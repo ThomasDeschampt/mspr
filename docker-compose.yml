@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./express-backend
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./flutter-frontend 
+    ports:
+      - "8080:8080"

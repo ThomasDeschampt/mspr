@@ -1,0 +1,216 @@
+--
+-- Fichier généré par SQLiteStudio v3.4.4 sur mar. janv. 9 11:44:23 2024
+--
+-- Encodage texte utilisé : System
+--
+PRAGMA foreign_keys = off;
+BEGIN TRANSACTION;
+
+-- Tableau : Botaniste
+DROP TABLE IF EXISTS Botaniste;
+
+CREATE TABLE IF NOT EXISTS Botaniste (
+    id_utl INTEGER,
+    PRIMARY KEY (
+        id_utl
+    ),
+    FOREIGN KEY (
+        id_utl
+    )
+    REFERENCES Utilisateur (id_utl) 
+);
+
+
+-- Tableau : Conseil
+DROP TABLE IF EXISTS Conseil;
+
+CREATE TABLE IF NOT EXISTS Conseil (
+    id_cns  INTEGER,
+    dsc_csn TEXT    NOT NULL,
+    PRIMARY KEY (
+        id_cns
+    )
+);
+
+
+-- Tableau : Conseiller
+DROP TABLE IF EXISTS Conseiller;
+
+CREATE TABLE IF NOT EXISTS Conseiller (
+    id_cns INTEGER,
+    id_utl INTEGER,
+    PRIMARY KEY (
+        id_cns,
+        id_utl
+    ),
+    FOREIGN KEY (
+        id_cns
+    )
+    REFERENCES Conseil (id_cns),
+    FOREIGN KEY (
+        id_utl
+    )
+    REFERENCES Botaniste (id_utl) 
+);
+
+
+-- Tableau : Donner
+DROP TABLE IF EXISTS Donner;
+
+CREATE TABLE IF NOT EXISTS Donner (
+    id_plt INTEGER,
+    id_cns INTEGER,
+    PRIMARY KEY (
+        id_plt,
+        id_cns
+    ),
+    FOREIGN KEY (
+        id_plt
+    )
+    REFERENCES Plante (id_plt),
+    FOREIGN KEY (
+        id_cns
+    )
+    REFERENCES Conseil (id_cns) 
+);
+
+
+-- Tableau : Gardien
+DROP TABLE IF EXISTS Gardien;
+
+CREATE TABLE IF NOT EXISTS Gardien (
+    id_utl INTEGER,
+    PRIMARY KEY (
+        id_utl
+    ),
+    FOREIGN KEY (
+        id_utl
+    )
+    REFERENCES Utilisateur (id_utl) 
+);
+
+
+-- Tableau : Image
+DROP TABLE IF EXISTS Image;
+
+CREATE TABLE IF NOT EXISTS Image (
+    id_img   INTEGER,
+    dat_img  NUMERIC NOT NULL,
+    url_img  TEXT    NOT NULL,
+    id_utl   INTEGER NOT NULL,
+    id_utl_1 INTEGER NOT NULL,
+    id_plt   INTEGER NOT NULL,
+    PRIMARY KEY (
+        id_img
+    ),
+    UNIQUE (
+        url_img
+    ),
+    FOREIGN KEY (
+        id_utl
+    )
+    REFERENCES Proprietaire (id_utl),
+    FOREIGN KEY (
+        id_utl_1
+    )
+    REFERENCES Gardien (id_utl),
+    FOREIGN KEY (
+        id_plt
+    )
+    REFERENCES Plante (id_plt) 
+);
+
+
+-- Tableau : Message
+DROP TABLE IF EXISTS Message;
+
+CREATE TABLE IF NOT EXISTS Message (
+    id_msg   INTEGER,
+    dat_msg  NUMERIC NOT NULL,
+    txt_msg  TEXT    NOT NULL,
+    id_utl   INTEGER NOT NULL,
+    id_utl_1 INTEGER NOT NULL,
+    PRIMARY KEY (
+        id_msg
+    ),
+    FOREIGN KEY (
+        id_utl
+    )
+    REFERENCES Proprietaire (id_utl),
+    FOREIGN KEY (
+        id_utl_1
+    )
+    REFERENCES Gardien (id_utl) 
+);
+
+
+-- Tableau : Plante
+DROP TABLE IF EXISTS Plante;
+
+CREATE TABLE IF NOT EXISTS Plante (
+    id_plt   INTEGER,
+    esp_plt  TEXT    NOT NULL,
+    dsc_plt  TEXT    NOT NULL,
+    nom_plt  TEXT    NOT NULL,
+    adr_plt  TEXT    NOT NULL,
+    id_utl   INTEGER NOT NULL,
+    id_utl_1 INTEGER NOT NULL,
+    PRIMARY KEY (
+        id_plt
+    ),
+    FOREIGN KEY (
+        id_utl
+    )
+    REFERENCES Proprietaire (id_utl),
+    FOREIGN KEY (
+        id_utl_1
+    )
+    REFERENCES Gardien (id_utl) 
+);
+
+
+-- Tableau : Proprietaire
+DROP TABLE IF EXISTS Proprietaire;
+
+CREATE TABLE IF NOT EXISTS Proprietaire (
+    id_utl INTEGER,
+    PRIMARY KEY (
+        id_utl
+    ),
+    FOREIGN KEY (
+        id_utl
+    )
+    REFERENCES Utilisateur (id_utl) 
+);
+
+
+-- Tableau : Utilisateur
+DROP TABLE IF EXISTS Utilisateur;
+
+CREATE TABLE IF NOT EXISTS Utilisateur (
+    id_utl  INTEGER,
+    nom_utl TEXT    NOT NULL,
+    pre_ult TEXT    NOT NULL,
+    age_utl INTEGER NOT NULL,
+    num_utl TEXT    NOT NULL,
+    eml_utl TEXT    NOT NULL,
+    adr_utl TEXT    NOT NULL,
+    psd_utl TEXT    NOT NULL,
+    mdp_utl TEXT    NOT NULL,
+    PRIMARY KEY (
+        id_utl
+    ),
+    UNIQUE (
+        num_utl
+    ),
+    UNIQUE (
+        eml_utl
+    ),
+    UNIQUE (
+        psd_utl
+    )
+);
+
+
+COMMIT TRANSACTION;
+PRAGMA foreign_keys = on;
