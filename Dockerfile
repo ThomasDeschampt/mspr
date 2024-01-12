@@ -1,20 +1,29 @@
-# Utilisez une image Node.js
-FROM node:14
+# Use an official Flutter runtime as a parent image
+FROM cirrusci/flutter:2.8.0 AS build
 
-# Définissez le répertoire de travail
+# Set the working directory
 WORKDIR /app
 
-# Copiez le fichier package.json et package-lock.json
-COPY package*.json ./
+# Copy the pubspec.yaml and pubspec.lock files to the working directory
+COPY flutter-frontend/pubspec.yaml flutter-frontend/pubspec.lock ./
 
-# Installez les dépendances
-RUN npm install
+# Get dependencies
+RUN flutter pub get
 
-# Copiez le reste du code source
-COPY . .
+# Copy the entire application
+COPY flutter-frontend/ .
 
-# Exposez le port sur lequel votre serveur ExpressJS écoutera
-EXPOSE 3000
+# Build the Flutter app
+RUN flutter build web
 
-# Commande pour démarrer l'application
-CMD ["npm", "start"]
+# Use Nginx as the final image
+FROM nginx:alpine
+
+# Copy the built app to the nginx public directory
+COPY --from=build /app/build/web /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Command to run the service
+CMD ["nginx", "-g", "daemon off;"]

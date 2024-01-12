@@ -1,20 +1,20 @@
-# Utilisez une image Node.js
+# Use an official Node runtime as a parent image
 FROM node:14
 
-# Définissez le répertoire de travail
+# Set the working directory
 WORKDIR /app
 
-# Copiez le fichier package.json et package-lock.json
-COPY package*.json ./
+# Copy package.json and package-lock.json to the working directory
+COPY express_backend/package*.json ./
 
-# Installez les dépendances
+# Install dependencies
 RUN npm install
 
-# Copiez le reste du code source
-COPY . .
+# Copy the entire backend application
+COPY express-backend/ .
 
-# Exposez le port sur lequel votre serveur ExpressJS écoutera
+# Expose port 3000
 EXPOSE 3000
 
-# Commande pour démarrer l'application
-CMD ["npm", "start"]
+# Command to run the service
+CMD ["node", "app.js"]
