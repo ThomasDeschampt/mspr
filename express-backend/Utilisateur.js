@@ -2,7 +2,6 @@ const Utilisateur = require('./models/Utilisateur');
 
 async function ajouterUtilisateur(nom, prenom, age, numero, email, adresse, pseudo, motdepasse) {
   try {
-    // Utilisation de la méthode `create` pour ajouter un nouvel utilisateur
     const nouvelUtilisateur = await Utilisateur.create({
       nom_utl: nom,
       pre_ult: prenom,
@@ -23,13 +22,17 @@ async function ajouterUtilisateur(nom, prenom, age, numero, email, adresse, pseu
 async function verifierUtilisateur(pseudo, motdepasse) {
   try {
     const utilisateur = await Utilisateur.findOne({
-      psd_utl: pseudo,
-      mdp_utl: motdepasse,
+      where: {
+        psd_utl: pseudo,
+        mdp_utl: motdepasse,
+      },
     });
 
     if (utilisateur) {
+      console.log("utilisateur trouvé");
       return true;
     } else {
+      console.log("utilisateur non trouvé");
       return false;
     }
   } catch (erreur) {
@@ -54,4 +57,4 @@ async function supprimerUtilisateur(pseudo) {
   }
 }
 
-ajouterUtilisateur();
+verifierUtilisateur('johndoe', 'motdepasse')
