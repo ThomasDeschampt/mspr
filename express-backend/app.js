@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const router = express.Router();
+const utilisateurController = require('./controllers/utilisateurController');
+
 
 const sequelize = require('./sequelize');
 const Utilisateur = require('./models/Utilisateur');
@@ -18,6 +21,10 @@ app.get('/', (req, res) => {
   res.send('Hello, world! This is your ExpressJS backend.');
 });
 
+router.post('/inscription', utilisateurController.inscrireUtilisateur);
+
+app.use('/api/utilisateurs', utilisateurRoutes);
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
@@ -30,3 +37,6 @@ app.listen(port, () => {
     console.error('Unable to synchronize the database:', error);
   }
 })();
+
+
+module.exports = router;
