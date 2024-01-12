@@ -5,6 +5,7 @@ const Utilisateur = sequelize.define('Utilisateur', {
   id_utl: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
   },
   nom_utl: {
     type: DataTypes.TEXT,
