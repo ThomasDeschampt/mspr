@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the entire backend application
-COPY express-backend/ .
+COPY . .
 
 # Expose port 3000
 EXPOSE 3000
