@@ -16,19 +16,21 @@ const Plante = require('./models/Plante');
 const Image = require('./models/Image');
 const Message = require('./models/Message');
 
-
-const utilisateurRoutes = require('./routes/utilisateurRoutes');
-
-// Middleware pour permettre à ExpressJS de comprendre le JSON dans les requêtes
 app.use(express.json());
 
-// Autres configurations de middleware et de routes
+app.get('/utilisateurs', async (req, res) => {
+  const utilisateurs = await Utilisateur.findAll();
+  res.json(utilisateurs);
+});
 
-// Utilisez les routes spécifiques aux utilisateurs
-app.use('/api/utilisateurs', utilisateurRoutes);
-
-
-
+app.post('/utilisateurs', async (req, res) => {
+  try {
+    const utilisateur = await Utilisateur.create(req.body);
+    res.json(utilisateur);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('Hello, world! This is your ExpressJS backend.');
