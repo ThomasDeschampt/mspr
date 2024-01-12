@@ -17,13 +17,22 @@ const Image = require('./models/Image');
 const Message = require('./models/Message');
 
 
+const utilisateurRoutes = require('./routes/utilisateurRoutes');
+
+// Middleware pour permettre à ExpressJS de comprendre le JSON dans les requêtes
+app.use(express.json());
+
+// Autres configurations de middleware et de routes
+
+// Utilisez les routes spécifiques aux utilisateurs
+app.use('/api/utilisateurs', utilisateurRoutes);
+
+
+
+
 app.get('/', (req, res) => {
   res.send('Hello, world! This is your ExpressJS backend.');
 });
-
-router.post('/inscription', utilisateurController.inscrireUtilisateur);
-
-app.use('/api/utilisateurs', utilisateurRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
@@ -32,9 +41,9 @@ app.listen(port, () => {
 (async () => {
   try {
     await sequelize.sync();
-    console.log('Database synchronized.');
+    console.log('Base de donnée sychronisé.');
   } catch (error) {
-    console.error('Unable to synchronize the database:', error);
+    console.error('Incapable de se synchroniser à la base de donnée:', error);
   }
 })();
 
