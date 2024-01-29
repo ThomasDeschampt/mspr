@@ -17,6 +17,13 @@ const Message = require('./models/Message');
 
 app.use(express.json());
 
+app.post('/api/ajouter-utilisateur', async (req, res) => {
+  const { nom, prenom, age, numero, email, adresse, pseudo, motdepasse } = req.body;
+  ajouterUtilisateur(nom, prenom, age, numero, email, adresse, pseudo, motdepasse);
+  res.send('Ajout d\'utilisateur en cours...');
+});
+
+
 app.get('/utilisateurs', async (req, res) => {
   const utilisateurs = await Utilisateur.findAll();
   res.json(utilisateurs);
