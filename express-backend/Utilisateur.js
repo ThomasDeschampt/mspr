@@ -1,5 +1,4 @@
 const Utilisateur = require('./models/Utilisateur');
-const botaniste = require('./models/Botaniste');
 
 async function ajouterUtilisateur(nom, prenom, age, numero, email, adresse, pseudo, motdepasse) {
   try {
@@ -13,6 +12,7 @@ async function ajouterUtilisateur(nom, prenom, age, numero, email, adresse, pseu
       psd_utl: pseudo,
       mdp_utl: motdepasse,
     });
+
     console.log('Nouvel utilisateur ajouté:', nouvelUtilisateur.toJSON());
   } catch (erreur) {
     console.error('Erreur lors de l\'ajout de l\'utilisateur:', erreur.message);
@@ -41,20 +41,15 @@ async function verifierUtilisateur(pseudo, motdepasse) {
 }
 
 async function supprimerUtilisateur(pseudo) {
-  const url = 'http://localhost:3000/utilisateurs-verifier';
   try {
     const utilisateur = await Utilisateur.findOne({
-      where: {
-        psd_utl: pseudo,
-      }
+      psd_utl: pseudo,
     });
 
     if (utilisateur) {
       await utilisateur.destroy();
-      console.log("utilisateur supprimé");
       return true;
     } else {
-      console.log("utilisateur non trouvé");
       return false;
     }
   } catch (erreur) {

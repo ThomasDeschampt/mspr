@@ -15,6 +15,9 @@ const Plante = require('./models/Plante');
 const Image = require('./models/Image');
 const Message = require('./models/Message');
 
+const utilisateurApi = require("./Utilisateur")
+
+
 app.use(express.json());
 
 app.post('/api/ajouter-utilisateur', async (req, res) => {
@@ -153,6 +156,13 @@ app.post('/message', async (req, res) => {
 app.get('/', (req, res) => {
   res.send('Hello, world! This is your ExpressJS backend.');
 });
+
+app.use('/api/utilisateurs', utilisateurRoutes);
+
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
