@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import "package:flutter/material.dart";
-import "package:flutter_map/flutter_map.dart";
-import "package:http/http.dart" as http;
-import "dart:convert" as convert;
+import 'package:flutter_map/flutter_map.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+
 
 class TrouverPage extends StatelessWidget {
   const TrouverPage({Key? key}) : super(key: key);
@@ -16,17 +16,16 @@ class TrouverPage extends StatelessWidget {
         body: Center(
             child: Stack(
           children: <Widget>[
-            FlutterMap(
-              options: new MapOptions(zoom: 13.0),
-              layers: [
-                new TileLayerOptions(
-                  urlTemplate: "https://api.tomtom.com/map/1/tile/basic/main/"
-                      "{z}/{x}/{y}.png?key={apiKey}",
-                  additionalOptions: {"apiKey": apiKey},
-                )
-              ],
-            )
-          ],
+FlutterMap(
+  options: MapOptions(zoom: 13.0),
+  children: [
+    TileLayer(
+      urlTemplate: "https://api.tomtom.com/map/1/tile/basic/main/{z}/{x}/{y}.png?key={apiKey}",
+      additionalOptions: {"apiKey": apiKey},
+    ),
+  ],
+),
+         ],
         )),
       ),
     );
