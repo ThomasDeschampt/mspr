@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+const bodyParser = require('body-parser');
 const sequelize = require('./sequelize');
 const Utilisateur = require('./models/Utilisateur');
 const Proprietaire = require('./models/Proprietaire');
@@ -12,8 +13,10 @@ const Conseiller = require('./models/Conseiller');
 const Plante = require('./models/Plante');
 const Image = require('./models/Image');
 const Message = require('./models/Message');
-
 const utilisateurRoutes = require("./api/Utilisateur")
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.json());
 

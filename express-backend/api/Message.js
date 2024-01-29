@@ -1,13 +1,33 @@
-app.get('/message', async (req, res) => {
-    const messages = await Message.findAll();
-    res.json(messages);
-  });
-  
-  app.post('/message', async (req, res) => {
-    try {
-      const message = await Message.create(req.body);
-      res.json(message);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
+const Message = require('../models/Utilisateur');
+
+async function ajouterMessage(dat_msg, txt_msg, id_utl, id_utl_1) {
+  try {
+    const nouveauMessage = await Message.create({
+      dat_msg,
+      txt_msg,
+      id_utl,
+      id_utl_1,
+    });
+    console.log('Nouveau message ajouté:', nouveauMessage.toJSON());
+  } catch (erreur) {
+    console.error('Erreur lors de l\'ajout du message:', erreur.message);
+  }
+}
+
+async function afficherMessages(id_utl, id_utl_1) {
+  try {
+    const messages = await Message.findAll({
+      where: {
+        id_utl: id_utl,
+        id_utl_1: id_utl_1,
+      },
+      order: [
+        ['dat_msg', 'ASC'],
+      ],
+    });
+    console.log("messages trouvés");
+    return messages;
+  } catch (erreur) {
+    console.error('Erreur lors de la récupération des messages:', erreur.message);
+  }
+}
