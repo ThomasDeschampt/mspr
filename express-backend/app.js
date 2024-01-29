@@ -3,7 +3,6 @@ const app = express();
 const port = 3000;
 const router = express.Router();
 
-
 const sequelize = require('./sequelize');
 const Utilisateur = require('./models/Utilisateur');
 const Proprietaire = require('./models/Proprietaire');
@@ -15,16 +14,18 @@ const Plante = require('./models/Plante');
 const Image = require('./models/Image');
 const Message = require('./models/Message');
 
-const utilisateurApi = require("./Utilisateur")
-
-
 app.use(express.json());
+
+const utilisateurRoutes = require("./api/Utilisateur")
+
 
 app.post('/api/ajouter-utilisateur', async (req, res) => {
   const { nom, prenom, age, numero, email, adresse, pseudo, motdepasse } = req.body;
   ajouterUtilisateur(nom, prenom, age, numero, email, adresse, pseudo, motdepasse);
   res.send('Ajout d\'utilisateur en cours...');
 });
+
+app.use('/api/utilisateurs', utilisateurRoutes);
 
 
 app.get('/utilisateurs', async (req, res) => {
