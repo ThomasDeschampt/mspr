@@ -3,7 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-
 class TrouverPage extends StatelessWidget {
   const TrouverPage({Key? key}) : super(key: key);
   final String apiKey = "r5tgib4GBlr2Zv5Cj8Zla0RGYWZRpZOw";
@@ -16,16 +15,17 @@ class TrouverPage extends StatelessWidget {
         body: Center(
             child: Stack(
           children: <Widget>[
-FlutterMap(
-  options: MapOptions(zoom: 13.0),
-  children: [
-    TileLayer(
-      urlTemplate: "https://api.tomtom.com/map/1/tile/basic/main/{z}/{x}/{y}.png?key={apiKey}",
-      additionalOptions: {"apiKey": apiKey},
-    ),
-  ],
-),
-         ],
+            FlutterMap(
+              options: MapOptions(zoom: 13.0),
+              children: [
+                TileLayer(
+                  urlTemplate:
+                      "https://api.tomtom.com/map/1/tile/basic/main/{z}/{x}/{y}.png?key={apiKey}",
+                  additionalOptions: {"apiKey": apiKey},
+                ),
+              ],
+            ),
+          ],
         )),
       ),
     );
