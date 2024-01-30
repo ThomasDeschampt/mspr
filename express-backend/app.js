@@ -19,6 +19,9 @@ app.use(express.json());
 
 app.use("/api/utilisateurs", utilisateurRoutes);
 
+app.get('/', (req, res) => {
+  res.send("Bienvenue sur mon serveur Express !");
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

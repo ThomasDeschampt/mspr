@@ -31,12 +31,10 @@ router.post("/ajouter", async (req, res) => {
     );
   } catch (erreur) {
     console.error("Erreur lors de l'ajout de l'utilisateur:", erreur.message);
-    res
-      .status(500)
-      .json({
-        message: "Erreur lors de l'ajout de l'utilisateur",
-        erreur: erreur.message,
-      });
+    res.status(500).json({
+      message: "Erreur lors de l'ajout de l'utilisateur",
+      erreur: erreur.message,
+    });
   }
 });
 
