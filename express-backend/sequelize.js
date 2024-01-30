@@ -4,9 +4,6 @@ const config = require('./config/config.json');
 
 const sequelize = new Sequelize(config.development);
 
-
-
-// Vérifiez la connexion à la base de données
 (async () => {
   try {
     await sequelize.authenticate();

@@ -13,14 +13,11 @@ const Conseiller = require('./models/Conseiller');
 const Plante = require('./models/Plante');
 const Image = require('./models/Image');
 const Message = require('./models/Message');
-const utilisateurRoutes = require("./api/Utilisateur")
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const utilisateurRoutes = require("./routes/utilisateurRoutes")
 
 app.use(express.json());
 
-app.use("/api/utilisateurs", utilisateurRoutes)
+app.use("/api/utilisateurs", utilisateurRoutes);
 
 
 app.listen(port, () => {
@@ -35,5 +32,3 @@ app.listen(port, () => {
     console.error('Incapable de se synchroniser à la base de donnée:', error);
   }
 })();
-
-

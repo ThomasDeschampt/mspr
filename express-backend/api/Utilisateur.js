@@ -1,17 +1,16 @@
 const Utilisateur = require('../models/Utilisateur');
-const botaniste = require('../models/Botaniste');
 
-async function ajouterUtilisateur(nom, prenom, age, numero, email, adresse, pseudo, motdepasse) {
+async function ajouterUtilisateur(nom_utl, pre_ult, age_utl, num_utl, eml_utl, adr_utl, psd_utl, mdp_utl) {
   try {
     const nouvelUtilisateur = await Utilisateur.create({
-      nom,
-      prenom,
-      age,
-      numero,
-      email,
-      adresse,
-      pseudo,
-      motdepasse,
+      nom_utl,
+      pre_ult,
+      age_utl,
+      num_utl,
+      eml_utl,
+      adr_utl,
+      psd_utl,
+      mdp_utl,
     });
     console.log('Nouvel utilisateur ajouté:', nouvelUtilisateur.toJSON());
   } catch (erreur) {
@@ -41,7 +40,6 @@ async function verifierUtilisateur(pseudo, motdepasse) {
 }
 
 async function supprimerUtilisateur(pseudo) {
-  const url = 'http://localhost:3000/utilisateurs-verifier';
   try {
     const utilisateur = await Utilisateur.findOne({
       where: {
@@ -63,4 +61,4 @@ async function supprimerUtilisateur(pseudo) {
 }
 
 
-
+module.exports = { ajouterUtilisateur, verifierUtilisateur, supprimerUtilisateur };
