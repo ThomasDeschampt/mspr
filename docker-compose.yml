@@ -19,7 +19,7 @@ services:
       - sqlite_db
 
   sqlite_db:
-    image: "tiangolo/sqlite-frontend-backend:latest"
+    image: "esolang/sqlite3:latest"
     environment:
       - SQL_FILE=/database/database_development.db
     volumes:

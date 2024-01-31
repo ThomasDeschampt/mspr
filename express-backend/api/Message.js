@@ -1,4 +1,4 @@
-const Message = require('../models/Utilisateur');
+const Message = require('../models/Message');
 
 async function ajouterMessage(dat_msg, txt_msg, id_utl, id_utl_1) {
   try {
@@ -31,3 +31,5 @@ async function afficherMessages(id_utl, id_utl_1) {
     console.error('Erreur lors de la récupération des messages:', erreur.message);
   }
 }
+
+module.exports = { ajouterMessage, afficherMessages };

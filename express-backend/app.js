@@ -14,10 +14,15 @@ const Plante = require('./models/Plante');
 const Image = require('./models/Image');
 const Message = require('./models/Message');
 const utilisateurRoutes = require("./routes/utilisateurRoutes")
+const messageRoutes = require("./routes/messageRoutes");
+const botanisteRoutes = require("./routes/botanisteRoutes");
 
 app.use(express.json());
+app.use("/api/message", messageRoutes);
 
 app.use("/api/utilisateurs", utilisateurRoutes);
+
+app.use("/api/botaniste", botanisteRoutes)
 
 app.get('/', (req, res) => {
   res.send("Bienvenue sur mon serveur Express !");

@@ -1,9 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-const Proprietaire = require('./Proprietaire');
-const Gardien = require('./Gardien');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../sequelize");
+const Proprietaire = require("./Proprietaire");
+const Gardien = require("./Gardien");
 
-const Plante = sequelize.define('Plante', {
+const Plante = sequelize.define("Plante", {
   id_plt: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -24,6 +24,14 @@ const Plante = sequelize.define('Plante', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  dat_deb_plt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  dat_fin_plt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
   id_utl: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -34,7 +42,7 @@ const Plante = sequelize.define('Plante', {
   },
 });
 
-Plante.belongsTo(Proprietaire, { foreignKey: 'id_utl' });
-Plante.belongsTo(Gardien, { foreignKey: 'id_utl_1' });
+Plante.belongsTo(Proprietaire, { foreignKey: "id_utl" });
+Plante.belongsTo(Gardien, { foreignKey: "id_utl_1" });
 
 module.exports = Plante;
