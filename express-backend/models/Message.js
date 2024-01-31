@@ -11,6 +11,7 @@ const Message = sequelize.define('Message', {
   dat_msg: {
     type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: literal('CURRENT_TIMESTAMP')
   },
   txt_msg: {
     type: DataTypes.STRING,

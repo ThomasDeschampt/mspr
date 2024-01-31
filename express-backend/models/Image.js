@@ -12,6 +12,7 @@ const Image = sequelize.define('Image', {
   dat_img: {
     type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: literal('CURRENT_TIMESTAMP'),
   },
   url_img: {
     type: DataTypes.STRING,

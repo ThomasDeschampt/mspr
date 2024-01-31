@@ -9,7 +9,6 @@ router.post("/ajouter", async (req,res) => {
     
         try {
             await ajouterMessage(
-                dat_msg,
                 txt_msg,
                 id_utl,
                 id_utl_1
