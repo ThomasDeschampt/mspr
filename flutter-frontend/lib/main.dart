@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http; // Importez le package http
+import 'dart:convert'; // Pour utiliser json.decode
 import 'accueil.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/browser_client.dart' as browser_http;
 
 void main() {
   runApp(const MyApp());
+  http.Client client =
+      browser_http.BrowserClient(); // Utiliser le client pour le navigateur
+  http.Client().close(); // Fermer le client par défaut
 }
 
 class MyApp extends StatelessWidget {
@@ -31,17 +38,29 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
-    // Implémentez votre logique de connexion ici
-    // Pour l'instant, imprimons simplement le nom d'utilisateur et le mot de passe saisis
-    print('Username: ${_usernameController.text}');
-    print('Password: ${_passwordController.text}');
+  Future<void> _login() async {
+    final pseudo = _usernameController.text;
+    final motdepasse = _passwordController.text;
 
-    // Naviguer vers la page AccueilPage en cas de connexion réussie
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AccueilPage()),
-    );
+    // Effectuer la requête HTTP
+final response = await http.post(Uri.parse('http://localhost:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
+
+    
+
+    if (response.statusCode == 200) {
+      final bool utilisateurTrouve = json.decode(response.body);
+      if (utilisateurTrouve) {
+        print('Utilisateur trouvé');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AccueilPage()),
+        );
+      } else {
+        print('Utilisateur non trouvé');
+      }
+    } else {
+      print('Erreur de connexion: ${response.statusCode}');
+    }
   }
 
   @override

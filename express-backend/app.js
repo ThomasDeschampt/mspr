@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
@@ -17,6 +18,7 @@ const utilisateurRoutes = require("./routes/utilisateurRoutes")
 const messageRoutes = require("./routes/messageRoutes");
 const botanisteRoutes = require("./routes/botanisteRoutes");
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/message", messageRoutes);
 

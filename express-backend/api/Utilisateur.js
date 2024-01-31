@@ -18,12 +18,12 @@ async function ajouterUtilisateur(nom_utl, pre_ult, age_utl, num_utl, eml_utl, a
   }
 }
 
-async function verifierUtilisateur(pseudo, motdepasse) {
+async function verifierUtilisateur(psd_utl, mdp_utl) {
   try {
     const utilisateur = await Utilisateur.findOne({
       where: {
-        psd_utl: pseudo,
-        mdp_utl: motdepasse,
+        psd_utl: psd_utl,
+        mdp_utl: mdp_utl,
       },
     });
 
@@ -39,11 +39,11 @@ async function verifierUtilisateur(pseudo, motdepasse) {
   }
 }
 
-async function supprimerUtilisateur(pseudo) {
+async function supprimerUtilisateur(psd_utl) {
   try {
     const utilisateur = await Utilisateur.findOne({
       where: {
-        psd_utl: pseudo,
+        psd_utl: psd_utl,
       }
     });
 

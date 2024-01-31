@@ -39,9 +39,9 @@ router.post("/ajouter", async (req, res) => {
 });
 
 router.post("/verifier", async (req, res) => {
-  const { pseudo, motdepasse } = req.body;
+  const { psd_utl, mdp_utl } = req.query;
   try {
-    const utilisateur = await verifierUtilisateur(pseudo, motdepasse);
+    const utilisateur = await verifierUtilisateur(psd_utl, mdp_utl);
 
     if (utilisateur) {
       console.log("utilisateur trouvé");
@@ -62,9 +62,9 @@ router.post("/verifier", async (req, res) => {
 });
 
 router.delete("/supprimer", async (req, res) => {
-  const { pseudo } = req.body;
+  const { psd_utl } = req.query;
   try {
-    await supprimerUtilisateur(pseudo);
+    await supprimerUtilisateur(psd_utl);
   } catch (erreur) {
     console.error(
       "Erreur lors de la suppression de l'utilisateur:",
