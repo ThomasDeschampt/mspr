@@ -43,24 +43,40 @@ class _LoginPageState extends State<LoginPage> {
     final motdepasse = _passwordController.text;
 
     // Effectuer la requête HTTP
-final response = await http.post(Uri.parse('http://localhost:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
+    final response = await http.post(Uri.parse('http://localhost:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
 
-    
+    final Map<String, dynamic> responseData = json.decode(response.body);
 
-    if (response.statusCode == 200) {
-      final bool utilisateurTrouve = json.decode(response.body);
-      if (utilisateurTrouve) {
-        print('Utilisateur trouvé');
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AccueilPage()),
-        );
-      } else {
-        print('Utilisateur non trouvé');
-      }
+    if (responseData.containsKey('message') && responseData['message'] == 'Utilisateur trouvé') {
+      print('Utilisateur trouvé');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AccueilPage()),
+      );
     } else {
-      print('Erreur de connexion: ${response.statusCode}');
+      print('Utilisateur non trouvé');
+      _showErrorDialog();
     }
+  }
+
+  void _showErrorDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Erreur de connexion'),
+          content: Text('Utilisateur non trouvé.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
