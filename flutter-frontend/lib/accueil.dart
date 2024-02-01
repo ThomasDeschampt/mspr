@@ -6,16 +6,24 @@ import 'plantes.dart';
 import 'profil.dart';
 import 'valider.dart';
 
-class AccueilPage extends StatelessWidget {
-  const AccueilPage({Key? key});
+class AccueilPage extends StatefulWidget {
+  final String pseudo;
+
+  AccueilPage({Key? key, required this.pseudo}) : super(key: key);
 
   @override
+  _AccueilPageState createState() => _AccueilPageState();
+}
+
+class _AccueilPageState extends State<AccueilPage> {
+  @override
   Widget build(BuildContext context) {
+    String pseudo = widget.pseudo;
     bool condition = false; // Mettez ici votre condition
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Accueil Page'),
+        title: Text('Accueil Page, $pseudo'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

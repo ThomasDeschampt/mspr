@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _login() async {
     final pseudo = _usernameController.text;
     final motdepasse = _passwordController.text;
+    final BuildContext currentContext = context;
 
     // Effectuer la requête HTTP
     final response = await http.post(Uri.parse('http://localhost:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
@@ -50,8 +51,8 @@ class _LoginPageState extends State<LoginPage> {
     if (responseData.containsKey('message') && responseData['message'] == 'Utilisateur trouvé') {
       print('Utilisateur trouvé');
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AccueilPage()),
+        currentContext,  // Utiliser la variable locale du BuildContext
+        MaterialPageRoute(builder: (context) => AccueilPage(pseudo: pseudo)),
       );
     } else {
       print('Utilisateur non trouvé');
