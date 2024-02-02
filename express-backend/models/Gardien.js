@@ -4,7 +4,7 @@ const Utilisateur = require('./Utilisateur');
 
 const Gardien = sequelize.define('Gardien', {
   id_utl: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     primaryKey: true,
   },
 });

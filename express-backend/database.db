@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Botaniste (
 DROP TABLE IF EXISTS Conseil;
 
 CREATE TABLE IF NOT EXISTS Conseil (
-    id_cns  INTEGER,
+    id_cns  INTEGER AUTOINCREMENT,
     dsc_csn TEXT    NOT NULL,
     PRIMARY KEY (
         id_cns
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS Gardien (
 DROP TABLE IF EXISTS Image;
 
 CREATE TABLE IF NOT EXISTS Image (
-    id_img   INTEGER,
+    id_img   INTEGER AUTOINCREMENT,
     dat_img  NUMERIC NOT NULL,
     url_img  TEXT    NOT NULL,
     id_utl   INTEGER NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS Image (
 DROP TABLE IF EXISTS Message;
 
 CREATE TABLE IF NOT EXISTS Message (
-    id_msg   INTEGER,
+    id_msg   INTEGER AUTOINCREMENT,
     dat_msg  NUMERIC NOT NULL,
     txt_msg  TEXT    NOT NULL,
     id_utl   INTEGER NOT NULL,
@@ -148,13 +148,15 @@ CREATE TABLE IF NOT EXISTS Message (
 DROP TABLE IF EXISTS Plante;
 
 CREATE TABLE IF NOT EXISTS Plante (
-    id_plt   INTEGER,
+    id_plt   INTEGER NOT NULL AUTOINCREMENT,
     esp_plt  TEXT    NOT NULL,
     dsc_plt  TEXT    NOT NULL,
     nom_plt  TEXT    NOT NULL,
     adr_plt  TEXT    NOT NULL,
     id_utl   INTEGER NOT NULL,
     id_utl_1 INTEGER NOT NULL,
+    dat_deb_plt DATE NOT NULL,
+    dat_fin_plt DATE NOT NULL,
     PRIMARY KEY (
         id_plt
     ),
@@ -188,7 +190,7 @@ CREATE TABLE IF NOT EXISTS Proprietaire (
 DROP TABLE IF EXISTS Utilisateur;
 
 CREATE TABLE IF NOT EXISTS Utilisateur (
-    id_utl  INTEGER,
+    id_utl  INTEGER AUTOINCREMENT,
     nom_utl TEXT    NOT NULL,
     pre_ult TEXT    NOT NULL,
     age_utl INTEGER NOT NULL,
