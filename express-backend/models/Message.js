@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, literal } = require('sequelize');
 const sequelize = require('../sequelize');
 const Proprietaire = require('./Proprietaire');
 const Gardien = require('./Gardien');
@@ -7,6 +7,7 @@ const Message = sequelize.define('Message', {
   id_msg: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true
   },
   dat_msg: {
     type: DataTypes.DATE,

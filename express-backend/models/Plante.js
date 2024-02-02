@@ -7,6 +7,7 @@ const Plante = sequelize.define("Plante", {
   id_plt: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement : true
   },
   esp_plt: {
     type: DataTypes.STRING,

@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, literal } = require('sequelize');
 const sequelize = require('../sequelize');
 const Proprietaire = require('./Proprietaire');
 const Gardien = require('./Gardien');
@@ -8,6 +8,7 @@ const Image = sequelize.define('Image', {
   id_img: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true
   },
   dat_img: {
     type: DataTypes.DATE,
