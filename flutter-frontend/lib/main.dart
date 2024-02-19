@@ -5,6 +5,7 @@ import 'accueil.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart' as browser_http;
 
+
 void main() {
   runApp(const MyApp());
   http.Client client =
@@ -24,8 +25,13 @@ class MyApp extends StatelessWidget {
       ),
       home: const LoginPage(),
     );
+    
   }
+
+  static of(BuildContext context) {}
+
 }
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});

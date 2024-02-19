@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
 import 'dart:convert' as convert;
 
 class TrouverPage extends StatelessWidget {
@@ -16,11 +17,12 @@ class TrouverPage extends StatelessWidget {
             child: Stack(
           children: <Widget>[
             FlutterMap(
-              options: MapOptions(zoom: 13.0),
+              options: MapOptions(
+                  initialCenter: const LatLng(45.7578137, 4.8320114), zoom: 13.0),
               children: [
                 TileLayer(
                   urlTemplate:
-                      "https://api.tomtom.com/map/1/tile/basic/main/{z}/{x}/{y}.png?key={apiKey}",
+                      "https://api.tomtom.com/map/1/tile/basic/main/%7Bz%7D/%7Bx%7D/%7By%7D.png?key={apiKey}",
                   additionalOptions: {"apiKey": apiKey},
                 ),
               ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PlantePage extends StatelessWidget {
-  const PlantePage({Key? key}) : super(key: key);
+  const PlantePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,8 +9,8 @@ class PlantePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Faire une demande'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),

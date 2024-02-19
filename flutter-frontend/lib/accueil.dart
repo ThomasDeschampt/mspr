@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mspr/home_page_widget.dart';
 import 'package:mspr/trouver.dart';
 import 'messages.dart';
 import 'gardiennages.dart';
@@ -78,7 +79,7 @@ class _AccueilPageState extends State<AccueilPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ProfilPage()),
+                                builder: (context) => const HomePageWidget()),
                           );
                         }),
                         _buildMenuItem(

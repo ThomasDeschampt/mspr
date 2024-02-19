@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MessagesPage extends StatelessWidget {
-  const MessagesPage({Key? key}) : super(key: key);
+  const MessagesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,8 +9,8 @@ class MessagesPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Messages'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),

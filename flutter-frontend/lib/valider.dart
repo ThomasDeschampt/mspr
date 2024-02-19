@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ValiderPage extends StatelessWidget {
-  const ValiderPage({Key? key}) : super(key: key);
+  const ValiderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,8 +9,8 @@ class ValiderPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Valider une demande'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
