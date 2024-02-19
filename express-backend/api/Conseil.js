@@ -18,8 +18,7 @@ async function afficherConseil(id_cns) {
         id_cns: id_cns,
       }
     });
-    console.log("conseil trouvé");
-    return messages;
+    return conseil;
   } catch (erreur) {
     console.error('Erreur lors de la récupération du conseil:', erreur.message);
   }
