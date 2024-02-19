@@ -26,6 +26,8 @@ app.use("/api/utilisateurs", utilisateurRoutes);
 
 app.use("/api/botaniste", botanisteRoutes)
 
+app.use("/api/conseil", conseilRoutes)
+
 app.get('/', (req, res) => {
   res.send("Bienvenue sur mon serveur Express !");
 });
