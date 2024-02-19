@@ -17,6 +17,7 @@ const Message = require('./models/Message');
 const utilisateurRoutes = require("./routes/utilisateurRoutes")
 const messageRoutes = require("./routes/messageRoutes");
 const botanisteRoutes = require("./routes/botanisteRoutes");
+const conseilRoutes = require("./routes/conseilRoutes");
 
 app.use(cors());
 app.use(express.json());
