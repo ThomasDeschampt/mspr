@@ -21,7 +21,7 @@ router.post("/ajouter", async (req,res) => {
     
 })
 
-router.post("/afficher", async (req,res) => {
+router.get("/afficher", async (req,res) => {
     const { id_cns } = req.query;
     try {
         const messages = await afficherConseil(id_cns);
