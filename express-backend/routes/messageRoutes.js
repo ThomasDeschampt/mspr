@@ -5,10 +5,11 @@ const { ajouterMessage, afficherMessages} = require("../api/Message");
 
 
 router.post("/ajouter", async (req,res) => {
-    const { dat_msg, txt_msg, id_utl, id_utl_1,} = req.query;
+    const { dat_msg, txt_msg, id_utl, id_utl_1} = req.query;
     
         try {
             await ajouterMessage(
+                dat_msg,
                 txt_msg,
                 id_utl,
                 id_utl_1
@@ -23,7 +24,7 @@ router.post("/ajouter", async (req,res) => {
     
 })
 
-router.post("/afficher", async (req,res) => {
+router.get("/afficher", async (req,res) => {
     const { id_utl, id_utl_1 } = req.query;
     try {
         const messages = await afficherMessages(id_utl, id_utl_1);
