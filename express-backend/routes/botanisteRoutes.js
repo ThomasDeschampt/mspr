@@ -17,7 +17,7 @@ router.post("/ajouterBotaniste", async (req,res) => {
 })
 
 router.post("/estBotaniste", async (req, res) => {
-  const {psd_utl} = req.body;
+  const {psd_utl} = req.query;
   try {
     await estBotaniste( 
       psd_utl,
