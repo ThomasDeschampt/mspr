@@ -86,51 +86,108 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.grey[200],
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+               const SizedBox(height: 32), 
+               Image.asset(
+                'images/Logo.png',
+                width: 150.0, // Largeur fixe pour le logo
+                height: 150.0, // Hauteur fixe pour le logo
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nom d\'utilisateur',
-                  border: InputBorder.none,
+               const Text(
+              "S'identifier", // Titre
+              style: TextStyle(
+                fontSize: 28, // Taille de la police du titre
+                fontWeight: FontWeight.bold, // Épaisseur de la police
+              ),
+            ),
+             const SizedBox(height: 32), 
+              Container(
+                
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                child: TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(
+                    labelText: 'E-mail ou numéro de téléphone',
+                    labelStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.grey[200],
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Mot de passe',
-                  border: InputBorder.none,
+              const SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
                 ),
-                obscureText: true,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                child: TextField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Mot de passe',
+                    labelStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
+                  obscureText: true,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _login,
-              child: const Text('Connexion'),
-            ),
-          ],
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _login,
+                style: ElevatedButton.styleFrom(
+                  primary: Color.fromARGB(255, 15, 220, 141),
+                  minimumSize: Size(double.infinity, 50), // fromHeight use double.infinity as width and 50 is the height
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)), // Pas de bordures arrondies
+                ),
+                child: const Text('Connexion', style: TextStyle(fontSize: 16, color: Colors.white),),
+              ),
+            ],
+          ),
         ),
       ),
     );
