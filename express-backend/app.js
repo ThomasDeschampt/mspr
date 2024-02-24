@@ -18,6 +18,9 @@ const utilisateurRoutes = require("./routes/utilisateurRoutes")
 const messageRoutes = require("./routes/messageRoutes");
 const botanisteRoutes = require("./routes/botanisteRoutes");
 const conseilRoutes = require("./routes/conseilRoutes");
+const conseillerRoutes = require("./routes/conseillerRoutes");
+const imageRoutes = require("./routes/imageRoutes");
+const planteRoutes = require("./routes/planteRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -28,6 +31,12 @@ app.use("/api/utilisateurs", utilisateurRoutes);
 app.use("/api/botaniste", botanisteRoutes)
 
 app.use("/api/conseil", conseilRoutes)
+
+app.use("/api/conseiller", conseillerRoutes);
+
+app.use("/api/image", imageRoutes);
+
+app.use("/api/plante", planteRoutes);
 
 app.get('/', (req, res) => {
   res.send("Bienvenue sur mon serveur Express !");
