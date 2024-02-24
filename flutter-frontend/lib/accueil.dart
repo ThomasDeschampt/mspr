@@ -76,12 +76,14 @@ class _AccueilPageState extends State<AccueilPage> {
                       ]
                     : [
                         _buildMenuItem(context, Icons.person, 'Mon Profil', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePageWidget()),
-                          );
-                        }),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePageWidget(pseudo: pseudo),
+                              ),
+                            );
+                          }),
+
                         _buildMenuItem(
                             context, Icons.add, 'Faire une demande Plantes',
                             () {

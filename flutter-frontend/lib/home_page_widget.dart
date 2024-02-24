@@ -1,3 +1,5 @@
+import 'package:mspr/main.dart';
+
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -10,7 +12,8 @@ import 'home_page_model.dart';
 export 'home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({super.key});
+  final String pseudo;
+  const HomePageWidget({super.key, required this.pseudo});
 
   @override
   State<HomePageWidget> createState() => _HomePageWidgetState();
@@ -95,16 +98,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ],
               ),
-              Padding(
+               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
                 child: Text(
-                  'John Doe',
+                   'Bienvenue ${widget.pseudo}',
                   style: FlutterFlowTheme.of(context).headlineMedium.override(
-                        fontFamily: 'Outfit',
-                        color: FlutterFlowTheme.of(context).primaryText,
-                      ),
+                    fontFamily: 'Outfit',
+                    color: FlutterFlowTheme.of(context).primaryText,
                 ),
               ),
+            ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                 child: Column(
@@ -258,11 +261,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ],
                 ),
               ),
-              Padding(
+             Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                 child: FFButtonWidget(
                   onPressed: () {
-                    print('Button pressed ...');
+                    // Déconnexion de l'utilisateur et retour à la page de login
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      (route) => false, // Supprime toutes les routes précédentes de la pile
+                    );
                   },
                   text: 'Logout',
                   options: FFButtonOptions(
@@ -271,11 +279,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                     iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                     color: FlutterFlowTheme.of(context).primary,
-                    textStyle:
-                        FlutterFlowTheme.of(context).titleMedium.override(
-                              fontFamily: 'Plus Jakarta Sans',
-                              color: Colors.white,
-                            ),
+                    textStyle: FlutterFlowTheme.of(context).titleMedium.override(
+                      fontFamily: 'Plus Jakarta Sans',
+                      color: Colors.white,
+                    ),
                     elevation: 2,
                     borderRadius: BorderRadius.circular(8),
                   ),
