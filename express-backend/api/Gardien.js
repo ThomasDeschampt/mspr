@@ -1,14 +1,18 @@
-app.get('/gardien', async (req, res) => {
-    const gardiens = await Gardien.findAll();
-    res.json(gardiens);
-  });
+const Gardien = require('../models/Gardien');
+
+async function ajouterGardien(id_utl) {
+  try {
+    const nouveauGardien = await Gardien.create({
+      id_utl,
+    });
+    console.log('Nouveau gardien ajouté:', nouveauGardien.toJSON());
+  }
+  catch (erreur) {
+    console.error('Erreur lors de l\'ajout du gardien:', erreur.message);
+  }
+}
+
+
+module.exports = { ajouterGardien };
   
-  app.post('/gardien', async (req, res) => {
-    try {
-      const gardien = await Gardien.create(req.body);
-      res.json(gardien);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
   

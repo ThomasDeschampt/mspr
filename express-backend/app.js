@@ -21,6 +21,8 @@ const conseilRoutes = require("./routes/conseilRoutes");
 const conseillerRoutes = require("./routes/conseillerRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const planteRoutes = require("./routes/planteRoutes");
+const gardienRoutes = require('./routes/gardienRoutes');
+const proprietaireRoutes = require('./routes/proprietaireRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -37,6 +39,10 @@ app.use("/api/conseiller", conseillerRoutes);
 app.use("/api/image", imageRoutes);
 
 app.use("/api/plante", planteRoutes);
+
+app.use("/api/gardien", gardienRoutes);
+
+app.use("/api/proprietaire", proprietaireRoutes);
 
 app.get('/', (req, res) => {
   res.send("Bienvenue sur mon serveur Express !");

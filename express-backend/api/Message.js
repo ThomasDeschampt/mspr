@@ -1,9 +1,8 @@
 const Message = require('../models/Message');
 
-async function ajouterMessage(dat_msg, txt_msg, id_utl, id_utl_1) {
+async function ajouterMessage(txt_msg, id_utl, id_utl_1) {
   try {
     const nouveauMessage = await Message.create({
-      dat_msg,
       txt_msg,
       id_utl,
       id_utl_1,

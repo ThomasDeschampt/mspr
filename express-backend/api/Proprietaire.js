@@ -1,16 +1,18 @@
+const Proprietaire = require('../models/Proprietaire');
 
-app.get('/proprietaires', async (req, res) => {
-    const proprietaires = await Proprietaire.findAll();
-    res.json(proprietaires);
-  });
-  
-  app.post('/proprietaires', async (req, res) => {
-    try {
-      const proprietaire = await Proprietaire.create(req.body);
-      res.json(proprietaire);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  });
+async function ajouterProprietaire(id_utl) {
+  try {
+    const nouveauProprietaire = await Proprietaire.create({
+      id_utl,
+    });
+    console.log('Nouveau propriétaire ajouté:', nouveauProprietaire.toJSON());
+  }
+  catch (erreur) {
+    console.error('Erreur lors de l\'ajout du propriétaire:', erreur.message);
+  }
+}
+
+
+module.exports = { ajouterProprietaire };
   
   
