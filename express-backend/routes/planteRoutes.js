@@ -60,7 +60,7 @@ router.get("/recupererlocalisation", async (req,res) => {
 })
 
 router.post("/ajouter", async (req,res) => {
-    const { esp_plt, des_plt, nom_plt, adr_plt, dat_deb_plt, dat_fin_plt, id_utl } = req.body;
+    const { esp_plt, des_plt, nom_plt, adr_plt, dat_deb_plt, dat_fin_plt, id_utl } = req.query;
     try {
         const messages = await ajouterPlante(esp_plt, des_plt, nom_plt, adr_plt, dat_deb_plt, dat_fin_plt, id_utl);
         res.json(messages);

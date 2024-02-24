@@ -67,9 +67,9 @@ async function ajouterPlante(esp_plt, des_plt, nom_plt, adr_plt, dat_deb_plt, da
       dat_deb_plt: dat_deb_plt,
       dat_fin_plt: dat_fin_plt,
       id_utl: id_utl,
-      id_utl_1: null
+      id_utl_1: 3
     });
-    console.log('Nouvelle plante ajoutée:', image.toJSON());
+    console.log('Nouvelle plante ajoutée:', plante.toJSON());
   } catch (erreur) {
     console.error('Erreur lors de l\'ajout de la plante:', erreur.message);
   }
@@ -84,7 +84,7 @@ async function ajouterGardienPlante(id_plt, id_utl_1) {
         id_plt: id_plt
       }
     });
-    console.log('Gardien ajouté à la plante:', plante.toJSON());
+    console.log('Gardien ajouté à la plante');
   } catch (erreur) {
     console.error('Erreur lors de l\'ajout du gardien à la plante:', erreur.message);
   }
