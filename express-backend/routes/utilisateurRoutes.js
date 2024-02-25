@@ -27,7 +27,7 @@ router.post("/ajouter", async (req, res) => {
       eml_utl,
       adr_utl,
       psd_utl,
-      mdp_utl
+      mdp_utl,
     );
   } catch (erreur) {
     console.error("Erreur lors de l'ajout de l'utilisateur:", erreur.message);
@@ -53,7 +53,7 @@ router.post("/verifier", async (req, res) => {
   } catch (erreur) {
     console.error(
       "Erreur lors de la vérification de l'utilisateur:",
-      erreur.message
+      erreur.message,
     );
     res
       .status(500)
@@ -68,7 +68,7 @@ router.delete("/supprimer", async (req, res) => {
   } catch (erreur) {
     console.error(
       "Erreur lors de la suppression de l'utilisateur:",
-      erreur.message
+      erreur.message,
     );
     res
       .status(500)

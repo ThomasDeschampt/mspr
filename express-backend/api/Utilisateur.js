@@ -1,6 +1,15 @@
-const Utilisateur = require('../models/Utilisateur');
+const Utilisateur = require("../models/Utilisateur");
 
-async function ajouterUtilisateur(nom_utl, pre_ult, age_utl, num_utl, eml_utl, adr_utl, psd_utl, mdp_utl) {
+async function ajouterUtilisateur(
+  nom_utl,
+  pre_ult,
+  age_utl,
+  num_utl,
+  eml_utl,
+  adr_utl,
+  psd_utl,
+  mdp_utl,
+) {
   try {
     const nouvelUtilisateur = await Utilisateur.create({
       nom_utl,
@@ -12,9 +21,9 @@ async function ajouterUtilisateur(nom_utl, pre_ult, age_utl, num_utl, eml_utl, a
       psd_utl,
       mdp_utl,
     });
-    console.log('Nouvel utilisateur ajouté:', nouvelUtilisateur);
+    console.log("Nouvel utilisateur ajouté:", nouvelUtilisateur);
   } catch (erreur) {
-    console.error('Erreur lors de l\'ajout de l\'utilisateur:', erreur.message);
+    console.error("Erreur lors de l'ajout de l'utilisateur:", erreur.message);
   }
 }
 
@@ -35,7 +44,10 @@ async function verifierUtilisateur(psd_utl, mdp_utl) {
       return false;
     }
   } catch (erreur) {
-    console.error('Erreur lors de la vérification de l\'utilisateur:', erreur.message);
+    console.error(
+      "Erreur lors de la vérification de l'utilisateur:",
+      erreur.message,
+    );
   }
 }
 
@@ -44,7 +56,7 @@ async function supprimerUtilisateur(psd_utl) {
     const utilisateur = await Utilisateur.findOne({
       where: {
         psd_utl: psd_utl,
-      }
+      },
     });
 
     if (utilisateur) {
@@ -56,9 +68,15 @@ async function supprimerUtilisateur(psd_utl) {
       return false;
     }
   } catch (erreur) {
-    console.error('Erreur lors de la suppression de l\'utilisateur:', erreur.message);
+    console.error(
+      "Erreur lors de la suppression de l'utilisateur:",
+      erreur.message,
+    );
   }
 }
 
-
-module.exports = { ajouterUtilisateur, verifierUtilisateur, supprimerUtilisateur };
+module.exports = {
+  ajouterUtilisateur,
+  verifierUtilisateur,
+  supprimerUtilisateur,
+};

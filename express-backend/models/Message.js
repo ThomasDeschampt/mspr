@@ -1,18 +1,18 @@
-const { DataTypes, literal } = require('sequelize');
-const sequelize = require('../sequelize');
-const Proprietaire = require('./Proprietaire');
-const Gardien = require('./Gardien');
+const { DataTypes, literal } = require("sequelize");
+const sequelize = require("../sequelize");
+const Proprietaire = require("./Proprietaire");
+const Gardien = require("./Gardien");
 
-const Message = sequelize.define('Message', {
+const Message = sequelize.define("Message", {
   id_msg: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
   dat_msg: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: literal('CURRENT_TIMESTAMP')
+    defaultValue: literal("CURRENT_TIMESTAMP"),
   },
   txt_msg: {
     type: DataTypes.STRING,
@@ -28,7 +28,7 @@ const Message = sequelize.define('Message', {
   },
 });
 
-Message.belongsTo(Proprietaire, { foreignKey: 'id_utl' });
-Message.belongsTo(Gardien, { foreignKey: 'id_utl_1' });
+Message.belongsTo(Proprietaire, { foreignKey: "id_utl" });
+Message.belongsTo(Gardien, { foreignKey: "id_utl_1" });
 
 module.exports = Message;

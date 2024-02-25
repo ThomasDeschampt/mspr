@@ -1,9 +1,9 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
-const Conseil = require('./Conseil');
-const Botaniste = require('./Botaniste');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../sequelize");
+const Conseil = require("./Conseil");
+const Botaniste = require("./Botaniste");
 
-const Conseiller = sequelize.define('Conseiller', {
+const Conseiller = sequelize.define("Conseiller", {
   id_cns: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -14,7 +14,7 @@ const Conseiller = sequelize.define('Conseiller', {
   },
 });
 
-Conseiller.belongsTo(Conseil, { foreignKey: 'id_cns' });
-Conseiller.belongsTo(Botaniste, { foreignKey: 'id_utl' });
+Conseiller.belongsTo(Conseil, { foreignKey: "id_cns" });
+Conseiller.belongsTo(Botaniste, { foreignKey: "id_utl" });
 
 module.exports = Conseiller;
