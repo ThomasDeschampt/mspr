@@ -9,3 +9,6 @@ npm install
 cd express-backend
 npx sequelize-cli db:migrate
 
+# TEST 
+
+
