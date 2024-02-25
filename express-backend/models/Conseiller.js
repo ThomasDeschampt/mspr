@@ -13,6 +13,7 @@ const Conseiller = sequelize.define("Conseiller", {
     primaryKey: true,
   },
 });
+     
 Conseiller.belongsTo(Conseil, { foreignKey: "id_cns" });
 Conseiller.belongsTo(Botaniste, { foreignKey: "id_utl" });
 
