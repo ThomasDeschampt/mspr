@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Change directory to express-backend
-        run: cd express-backend
-        
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Change directory to express-backend
+        run: cd express-backend
 
       - name: Install Node.js
         uses: actions/setup-node@v2
