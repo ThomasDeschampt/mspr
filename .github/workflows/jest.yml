@@ -22,4 +22,4 @@ jobs:
           node-version: '14'
 
       - name: Run Jest
-        run: cd express-backend && npx jest
+        run: cd express-backend && npx jest --config=express-backend/jest.config.js
