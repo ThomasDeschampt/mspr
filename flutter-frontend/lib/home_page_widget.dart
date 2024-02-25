@@ -278,7 +278,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     height: 60,
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                     iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                    color: FlutterFlowTheme.of(context).primary,
+                    color: Color.fromARGB(255, 15, 220, 141),
                     textStyle: FlutterFlowTheme.of(context).titleMedium.override(
                       fontFamily: 'Plus Jakarta Sans',
                       color: Colors.white,

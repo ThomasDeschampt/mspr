@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '/flutter_flow/flutter_flow_widgets.dart'; // Importez les widgets FlutterFlow
+import '/flutter_flow/flutter_flow_theme.dart'; // Importez le thème FlutterFlow
 import 'package:mspr/home_page_widget.dart';
 import 'package:mspr/trouver.dart';
 import 'messages.dart';
@@ -24,7 +26,7 @@ class _AccueilPageState extends State<AccueilPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Accueil Page, $pseudo'),
+        title: Text('Accueil Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -127,10 +129,20 @@ class _AccueilPageState extends State<AccueilPage> {
 
   Widget _buildMenuItem(
       BuildContext context, IconData icon, String title, VoidCallback onTap) {
-    return ListTile(
-      leading: Icon(icon), // Ajouter une icône à gauche
-      title: Text(title),
-      onTap: onTap,
+    return FFButtonWidget( // Utilisez le widget FFButtonWidget à la place de ListTile
+      onPressed: onTap,
+      iconData: icon,
+      text: title,
+      options: FFButtonOptions(
+        width: 300,
+        height: 50,
+        color: Color.fromARGB(255, 15, 220, 141),
+        textStyle: FlutterFlowTheme.of(context).titleMedium.override(
+          fontFamily: 'Plus Jakarta Sans',
+          color: Colors.white,
+        ),
+        elevation: 2,
+      ),
     );
   }
 }
