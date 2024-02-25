@@ -12,7 +12,7 @@ async function ajouterUtilisateur(nom_utl, pre_ult, age_utl, num_utl, eml_utl, a
       psd_utl,
       mdp_utl,
     });
-    console.log('Nouvel utilisateur ajouté:', nouvelUtilisateur.toJSON());
+    console.log('Nouvel utilisateur ajouté:', nouvelUtilisateur);
   } catch (erreur) {
     console.error('Erreur lors de l\'ajout de l\'utilisateur:', erreur.message);
   }

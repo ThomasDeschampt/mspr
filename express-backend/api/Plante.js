@@ -35,7 +35,7 @@ async function afficherPlanteFaitesGardees(id_utl) {
     });
     return plantes;
   } catch (erreur) {
-    console.error('Erreur lors de la récupération des plantes faites gardeess:', erreur.message);
+    console.error('Erreur lors de la récupération des plantes faites gardees:', erreur.message);
   }
 }
 
@@ -69,11 +69,13 @@ async function ajouterPlante(esp_plt, des_plt, nom_plt, adr_plt, dat_deb_plt, da
       id_utl: id_utl,
       id_utl_1: 3
     });
-    console.log('Nouvelle plante ajoutée:', plante.toJSON());
+    console.log('Nouvelle plante ajoutée:', plante);
+    return plante; 
   } catch (erreur) {
     console.error('Erreur lors de l\'ajout de la plante:', erreur.message);
   }
 }
+
 
 async function ajouterGardienPlante(id_plt, id_utl_1) {
   try {

@@ -39,7 +39,7 @@ async function ajouterImage(url_img, id_utl, id_utl_1, id_plt) {
     });
     console.log('Nouvelle image ajoutée:', image.toJSON());
   } catch (erreur) {
-    console.error('Erreur lors de l\'ajout de l\image:', erreur.message);
+    console.error('Erreur lors de l\'ajout de l\'image:', erreur.message);
   }
 }
 

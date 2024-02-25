@@ -5,7 +5,7 @@ async function ajouterProprietaire(id_utl) {
     const nouveauProprietaire = await Proprietaire.create({
       id_utl,
     });
-    console.log('Nouveau propriétaire ajouté:', nouveauProprietaire.toJSON());
+    console.log('Nouveau propriétaire ajouté:', nouveauProprietaire);
   }
   catch (erreur) {
     console.error('Erreur lors de l\'ajout du propriétaire:', erreur.message);

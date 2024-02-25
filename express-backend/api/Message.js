@@ -7,7 +7,7 @@ async function ajouterMessage(txt_msg, id_utl, id_utl_1) {
       id_utl,
       id_utl_1,
     });
-    console.log('Nouveau message ajouté:', nouveauMessage.toJSON());
+    console.log('Nouveau message ajouté:', nouveauMessage);
   } catch (erreur) {
     console.error('Erreur lors de l\'ajout du message:', erreur.message);
   }

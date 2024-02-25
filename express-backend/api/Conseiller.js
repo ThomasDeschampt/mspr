@@ -10,7 +10,7 @@ async function afficherConseillage(id_cns) {
     });
     return conseillage;
   } catch (erreur) {
-    console.error('Erreur lors de la récupération du conseillage:', erreur.message);
+    throw erreur;
   }
 }
 
@@ -20,9 +20,8 @@ async function ajouterConseillage(id_cns, id_utl) {
       id_cns: id_cns,
       id_utl: id_utl,
     });
-    console.log('Nouveau conseillage ajouté:', nouveauConseil.toJSON());
   } catch (erreur) {
-    console.error('Erreur lors de l\'ajout du conseillage:', erreur.message);
+    console.error('Erreur lors de l\'ajout du conseillage');
   }
 }
 

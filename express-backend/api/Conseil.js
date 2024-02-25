@@ -6,10 +6,13 @@ async function ajouterConseil(dsc_csn) {
       dsc_csn: dsc_csn,
     });
     console.log('Nouveau conseil ajouté:', nouveauConseil.toJSON());
+    return nouveauConseil; 
   } catch (erreur) {
     console.error('Erreur lors de l\'ajout du conseil:', erreur.message);
+    throw erreur; 
   }
 }
+
 
 async function afficherConseil(id_cns) {
   try {
