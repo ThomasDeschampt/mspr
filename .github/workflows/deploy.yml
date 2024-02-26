@@ -23,6 +23,6 @@ jobs:
           sudo docker stop express-backend
           sudo docker rm express-backend
           sudo docker rmi express-image
-          cd /mspr && git pull
-          cd /mspr && sudo docker build -t express-image express-backend/
+          cd mspr && git pull
+          cd mspr && sudo docker build -t express-image express-backend/
           sudo docker run --name express-backend -p 3000:3000 express-image
