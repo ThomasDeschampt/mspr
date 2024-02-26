@@ -47,7 +47,6 @@ describe("Test des fonctions de conseillage", () => {
       const nouveauConseillageMock = { id_cns: id_cns, id_utl: id_utl };
 
       Conseiller.create.mockResolvedValue(nouveauConseillageMock);
-
       await ajouterConseillage(id_cns, id_utl);
 
       expect(Conseiller.create).toHaveBeenCalledWith({
