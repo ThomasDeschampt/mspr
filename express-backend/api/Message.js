@@ -33,4 +33,28 @@ async function afficherMessages(id_utl, id_utl_1) {
   }
 }
 
-module.exports = { ajouterMessage, afficherMessages };
+async function afficherConversations(id_utl) {
+  try {
+    const conversations = await Message.findAll({
+      where: {
+        id_utl: id_utl,
+      },
+      group: ["id_utl_1"],
+    });
+    console.log("conversations trouvées");
+    conv = [];
+    for (let i = 0; i < conversations.length; i++) {
+      conv.push(conversations[i].id_utl_1);
+    }
+    return conv;
+  
+  }
+  catch (erreur) {
+    console.error(
+      "Erreur lors de la récupération des conversations:",
+      erreur.message,
+    );
+  }
+}
+
+module.exports = { ajouterMessage, afficherMessages, afficherConversations };
