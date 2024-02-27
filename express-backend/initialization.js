@@ -5,6 +5,8 @@ const { ajouterBotaniste } = require('./api/Botaniste');
 const { ajouterMessage } = require('./api/Message');
 const { ajouterImage } = require('./api/Image');
 const { ajouterConseil } = require('./api/Conseil');
+const { ajouterPlante, ajouterGardienPlante } = require('./api/Plante');
+
 
 async function ajouterUtilisateurs() {
   try {
@@ -34,6 +36,14 @@ async function ajouterUtilisateurs() {
   }
 }
 
+async function ajouterPlantes() {
+  await ajouterPlante("test", "test", "test", "test", "01/01/2025", "12/12/2025", 2, 1);
+}
+
+async function ajouterGardiensPlantes() {
+  await ajouterGardienPlante(1, 1);
+}
+
 
 async function ajouterMessages() {
   await ajouterMessage("Message 1 du gardien", 3, 1, 2);
@@ -54,6 +64,8 @@ async function ajouterConseils() {
 }
 
 ajouterUtilisateurs();
+ajouterPlantes();
+ajouterGardiensPlantes();
 ajouterMessages();
 ajouterImages();
 ajouterConseils();
