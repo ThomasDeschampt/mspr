@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     final BuildContext currentContext = context;
 
     // Effectuer la requête HTTP
-    final response = await http.post(Uri.parse('http://localhost:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
+    final response = await http.post(Uri.parse('http://15.237.169.255:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
 
     final Map<String, dynamic> responseData = json.decode(response.body);
 
