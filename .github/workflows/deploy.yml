@@ -26,3 +26,4 @@ jobs:
           cd /home/ubuntu/mspr && git pull
           cd /home/ubuntu/mspr && sudo docker build -t express-image express-backend/
           sudo docker run --name express-backend -d -p 3000:3000 express-image 
+          node /home/ubuntu/mspr/express-backend/seeds/initialization.js
