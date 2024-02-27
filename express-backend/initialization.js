@@ -32,12 +32,6 @@ async function ajouterUtilisateurs() {
   }
 }
 
-async function ajouterMessages() {
-  await ajouterMessage("Message 1 du gardien", 0, 1, 2);
-  await ajouterMessage("Message 1 du propriétaire", 0, 1, 2);
-  await ajouterMessage("Message 2 de propriétaire", 0, 1, 2);
-  await ajouterMessage("Message 2 du gardien", 0, 1, 2);
-}
 
 async function ajouterMessages() {
   await ajouterMessage("Message 1 du gardien", 2, 0, 1);
