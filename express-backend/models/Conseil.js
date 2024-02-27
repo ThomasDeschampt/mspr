@@ -1,5 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../sequelize");
+const Plante = require("./Plante");
+const Botaniste = require("./Botaniste");
 
 const Conseil = sequelize.define("Conseil", {
   id_cns: {
@@ -11,6 +13,18 @@ const Conseil = sequelize.define("Conseil", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  id_plt: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  id_utl: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
+Conseil.belongsTo(Plante, { foreignKey: "id_plt" })
+Conseil.belongsTo(Botaniste, { foreignKey: "id_utl" })
+
 module.exports = Conseil;
+

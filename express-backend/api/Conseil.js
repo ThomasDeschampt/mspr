@@ -1,9 +1,11 @@
 const Conseil = require("../models/Conseil");
 
-async function ajouterConseil(dsc_csn) {
+async function ajouterConseil(dsc_csn, id_plt, id_utl) {
   try {
     const nouveauConseil = await Conseil.create({
       dsc_csn: dsc_csn,
+      id_plt: id_plt,
+      id_utl: id_utl,
     });
     console.log("Nouveau conseil ajouté:", nouveauConseil.toJSON());
     return nouveauConseil;
