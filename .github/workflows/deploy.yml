@@ -26,5 +26,5 @@ jobs:
           cd /home/ubuntu/mspr && git pull
           cd /home/ubuntu/mspr && sudo docker build -t express-image express-backend/
           sudo docker run --name express-backend -d -p 3000:3000 express-image
-          cd /home/ubuntu/mspr/express-backend && npm install 
+          cd /home/ubuntu/mspr/express-backend && npm install && npm rebuild sqlite3
           NODE_ENV=development node /home/ubuntu/mspr/express-backend/initialization.js
