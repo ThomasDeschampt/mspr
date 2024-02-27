@@ -1,7 +1,7 @@
-const { ajouterUtilisateur } = require('../api/Utilisateur');
-const { ajouterGardien } = require('../api/Gardien');
-const { ajouterProprietaire } = require('../api/Proprietaire');
-const { ajouterBotaniste } = require('../api/Botaniste');
+const { ajouterUtilisateur } = require('./api/Utilisateur');
+const { ajouterGardien } = require('./api/Gardien');
+const { ajouterProprietaire } = require('./api/Proprietaire');
+const { ajouterBotaniste } = require('./api/Botaniste');
 
 async function ajouterUtilisateurs() {
   try {
