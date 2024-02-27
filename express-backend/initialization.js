@@ -3,6 +3,8 @@ const { ajouterGardien } = require('./api/Gardien');
 const { ajouterProprietaire } = require('./api/Proprietaire');
 const { ajouterBotaniste } = require('./api/Botaniste');
 const { ajouterMessage } = require('./api/Message');
+const { ajouterImage } = require('./api/Image');
+const { ajouterConseil } = require('./api/Conseil');
 
 async function ajouterUtilisateurs() {
   try {
