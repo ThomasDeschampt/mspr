@@ -10,7 +10,6 @@ const Proprietaire = require("./models/Proprietaire");
 const Gardien = require("./models/Gardien");
 const Botaniste = require("./models/Botaniste");
 const Conseil = require("./models/Conseil");
-const Conseiller = require("./models/Conseiller");
 const Plante = require("./models/Plante");
 const Image = require("./models/Image");
 const Message = require("./models/Message");
@@ -18,7 +17,6 @@ const utilisateurRoutes = require("./routes/utilisateurRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const botanisteRoutes = require("./routes/botanisteRoutes");
 const conseilRoutes = require("./routes/conseilRoutes");
-const conseillerRoutes = require("./routes/conseillerRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const planteRoutes = require("./routes/planteRoutes");
 const gardienRoutes = require("./routes/gardienRoutes");
@@ -33,8 +31,6 @@ app.use("/api/utilisateurs", utilisateurRoutes);
 app.use("/api/botaniste", botanisteRoutes);
 
 app.use("/api/conseil", conseilRoutes);
-
-app.use("/api/conseiller", conseillerRoutes);
 
 app.use("/api/image", imageRoutes);
 
