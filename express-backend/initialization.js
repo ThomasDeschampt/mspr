@@ -44,7 +44,6 @@ async function ajouterGardiensPlantes() {
   await ajouterGardienPlante(1, 1);
 }
 
-
 async function ajouterMessages() {
   await ajouterMessage("Message 1 du gardien", 3, 1, 2);
   await ajouterMessage("Message 1 du propriétaire", 2, 1, 2);
