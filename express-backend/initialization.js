@@ -18,14 +18,14 @@ async function ajouterUtilisateurs() {
     await ajouterUtilisateur("botaniste", "botaniste", 18, "0000000003", "botaniste", "botaniste", "botaniste", "botaniste");
     console.log("Botaniste ajouté avec succès !");
 
-    await ajouterGardien(0);
-    await ajouterGardien(2);
+    await ajouterGardien(1);
+    await ajouterGardien(3);
     console.log("Gardiens ajoutés avec succès !");
 
-    await ajouterProprietaire(1);
+    await ajouterProprietaire(2);
     console.log("Propriétaire ajouté avec succès !");
 
-    await ajouterBotaniste(3);
+    await ajouterBotaniste(4);
     console.log("Botaniste ajouté avec succès !");
   } catch (error) {
     console.error("Erreur lors de l'ajout :", error);
@@ -34,21 +34,21 @@ async function ajouterUtilisateurs() {
 
 
 async function ajouterMessages() {
-  await ajouterMessage("Message 1 du gardien", 2, 0, 1);
-  await ajouterMessage("Message 1 du propriétaire", 1, 0, 1);
-  await ajouterMessage("Message 2 de propriétaire", 1, 0, 1);
-  await ajouterMessage("Message 2 du gardien", 2, 0, 1);
+  await ajouterMessage("Message 1 du gardien", 3, 1, 2);
+  await ajouterMessage("Message 1 du propriétaire", 2, 1, 2);
+  await ajouterMessage("Message 2 de propriétaire", 2, 1, 2);
+  await ajouterMessage("Message 2 du gardien", 3, 1, 2);
 }
 
 async function ajouterImages() {
   await ajouterImage("https://media.istockphoto.com/id/1380361370/fr/photo/bananier-décoratif-en-vase-en-béton-isolé-sur-fond-blanc.jpg?s=612x612&w=0&k=20&c=Sbo0kQTPXca_yhal1n9KUAbXj1B9NNAXmDdPYMNUDDM=",
-   0, 1, 0);
+   1, 2, 1);
    await ajouterImage("https://media.istockphoto.com/id/1303363400/fr/vectoriel/belle-composition-verte-dintérieur-et-de-fleurs.jpg?s=612x612&w=0&k=20&c=sO6NKKeHp-M1ggtfIEiiCf1pXWlYWdJ-FkBFDHxdukA=",
-   0, 0, 0);
+   1, 1, 1);
 }
 
 async function ajouterConseils() {
-  await  ajouterConseil("Conseil pour la plante 1 avec le botaniste", 0, 0);
+  await  ajouterConseil("Conseil pour la plante 1 avec le botaniste", 1, 1);
 }
 
 ajouterUtilisateurs();
