@@ -21,7 +21,7 @@ router.get("/estGardien", async (req, res) => {
   const { psd_utl } = req.query;
 
   try {
-    gardien = await verifierGardien(id_utl);
+    gardien = await verifierGardien(psd_utl);
     if (gardien) {
       console.log("gardien trouvé");
       res.status(200).json({ message: "gardien trouvé" });
