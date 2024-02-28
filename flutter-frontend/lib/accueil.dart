@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import '/flutter_flow/flutter_flow_widgets.dart'; // Importez les widgets FlutterFlow
-import '/flutter_flow/flutter_flow_theme.dart'; // Importez le thème FlutterFlow
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import 'package:http/http.dart' as http; 
+import 'dart:convert'; 
 import 'package:mspr/home_page_widget.dart';
 import 'package:mspr/trouver.dart';
 import 'messages.dart';
@@ -19,117 +21,135 @@ class AccueilPage extends StatefulWidget {
 }
 
 class _AccueilPageState extends State<AccueilPage> {
+  bool condition = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserType(); 
+  }
+
+  Future<void> fetchUserType() async {
+  final pseudo = widget.pseudo;
+  try {
+    final response = await http.get(Uri.parse('http://15.237.169.255:3000/api/botaniste/estBotaniste?psd_utl=$pseudo'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        condition = true;
+      });
+    } else {
+      setState(() {
+        condition = false;
+      });
+    }
+  } catch (e) {
+    setState(() {
+      condition = false;
+    });
+  }
+}
+
   @override
   Widget build(BuildContext context) {
-    String pseudo = widget.pseudo;
-    bool condition = false; // Mettez ici votre condition
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Accueil Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: ListView(
-                children: condition
-                    ? [
-                        _buildMenuItem(context, Icons.person, 'Mon Profil', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfilPage()),
-                          );
-                        }),
-                        _buildMenuItem(
-                            context, Icons.check, 'Valider une Demande', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ValiderPage()),
-                          );
-                        }),
-                        _buildMenuItem(context, Icons.home, 'Mes gardiennages',
-                            () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const GardiennagePage()),
-                          );
-                        }),
-                        _buildMenuItem(
-                            context, Icons.search, 'Chercher une Plante', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const TrouverPage()),
-                          );
-                        }),
-                        _buildMenuItem(context, Icons.mail, 'Messages', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MessagesPage()),
-                          );
-                        }),
-                      ]
-                    : [
-                        _buildMenuItem(context, Icons.person, 'Mon Profil', () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePageWidget(pseudo: pseudo),
-                              ),
-                            );
-                          }),
-
-                        _buildMenuItem(
-                            context, Icons.add, 'Faire une demande Plantes',
-                            () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const PlantePage()),
-                          );
-                        }),
-                        _buildMenuItem(context, Icons.home, 'Mes gardiennages',
-                            () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const GardiennagePage()),
-                          );
-                        }),
-                        _buildMenuItem(
-                            context, Icons.search, 'Trouver des Plantes', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const TrouverPage()),
-                          );
-                        }),
-                        _buildMenuItem(context, Icons.mail, 'Messages', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MessagesPage()),
-                          );
-                        }),
-                      ],
-              ),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: condition
+              ? _buildBotanistMenu()
+              : _buildNonBotanistMenu(),
         ),
       ),
     );
   }
 
+  Widget _buildBotanistMenu() {
+    return ListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        _buildMenuItem(context, Icons.person, 'Mon Profil 1', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfilPage()),
+          );
+        }),
+        _buildMenuItem(context, Icons.check, 'Valider une Demande', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ValiderPage()),
+          );
+        }),
+        _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const GardiennagePage()),
+          );
+        }),
+        _buildMenuItem(context, Icons.search, 'Chercher une Plante', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TrouverPage()),
+          );
+        }),
+        _buildMenuItem(context, Icons.mail, 'Messages', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MessagesPage()),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildNonBotanistMenu() {
+    return ListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        _buildMenuItem(context, Icons.person, 'Mon Profil 2', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomePageWidget(pseudo: widget.pseudo),
+            ),
+          );
+        }),
+        _buildMenuItem(context, Icons.add, 'Faire une demande Plantes', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const PlantePage()),
+          );
+        }),
+        _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const GardiennagePage()),
+          );
+        }),
+        _buildMenuItem(context, Icons.search, 'Trouver des Plantes', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TrouverPage()),
+          );
+        }),
+        _buildMenuItem(context, Icons.mail, 'Messages', () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MessagesPage()),
+          );
+        }),
+      ],
+    );
+  }
+
   Widget _buildMenuItem(
       BuildContext context, IconData icon, String title, VoidCallback onTap) {
-    return FFButtonWidget( // Utilisez le widget FFButtonWidget à la place de ListTile
+    return FFButtonWidget(
       onPressed: onTap,
       iconData: icon,
       text: title,
