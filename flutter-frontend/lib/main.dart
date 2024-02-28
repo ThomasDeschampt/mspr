@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: _usernameController,
                   decoration: const InputDecoration(
-                    labelText: 'E-mail ou numéro de téléphone',
+                    labelText: 'Utilisateur',
                     labelStyle: TextStyle(
                       color: Colors.grey,
                       fontSize: 14,
