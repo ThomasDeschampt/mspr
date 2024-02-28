@@ -75,7 +75,9 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.person, 'Mon Profil 1', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const ProfilPage()),
+            MaterialPageRoute(
+              builder: (context) => HomePageWidget(pseudo: widget.pseudo),
+            ),
           );
         }),
         _buildMenuItem(context, Icons.check, 'Valider une Demande', () {
