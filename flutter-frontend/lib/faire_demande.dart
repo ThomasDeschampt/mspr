@@ -37,6 +37,9 @@ class PlantePage extends StatelessWidget {
           ),
         );
       } else {
+        String url0 = 'localhost:3000/api/proprietaire/ajouter?id_utl=$pseudo';
+        var response0 = await http.post(Uri.parse(url0));
+
         String url = 'http://15.237.169.255:3000/api/plante/ajouter?'
             'esp_plt=${especeController.text}&'
             'des_plt=${descriptionController.text}&'

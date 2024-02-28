@@ -1,8 +1,14 @@
 const Gardien = require("../models/Gardien");
 const Utilisateur = require("../models/Utilisateur");
 
-async function ajouterGardien(id_utl) {
+async function ajouterGardien(psd_utl) {
+  const utilisateur = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
   try {
+    const id_utl = utilisateur.id_utl;
     const nouveauGardien = await Gardien.create({
       id_utl,
     });

@@ -4,10 +4,10 @@ const router = express.Router();
 const { ajouterProprietaire, verifierProprietaire } = require("../api/Proprietaire");
 
 router.post("/ajouter", async (req, res) => {
-  const { id_utl } = req.query;
+  const { psd_utl } = req.query;
 
   try {
-    await ajouterProprietaire(id_utl);
+    await ajouterProprietaire(psd_utl);
   } catch (erreur) {
     console.error("Erreur lors de l'ajout du proprietaire:", erreur.message);
     res.status(500).json({

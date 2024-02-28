@@ -4,10 +4,10 @@ const router = express.Router();
 const { ajouterGardien, verifierGardien } = require("../api/Gardien");
 
 router.post("/ajouter", async (req, res) => {
-  const { id_utl } = req.query;
+  const { psd_utl } = req.query;
 
   try {
-    await ajouterGardien(id_utl);
+    await ajouterGardien(psd_utl);
   } catch (erreur) {
     console.error("Erreur lors de l'ajout du gardien:", erreur.message);
     res.status(500).json({

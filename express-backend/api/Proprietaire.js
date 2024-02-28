@@ -1,8 +1,14 @@
 const Proprietaire = require("../models/Proprietaire");
 const Utilisateur = require("../models/Utilisateur");
 
-async function ajouterProprietaire(id_utl) {
+async function ajouterProprietaire(psd_utl) {
+  const utilisateur = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
   try {
+    const id_utl = utilisateur.id_utl;
     const nouveauProprietaire = await Proprietaire.create({
       id_utl,
     });

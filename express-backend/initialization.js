@@ -22,14 +22,14 @@ async function ajouterUtilisateurs() {
     await ajouterUtilisateur("botaniste", "botaniste", 18, "0000000003", "botaniste", "botaniste", "botaniste", "botaniste");
     console.log("Botaniste ajouté avec succès !");
 
-    await ajouterGardien(1);
-    await ajouterGardien(3);
+    await ajouterGardien("default");
+    await ajouterGardien("gardien");
     console.log("Gardiens ajoutés avec succès !");
 
-    await ajouterProprietaire(2);
+    await ajouterProprietaire("proprietaire");
     console.log("Propriétaire ajouté avec succès !");
 
-    await ajouterBotaniste(4);
+    await ajouterBotaniste("botaniste");
     console.log("Botaniste ajouté avec succès !");
   } catch (error) {
     console.error("Erreur lors de l'ajout :", error);
