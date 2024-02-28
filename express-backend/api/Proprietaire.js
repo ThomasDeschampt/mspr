@@ -11,4 +11,24 @@ async function ajouterProprietaire(id_utl) {
   }
 }
 
-module.exports = { ajouterProprietaire };
+async function verifierProprietaire(id_utl) {
+  try {
+    const proprietaire = await Proprietaire.findOne({
+      where: {
+        id_utl: id_utl,
+      },
+    });
+    if (proprietaire) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (erreur) {
+    console.error(
+      "Erreur lors de la recherche du propriétaire:",
+      erreur.message
+    );
+  }
+}
+
+module.exports = { ajouterProprietaire, verifierProprietaire };

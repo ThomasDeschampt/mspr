@@ -11,4 +11,21 @@ async function ajouterGardien(id_utl) {
   }
 }
 
-module.exports = { ajouterGardien };
+async function verifierGardien(id_utl) {
+  try {
+    const gardien = await Gardien.findOne({
+      where: {
+        id_utl,
+      },
+    });
+    if (gardien) {
+      return true;
+    }else{
+      return false;
+    }
+  } catch (erreur) {
+    console.error("Erreur lors de la vérification du gardien:", erreur.message);
+  }
+}
+
+module.exports = { ajouterGardien, verifierGardien };

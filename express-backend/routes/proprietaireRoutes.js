@@ -17,4 +17,18 @@ router.post("/ajouter", async (req, res) => {
   }
 });
 
+router.get("/verifier", async (req, res) => {
+  const { id_utl } = req.query;
+
+  try {
+    await verifierProprietaire(id_utl);
+  } catch (erreur) {
+    console.error("Erreur lors de la vérification du proprietaire:", erreur.message);
+    res.status(500).json({
+      message: "Erreur lors de la vérification du proprietaire",
+      erreur: erreur.message,
+    });
+  }
+});
+
 module.exports = router;

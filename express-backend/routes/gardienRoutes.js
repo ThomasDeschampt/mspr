@@ -17,4 +17,19 @@ router.post("/ajouter", async (req, res) => {
   }
 });
 
+router.get("/verifier", async (req, res) => {
+  const { id_utl } = req.query;
+
+  try {
+    await verifierGardien(id_utl);
+  } catch (erreur) {
+    console.error("Erreur lors de la vérification du gardien:", erreur.message);
+    res.status(500).json({
+      message: "Erreur lors de la vérification du gardien",
+      erreur: erreur.message,
+    });
+  }
+});
+
+
 module.exports = router;

@@ -52,7 +52,7 @@ async function recupererlocalisation() {
   try {
     const plantes = await Plante.findAll({
       where: {
-        id_utl_1: null,
+        id_utl_1: 1,
       },
     });
     let localisation = [];
@@ -86,7 +86,7 @@ async function ajouterPlante(
       dat_deb_plt: dat_deb_plt,
       dat_fin_plt: dat_fin_plt,
       id_utl: id_utl,
-      id_utl_1: 3,
+      id_utl_1: 1,
     });
     console.log("Nouvelle plante ajoutée:", plante);
     return plante;
