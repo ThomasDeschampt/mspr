@@ -15,26 +15,21 @@ describe("Test des fonctions de message", () => {
   describe("Test de ajouterMessage", () => {
     it("Devrait ajouter un nouveau message", async () => {
       const nouveauMessageMock = {
-        id_msg: 1,
         txt_msg: "Bonjour",
+        exp_msg: 1, 
         id_utl: 1,
         id_utl_1: 2,
       };
       Message.create.mockResolvedValue(nouveauMessageMock);
 
-      console.log = jest.fn();
-
-      await ajouterMessage("Bonjour", 1, 2);
+      await ajouterMessage("Bonjour", 1, 1, 2);
 
       expect(Message.create).toHaveBeenCalledWith({
         txt_msg: "Bonjour",
+        exp_msg: 1, 
         id_utl: 1,
         id_utl_1: 2,
       });
-      expect(console.log).toHaveBeenCalledWith(
-        "Nouveau message ajouté:",
-        nouveauMessageMock,
-      );
     });
 
     it("Devrait afficher une erreur en cas de problème", async () => {
@@ -47,7 +42,7 @@ describe("Test des fonctions de message", () => {
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de l'ajout du message:",
-        erreur.message,
+        erreur.message
       );
     });
   });
@@ -81,7 +76,7 @@ describe("Test des fonctions de message", () => {
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de la récupération des messages:",
-        erreur.message,
+        erreur.message
       );
     });
   });

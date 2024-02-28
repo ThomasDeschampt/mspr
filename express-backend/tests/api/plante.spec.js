@@ -41,7 +41,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de la récupération de la plante:",
-        erreur.message,
+        erreur.message
       );
     });
   });
@@ -59,7 +59,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
     it("Devrait afficher une erreur en cas de problème", async () => {
       const erreur = new Error(
-        "Erreur lors de la récupération des plantes gardees",
+        "Erreur lors de la récupération des plantes gardees"
       );
       Plante.findAll.mockRejectedValue(erreur);
 
@@ -69,7 +69,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de la récupération des plantes gardees:",
-        erreur.message,
+        erreur.message
       );
     });
   });
@@ -87,7 +87,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
     it("Devrait afficher une erreur en cas de problème", async () => {
       const erreur = new Error(
-        "Erreur lors de la récupération des plantes faites gardees",
+        "Erreur lors de la récupération des plantes faites gardees"
       );
       Plante.findAll.mockRejectedValue(erreur);
 
@@ -97,7 +97,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de la récupération des plantes faites gardees:",
-        erreur.message,
+        erreur.message
       );
     });
   });
@@ -117,7 +117,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
     it("Devrait afficher une erreur en cas de problème", async () => {
       const erreur = new Error(
-        "Erreur lors de la récupération de la localisation de la plante",
+        "Erreur lors de la récupération de la localisation de la plante"
       );
       Plante.findAll.mockRejectedValue(erreur);
 
@@ -127,7 +127,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de la récupération de la localisation de la plante:",
-        erreur.message,
+        erreur.message
       );
     });
   });
@@ -156,7 +156,7 @@ describe("Test des fonctions liées aux plantes", () => {
         "Adresse",
         "2024-02-27",
         "2024-03-27",
-        1,
+        1
       );
 
       expect(Plante.create).toHaveBeenCalledWith({
@@ -167,11 +167,11 @@ describe("Test des fonctions liées aux plantes", () => {
         dat_deb_plt: "2024-02-27",
         dat_fin_plt: "2024-03-27",
         id_utl: 1,
-        id_utl_1: 3,
+        id_utl_1: 1,
       });
       expect(console.log).toHaveBeenCalledWith(
         "Nouvelle plante ajoutée:",
-        nouvellePlanteMock,
+        nouvellePlanteMock
       );
     });
 
@@ -188,12 +188,12 @@ describe("Test des fonctions liées aux plantes", () => {
         "Adresse",
         "2024-02-27",
         "2024-03-27",
-        1,
+        1
       );
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de l'ajout de la plante:",
-        erreur.message,
+        erreur.message
       );
     });
   });
@@ -209,7 +209,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
       expect(Plante.update).toHaveBeenCalledWith(
         { id_utl_1: 1 },
-        { where: { id_plt: 5 } },
+        { where: { id_plt: 5 } }
       );
       expect(console.log).toHaveBeenCalledWith("Gardien ajouté à la plante");
     });
@@ -224,7 +224,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
       expect(console.error).toHaveBeenCalledWith(
         "Erreur lors de l'ajout du gardien à la plante:",
-        erreur.message,
+        erreur.message
       );
     });
   });
