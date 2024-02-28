@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http; 
 
 class PlantePage extends StatelessWidget {
-  const PlantePage({Key? key}) : super(key: key);
+  final String pseudo;
+
+  PlantePage({Key? key, required this.pseudo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +14,71 @@ class PlantePage extends StatelessWidget {
     TextEditingController adresseController = TextEditingController();
     TextEditingController debutController = TextEditingController();
     TextEditingController finController = TextEditingController();
+
+
+    Future<void> ajouterPlante() async {
+      if (especeController.text.isEmpty ||
+          descriptionController.text.isEmpty ||
+          nomController.text.isEmpty ||
+          adresseController.text.isEmpty ||
+          debutController.text.isEmpty ||
+          finController.text.isEmpty) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Champs incomplets'),
+            content: Text('Veuillez remplir tous les champs.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        String url = 'http://15.237.169.255:3000/api/plante/ajouter?'
+            'esp_plt=${especeController.text}&'
+            'des_plt=${descriptionController.text}&'
+            'nom_plt=${nomController.text}&'
+            'adr_plt=${adresseController.text}&'
+            'dat_deb_plt=${debutController.text}&'
+            'dat_fin_plt=${finController.text}&'
+            'psd_utl=$pseudo';
+
+        var response = await http.post(Uri.parse(url));
+
+        if (response.statusCode == 200) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Succès'),
+              content: Text('La demande a été ajoutée avec succès.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Erreur'),
+              content: Text('Une erreur s\'est produite. Veuillez réessayer.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -47,31 +115,7 @@ class PlantePage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                if (especeController.text.isEmpty ||
-                    descriptionController.text.isEmpty ||
-                    nomController.text.isEmpty ||
-                    adresseController.text.isEmpty ||
-                    debutController.text.isEmpty ||
-                    finController.text.isEmpty) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Champs incomplets'),
-                      content: Text('Veuillez remplir tous les champs.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  // Ajoutez ici la logique pour ajouter la plante
-                  // lorsque tous les champs sont remplis
-                }
-              },
+              onPressed: ajouterPlante,
               child: Text('Ajouter'),
             ),
           ],

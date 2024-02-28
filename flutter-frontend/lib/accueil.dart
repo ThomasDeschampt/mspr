@@ -124,7 +124,8 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.add, 'Faire une demande Plantes', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const PlantePage()),
+            MaterialPageRoute(
+              builder: (context) => PlantePage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {

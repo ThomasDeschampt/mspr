@@ -37,7 +37,7 @@ async function ajouterUtilisateurs() {
 }
 
 async function ajouterPlantes() {
-  await ajouterPlante("test", "test", "test", "test", "01/01/2025", "12/12/2025", 2, 1);
+  await ajouterPlante("test", "test", "test", "test", "01/01/2025", "12/12/2025", "proprietaire", "default");
 }
 
 async function ajouterGardiensPlantes() {

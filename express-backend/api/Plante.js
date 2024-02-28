@@ -1,4 +1,5 @@
 const Plante = require("../models/Plante");
+const Utilisateur = require("../models/Utilisateur");
 
 async function afficherPlante(id_plt) {
   try {
@@ -75,8 +76,13 @@ async function ajouterPlante(
   adr_plt,
   dat_deb_plt,
   dat_fin_plt,
-  id_utl,
+  psd_utl,
 ) {
+  const proprietaire = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
   try {
     const plante = await Plante.create({
       esp_plt: esp_plt,
@@ -85,8 +91,8 @@ async function ajouterPlante(
       adr_plt: adr_plt,
       dat_deb_plt: dat_deb_plt,
       dat_fin_plt: dat_fin_plt,
-      id_utl: id_utl,
-      id_utl_1: 1,
+      id_utl: proprietaire.id_utl,
+      id_utl_1: 2,
     });
     console.log("Nouvelle plante ajoutée:", plante);
     return plante;

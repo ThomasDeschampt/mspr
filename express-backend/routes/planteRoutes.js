@@ -86,7 +86,7 @@ router.post("/ajouter", async (req, res) => {
     adr_plt,
     dat_deb_plt,
     dat_fin_plt,
-    id_utl,
+    psd_utl,
   } = req.query;
   try {
     const messages = await ajouterPlante(
@@ -96,7 +96,7 @@ router.post("/ajouter", async (req, res) => {
       adr_plt,
       dat_deb_plt,
       dat_fin_plt,
-      id_utl,
+      psd_utl,
     );
     res.json(messages);
   } catch (erreur) {
