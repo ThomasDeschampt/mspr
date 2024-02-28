@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { ajouterGardien } = require("../api/Gardien");
+const { ajouterGardien, verifierGardien } = require("../api/Gardien");
 
 router.post("/ajouter", async (req, res) => {
   const { id_utl } = req.query;
@@ -17,11 +17,18 @@ router.post("/ajouter", async (req, res) => {
   }
 });
 
-router.get("/verifier", async (req, res) => {
-  const { id_utl } = req.query;
+router.get("/estGardien", async (req, res) => {
+  const { psd_utl } = req.query;
 
   try {
-    await verifierGardien(id_utl);
+    gardien = await verifierGardien(id_utl);
+    if (gardien) {
+      console.log("gardien trouvé");
+      res.status(200).json({ message: "gardien trouvé" });
+    } else {
+      console.log("gardien non trouvé");
+      res.status(404).json({ message: "gardien non trouvé" });
+    }
   } catch (erreur) {
     console.error("Erreur lors de la vérification du gardien:", erreur.message);
     res.status(500).json({
@@ -30,6 +37,5 @@ router.get("/verifier", async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;

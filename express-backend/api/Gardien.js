@@ -1,4 +1,5 @@
 const Gardien = require("../models/Gardien");
+const Utilisateur = require("../models/Utilisateur");
 
 async function ajouterGardien(id_utl) {
   try {
@@ -11,20 +12,30 @@ async function ajouterGardien(id_utl) {
   }
 }
 
-async function verifierGardien(id_utl) {
-  try {
+async function verifierGardien(psd_utl) {
+  const utilisateur = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
+
+  if(utilisateur){
     const gardien = await Gardien.findOne({
       where: {
-        id_utl,
+        id_utl: utilisateur.id_utl,
       },
     });
+
     if (gardien) {
+      console.log("gardien trouvé");
       return true;
-    }else{
+    } else {
+      console.log("gardien non trouvé" + utilisateur.id_utl);
       return false;
     }
-  } catch (erreur) {
-    console.error("Erreur lors de la vérification du gardien:", erreur.message);
+  } else {
+    console.log("utilisateur non trouvé");
+    return false;
   }
 }
 

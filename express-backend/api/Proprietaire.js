@@ -1,4 +1,5 @@
 const Proprietaire = require("../models/Proprietaire");
+const Utilisateur = require("../models/Utilisateur");
 
 async function ajouterProprietaire(id_utl) {
   try {
@@ -11,23 +12,30 @@ async function ajouterProprietaire(id_utl) {
   }
 }
 
-async function verifierProprietaire(id_utl) {
-  try {
+async function verifierProprietaire(psd_utl) {
+  const utilisateur = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
+
+  if(utilisateur){
     const proprietaire = await Proprietaire.findOne({
       where: {
-        id_utl: id_utl,
+        id_utl: utilisateur.id_utl,
       },
     });
+
     if (proprietaire) {
+      console.log("proprietaire trouvé");
       return true;
     } else {
+      console.log("proprietaire non trouvé" + utilisateur.id_utl);
       return false;
     }
-  } catch (erreur) {
-    console.error(
-      "Erreur lors de la recherche du propriétaire:",
-      erreur.message
-    );
+  } else {
+    console.log("utilisateur non trouvé");
+    return false;
   }
 }
 
