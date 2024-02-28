@@ -1,35 +1,82 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
-class TrouverPage extends StatelessWidget {
+// Fonction pour récupérer les coordonnées à partir d'une adresse
+Future<LatLng?> getCoordinatesFromAddress(String address) async {
+  final url = Uri.parse('https://nominatim.openstreetmap.org/search?q=$address&format=json');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    if (jsonData.isNotEmpty) {
+      final location = jsonData[0];
+      return LatLng(double.parse(location['lat']), double.parse(location['lon']));
+    }
+  }
+
+  return null;
+}
+
+Future<void> testAddressConversion(List<String> addresses) async {
+  for (final address in addresses) {
+    final coordinates = await getCoordinatesFromAddress(address);
+    if (coordinates != null) {
+      print('Adresse : $address');
+      print('Latitude : ${coordinates.latitude}');
+      print('Longitude : ${coordinates.longitude}');
+    } else {
+      print('Adresse : $address');
+      print('Erreur : Impossible de récupérer les coordonnées');
+    }
+    print('---');
+  }
+}
+
+class TrouverPage extends StatefulWidget {
   const TrouverPage({Key? key}) : super(key: key);
-  final String apiKey = "r5tgib4GBlr2Zv5Cj8Zla0RGYWZRpZOw";
+
+  @override
+  _TrouverPageState createState() => _TrouverPageState();
+}
+
+class _TrouverPageState extends State<TrouverPage> {
+  late final List<String> _addresses; // Remplacez ceci par vos adresses réelles
+
+  @override
+  void initState() {
+    super.initState();
+    _addresses = [
+      '117 avenue Georges Clemenceau, Saint-Genis-Laval',
+      '7 rue jean marie leclair, lyon',
+    ];
+    testAddressConversion(_addresses);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "TomTom Map",
+      title: "OpenStreetMap Map",
       home: Scaffold(
-        body: Center(
-            child: Stack(
-          children: <Widget>[
-            FlutterMap(
-              options: MapOptions(
-                  initialCenter: const LatLng(45.7578137, 4.8320114), zoom: 13.0),
-              children: [
-                TileLayer(
-                  urlTemplate:
-                      "https://api.tomtom.com/map/1/tile/basic/main/%7Bz%7D/%7Bx%7D/%7By%7D.png?key={apiKey}",
-                  additionalOptions: {"apiKey": apiKey},
-                ),
-              ],
+        body: FlutterMap(
+          options: MapOptions(
+            center: LatLng(45.76, 4.83), // Centre de la carte sur Lyon
+            zoom: 13.0,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              subdomains: ['a', 'b', 'c'],
             ),
           ],
-        )),
+        ),
       ),
     );
   }
+}
+
+void main() {
+  runApp(TrouverPage());
 }
