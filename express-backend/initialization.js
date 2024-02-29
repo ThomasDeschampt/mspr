@@ -37,7 +37,9 @@ async function ajouterUtilisateurs() {
 }
 
 async function ajouterPlantes() {
-  await ajouterPlante("test", "test", "test", "test", "01/01/2025", "12/12/2025", "proprietaire", "default");
+  await ajouterPlante("test", "test", "test", "7 rue jean marie leclair, lyon", "01/01/2025", "12/12/2025", "proprietaire", "default");
+  await ajouterPlante("test2", "test2", "test2", "116 avenue georges clemenceau, saint genis laval", "01/01/2025", "12/12/2025", "proprietaire", "default");
+  await ajouterPlante("test3", "test3", "test3", "45 place bellecour, lyon", "01/01/2025", "12/12/2025", "proprietaire", "default");
 }
 
 async function ajouterGardiensPlantes() {

@@ -6,33 +6,32 @@ import 'package:http/http.dart' as http;
 
 // Fonction pour récupérer les coordonnées à partir d'une adresse
 Future<LatLng?> getCoordinatesFromAddress(String address) async {
-  final url = Uri.parse('https://nominatim.openstreetmap.org/search?q=$address&format=json');
+  final url = Uri.parse(
+      'https://nominatim.openstreetmap.org/search?q=$address&format=json');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
     final jsonData = json.decode(response.body);
     if (jsonData.isNotEmpty) {
       final location = jsonData[0];
-      return LatLng(double.parse(location['lat']), double.parse(location['lon']));
+      //on va log la latitude et la longitude
+      print('Latitude: ${location['lat']}, Longitude: ${location['lon']}');
+      return LatLng(
+          double.parse(location['lat']), double.parse(location['lon']));
     }
   }
 
   return null;
 }
 
-Future<void> testAddressConversion(List<String> addresses) async {
-  for (final address in addresses) {
-    final coordinates = await getCoordinatesFromAddress(address);
-    if (coordinates != null) {
-      print('Adresse : $address');
-      print('Latitude : ${coordinates.latitude}');
-      print('Longitude : ${coordinates.longitude}');
-    } else {
-      print('Adresse : $address');
-      print('Erreur : Impossible de récupérer les coordonnées');
-    }
-    print('---');
-  }
+// fonction pour créer un marquer sur la carte à partir d'une coordonnée
+Marker createMarker(LatLng latLng) {
+  return Marker(
+    child: Image.asset('images/plante.png'),
+    width: 80,
+    height: 80,
+    point: latLng,
+  );
 }
 
 class TrouverPage extends StatefulWidget {
@@ -43,7 +42,8 @@ class TrouverPage extends StatefulWidget {
 }
 
 class _TrouverPageState extends State<TrouverPage> {
-  late final List<String> _addresses; // Remplacez ceci par vos adresses réelles
+  late final List<String> _addresses;
+  List<Marker> markerList = <Marker>[];
 
   @override
   void initState() {
@@ -52,7 +52,19 @@ class _TrouverPageState extends State<TrouverPage> {
       '117 avenue Georges Clemenceau, Saint-Genis-Laval',
       '7 rue jean marie leclair, lyon',
     ];
-    testAddressConversion(_addresses);
+
+    // on va recuperer les coordonnées de chaque adresse puis les afficher sur la carte
+    for (final address in _addresses) {
+      getCoordinatesFromAddress(address).then((latLng) {
+        if (latLng != null) {
+          setState(() {
+            markerList.add(createMarker(latLng));
+            // on va afficher les marqueurs sur la carte
+            print(markerList);
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -69,6 +81,9 @@ class _TrouverPageState extends State<TrouverPage> {
             TileLayer(
               urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
               subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayer(
+              markers: markerList,
             ),
           ],
         ),
