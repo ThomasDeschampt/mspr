@@ -34,6 +34,18 @@ Marker createMarker(LatLng latLng) {
   );
 }
 
+Future<List<String>?> getAddressesFromAPI() async {
+  final url = Uri.parse('http://15.237.169.255:3000/api/plante/recupererlocalisation');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    return List<String>.from(jsonData);
+  }
+
+  return null;
+}
+
 class TrouverPage extends StatefulWidget {
   const TrouverPage({Key? key}) : super(key: key);
 
@@ -42,29 +54,32 @@ class TrouverPage extends StatefulWidget {
 }
 
 class _TrouverPageState extends State<TrouverPage> {
-  late final List<String> _addresses;
+  late List<String> _addresses;
   List<Marker> markerList = <Marker>[];
 
   @override
   void initState() {
     super.initState();
-    _addresses = [
-      '117 avenue Georges Clemenceau, Saint-Genis-Laval',
-      '7 rue jean marie leclair, lyon',
-    ];
+    getAddressesFromAPI().then((addresses) {
+      if (addresses != null) {
+        setState(() {
+          _addresses = addresses;
+        });
 
-    // on va recuperer les coordonnées de chaque adresse puis les afficher sur la carte
-    for (final address in _addresses) {
-      getCoordinatesFromAddress(address).then((latLng) {
-        if (latLng != null) {
-          setState(() {
-            markerList.add(createMarker(latLng));
-            // on va afficher les marqueurs sur la carte
-            print(markerList);
+        // on va recuperer les coordonnées de chaque adresse puis les afficher sur la carte
+        for (final address in _addresses) {
+          getCoordinatesFromAddress(address).then((latLng) {
+            if (latLng != null) {
+              setState(() {
+                markerList.add(createMarker(latLng));
+                // on va afficher les marqueurs sur la carte
+                print(markerList);
+              });
+            }
           });
         }
-      });
-    }
+      }
+    });
   }
 
   @override
