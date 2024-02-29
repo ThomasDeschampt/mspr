@@ -1,11 +1,11 @@
 const Plante = require("../models/Plante");
 const Utilisateur = require("../models/Utilisateur");
 
-async function afficherPlante(id_plt) {
+async function afficherPlante(adr_plt) {
   try {
     const plante = await Plante.findOne({
       where: {
-        id_plt: id_plt,
+        adr_plt: adr_plt,
       },
     });
     return plante;
@@ -53,7 +53,7 @@ async function recupererlocalisation() {
   try {
     const plantes = await Plante.findAll({
       where: {
-        id_utl_1: 1,
+        id_utl_1: 2,
       },
     });
     let localisation = [];

@@ -24,14 +24,16 @@ Future<LatLng?> getCoordinatesFromAddress(String address) async {
   return null;
 }
 
-// fonction pour créer un marquer sur la carte à partir d'une coordonnée
-Marker createMarker(LatLng latLng) {
-  return Marker(
-    child: Image.asset('images/plante.png'),
-    width: 80,
-    height: 80,
-    point: latLng,
-  );
+Future<Map<String, dynamic>?> getPlantDataFromAPI(String address) async {
+  final url = Uri.parse('http://15.237.169.255:3000/api/plante/afficher?adr_plt=$address');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final jsonData = json.decode(response.body);
+    return jsonData;
+  }
+
+  return null;
 }
 
 Future<List<String>?> getAddressesFromAPI() async {
@@ -64,14 +66,61 @@ class _TrouverPageState extends State<TrouverPage> {
       if (addresses != null) {
         setState(() {
           _addresses = addresses;
+          print(_addresses);
         });
+
+
+// fonction pour créer un marqueur sur la carte à partir d'une coordonnée et d'une adresse
+Marker createMarker(LatLng latLng, String address) {
+  return Marker(
+    child: InkWell(
+      onTap: () {
+        getPlantDataFromAPI(address).then((plantData) {
+          if (plantData != null) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(plantData['nom_plt']),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Adresse: ${plantData['adr_plt']}'),
+                      Text('Date de début: ${plantData['dat_deb_plt'] ?? 'N/A'}'),
+                      Text('Date de fin: ${plantData['dat_fin_plt'] ?? 'N/A'}'),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        });
+      },
+      child: Image.asset('images/plante.png'),
+    ),
+    width: 80,
+    height: 80,
+    point: latLng,
+  );
+}
+
+
 
         // on va recuperer les coordonnées de chaque adresse puis les afficher sur la carte
         for (final address in _addresses) {
           getCoordinatesFromAddress(address).then((latLng) {
             if (latLng != null) {
               setState(() {
-                markerList.add(createMarker(latLng));
+                markerList.add(createMarker(latLng, address));
                 // on va afficher les marqueurs sur la carte
                 print(markerList);
               });

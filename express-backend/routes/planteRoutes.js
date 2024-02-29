@@ -11,9 +11,9 @@ const {
 } = require("../api/Plante");
 
 router.get("/afficher", async (req, res) => {
-  const { id_plt } = req.query;
+  const { adr_plt } = req.query;
   try {
-    const messages = await afficherPlante(id_plt);
+    const messages = await afficherPlante(adr_plt);
     res.json(messages);
   } catch (erreur) {
     console.error(
