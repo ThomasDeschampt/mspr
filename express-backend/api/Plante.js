@@ -58,7 +58,7 @@ async function recupererlocalisation() {
     });
     let localisation = [];
     for (let i = 0; i < plantes.length; i++) {
-      localisation.push(plantes[i].localisation);
+      localisation.push(plantes[i].adr_plt);
     }
     return localisation;
   } catch (erreur) {
