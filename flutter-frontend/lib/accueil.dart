@@ -72,7 +72,7 @@ class _AccueilPageState extends State<AccueilPage> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        _buildMenuItem(context, Icons.person, 'Mon Profil 1', () {
+        _buildMenuItem(context, Icons.person, 'Mon profil utilisateur', () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -80,7 +80,7 @@ class _AccueilPageState extends State<AccueilPage> {
             ),
           );
         }),
-        _buildMenuItem(context, Icons.check, 'Valider une Demande', () {
+        _buildMenuItem(context, Icons.check, 'Valider une demande', () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const ValiderPage()),
@@ -92,7 +92,7 @@ class _AccueilPageState extends State<AccueilPage> {
             MaterialPageRoute(builder: (context) => GardiennagePage(pseudo: widget.pseudo)),
           );
         }),
-        _buildMenuItem(context, Icons.search, 'Chercher une Plante', () {
+        _buildMenuItem(context, Icons.search, 'Trouver des plantes à garder', () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),
@@ -113,7 +113,7 @@ class _AccueilPageState extends State<AccueilPage> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        _buildMenuItem(context, Icons.person, 'Mon Profil 2', () {
+        _buildMenuItem(context, Icons.person, 'Mon profil de gardien', () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -121,7 +121,7 @@ class _AccueilPageState extends State<AccueilPage> {
             ),
           );
         }),
-        _buildMenuItem(context, Icons.add, 'Faire une demande Plantes', () {
+        _buildMenuItem(context, Icons.add, 'Confier ma plante à quelqu\'un', () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -134,7 +134,7 @@ class _AccueilPageState extends State<AccueilPage> {
             MaterialPageRoute(builder: (context) => GardiennagePage(pseudo: widget.pseudo)),
           );
         }),
-        _buildMenuItem(context, Icons.search, 'Trouver des Plantes', () {
+        _buildMenuItem(context, Icons.search, 'Trouver des plantes à garder', () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),

@@ -130,7 +130,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           padding:
                               EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                           child: Text(
-                            'Menu 1',
+                            'Ma plante 1',
                             style: FlutterFlowTheme.of(context)
                                 .labelLarge
                                 .override(
@@ -159,7 +159,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           padding:
                               EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                           child: Text(
-                            'Menu 2',
+                            'Ma plante 2',
                             style: FlutterFlowTheme.of(context)
                                 .labelLarge
                                 .override(
@@ -188,7 +188,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           padding:
                               EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                           child: Text(
-                            'Menu 3',
+                            'Ma plante 3',
                             style: FlutterFlowTheme.of(context)
                                 .labelLarge
                                 .override(
@@ -217,7 +217,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           padding:
                               EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                           child: Text(
-                            'Menu 4',
+                            'Ma plante 4',
                             style: FlutterFlowTheme.of(context)
                                 .labelLarge
                                 .override(
@@ -246,7 +246,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           padding:
                               EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
                           child: Text(
-                            'Menu 5',
+                            'Ma plante 5',
                             style: FlutterFlowTheme.of(context)
                                 .labelLarge
                                 .override(
