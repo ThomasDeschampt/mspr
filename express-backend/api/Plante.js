@@ -53,7 +53,7 @@ async function recupererlocalisation() {
   try {
     const plantes = await Plante.findAll({
       where: {
-        id_utl_1: 2,
+        id_utl_1: 1,
       },
     });
     let localisation = [];
