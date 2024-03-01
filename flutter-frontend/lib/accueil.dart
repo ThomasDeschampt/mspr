@@ -89,13 +89,13 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const GardiennagePage()),
+            MaterialPageRoute(builder: (context) => GardiennagePage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.search, 'Chercher une Plante', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const TrouverPage()),
+            MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.mail, 'Messages', () {
@@ -131,13 +131,13 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const GardiennagePage()),
+            MaterialPageRoute(builder: (context) => MessagesPage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.search, 'Trouver des Plantes', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const TrouverPage()),
+            MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.mail, 'Messages', () {
