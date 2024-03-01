@@ -92,7 +92,7 @@ async function ajouterPlante(
       dat_deb_plt: dat_deb_plt,
       dat_fin_plt: dat_fin_plt,
       id_utl: proprietaire.id_utl,
-      id_utl_1: 2,
+      id_utl_1: 1,
     });
     console.log("Nouvelle plante ajoutée:", plante);
     return plante;
