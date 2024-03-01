@@ -113,11 +113,16 @@ async function ajouterPlante(
   }
 }
 
-async function ajouterGardienPlante(id_plt, id_utl_1) {
+async function ajouterGardienPlante(id_plt, psd_utl) {
+  const gardien = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
   try {
     const plante = await Plante.update(
       {
-        id_utl_1: id_utl_1,
+        id_utl_1: gardien.id_utl,
       },
       {
         where: {

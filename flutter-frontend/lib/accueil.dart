@@ -95,7 +95,7 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.search, 'Chercher une Plante', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const TrouverPage()),
+            MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.mail, 'Messages', () {
@@ -137,7 +137,7 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.search, 'Trouver des Plantes', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const TrouverPage()),
+            MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.mail, 'Messages', () {

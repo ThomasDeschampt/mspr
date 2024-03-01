@@ -25,7 +25,8 @@ Future<LatLng?> getCoordinatesFromAddress(String address) async {
 }
 
 Future<Map<String, dynamic>?> getPlantDataFromAPI(String address) async {
-  final url = Uri.parse('http://15.237.169.255:3000/api/plante/afficher?adr_plt=$address');
+  final url = Uri.parse(
+      'http://15.237.169.255:3000/api/plante/afficher?adr_plt=$address');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -36,31 +37,51 @@ Future<Map<String, dynamic>?> getPlantDataFromAPI(String address) async {
   return null;
 }
 
-  String formatDateTime(String dateString) {
-    // Analyser la chaîne de date en tant qu'objet DateTime
-    DateTime dateTime = DateTime.parse(dateString);
+Future<http.Response> addGuardianToPlant(String plantId, String userPseudo) {
+  final uri = Uri.parse('http://15.237.169.255:3000/api/plante/ajouterGardien')
+      .replace(queryParameters: {'id_plt': plantId, 'psd_utl': userPseudo});
 
-    // Créer une liste des noms de mois
-    List<String> monthNames = [
-      "", "janvier", "février", "mars", "avril", "mai", "juin", "juillet",
-      "août", "septembre", "octobre", "novembre", "décembre"
-    ];
+  return http.patch(uri);
+}
 
-    // Extraire le jour, le mois et l'année de la date
-    int day = dateTime.day;
-    int month = dateTime.month;
-    int year = dateTime.year;
-    int hour = dateTime.hour;
-    int minute = dateTime.minute;
+String formatDateTime(String dateString) {
+  // Analyser la chaîne de date en tant qu'objet DateTime
+  DateTime dateTime = DateTime.parse(dateString);
 
-    // Formater la date dans le format souhaité
-    String formattedDate = "$day ${monthNames[month]} $year à ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
+  // Créer une liste des noms de mois
+  List<String> monthNames = [
+    "",
+    "janvier",
+    "février",
+    "mars",
+    "avril",
+    "mai",
+    "juin",
+    "juillet",
+    "août",
+    "septembre",
+    "octobre",
+    "novembre",
+    "décembre"
+  ];
 
-    return formattedDate;
-  }
+  // Extraire le jour, le mois et l'année de la date
+  int day = dateTime.day;
+  int month = dateTime.month;
+  int year = dateTime.year;
+  int hour = dateTime.hour;
+  int minute = dateTime.minute;
+
+  // Formater la date dans le format souhaité
+  String formattedDate =
+      "$day ${monthNames[month]} $year à ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
+
+  return formattedDate;
+}
 
 Future<List<String>?> getAddressesFromAPI() async {
-  final url = Uri.parse('http://15.237.169.255:3000/api/plante/recupererlocalisation');
+  final url =
+      Uri.parse('http://15.237.169.255:3000/api/plante/recupererlocalisation');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -72,7 +93,8 @@ Future<List<String>?> getAddressesFromAPI() async {
 }
 
 class TrouverPage extends StatefulWidget {
-  const TrouverPage({Key? key}) : super(key: key);
+  final String pseudo;
+  const TrouverPage({Key? key, required this.pseudo}) : super(key: key);
 
   @override
   _TrouverPageState createState() => _TrouverPageState();
@@ -92,51 +114,60 @@ class _TrouverPageState extends State<TrouverPage> {
           print(_addresses);
         });
 
-
-// fonction pour créer un marqueur sur la carte à partir d'une coordonnée et d'une adresse
-Marker createMarker(LatLng latLng, String address) {
-  return Marker(
-    child: InkWell(
-      onTap: () {
-        getPlantDataFromAPI(address).then((plantData) {
-          if (plantData != null) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(plantData['nom_plt']),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Adresse: ${plantData['adr_plt']}'),
-                     Text('Date de début: ${formatDateTime(plantData['dat_deb_plt'])}'),
-                Text('Date de fin: ${formatDateTime(plantData['dat_fin_plt'])}'),
-                    ],
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('OK'),
-                      onPressed: () {
+        Marker createMarker(LatLng latLng, String address) {
+          return Marker(
+            child: InkWell(
+              onTap: () {
+                getPlantDataFromAPI(address).then((plantData) {
+                  if (plantData != null) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(plantData['nom_plt']),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Adresse: ${plantData['adr_plt']}'),
+                              Text(
+                                  'Date de début: ${formatDateTime(plantData['dat_deb_plt'])}'),
+                              Text(
+                                  'Date de fin: ${formatDateTime(plantData['dat_fin_plt'])}'),
+                      ElevatedButton(
+                  child: Text('Garder la plante'),
+                  onPressed: () {
+                    addGuardianToPlant(plantData['id_plt'].toString(), widget.pseudo).then((response) {
+                      if (response.statusCode == 200) {
                         Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Vous êtes maintenant le gardien de cette plante')));
+                      }
+                    });
+                  },
+                ),
+              ],
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
                       },
-                    ),
-                  ],
-                );
+                    );
+                  }
+                });
               },
-            );
-          }
-        });
-      },
-      child: Image.asset('images/plante.png'),
-    ),
-    width: 80,
-    height: 80,
-    point: latLng,
-  );
-}
-
-
+              child: Image.asset('images/plante.png'),
+            ),
+            width: 80,
+            height: 80,
+            point: latLng,
+          );
+        }
 
         // on va recuperer les coordonnées de chaque adresse puis les afficher sur la carte
         for (final address in _addresses) {
@@ -177,8 +208,4 @@ Marker createMarker(LatLng latLng, String address) {
       ),
     );
   }
-}
-
-void main() {
-  runApp(TrouverPage());
 }
