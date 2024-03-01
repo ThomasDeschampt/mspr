@@ -89,7 +89,7 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const GardiennagePage()),
+            MaterialPageRoute(builder: (context) => GardiennagePage(pseudo : widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.search, 'Chercher une Plante', () {
@@ -131,7 +131,7 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const GardiennagePage()),
+            MaterialPageRoute(builder: (context) => GardiennagePage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.search, 'Trouver des Plantes', () {
