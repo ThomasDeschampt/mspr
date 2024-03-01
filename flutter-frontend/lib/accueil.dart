@@ -131,7 +131,7 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MessagesPage(pseudo: widget.pseudo)),
+            MaterialPageRoute(builder: (context) => GardiennagePage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.search, 'Trouver des Plantes', () {
