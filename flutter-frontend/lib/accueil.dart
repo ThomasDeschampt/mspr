@@ -89,19 +89,19 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GardiennagePage(pseudo : widget.pseudo)),
+            MaterialPageRoute(builder: (context) => const GardiennagePage()),
           );
         }),
         _buildMenuItem(context, Icons.search, 'Chercher une Plante', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),
+            MaterialPageRoute(builder: (context) => const TrouverPage()),
           );
         }),
         _buildMenuItem(context, Icons.mail, 'Messages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MessagesPage()),
+            MaterialPageRoute(builder: (context) => MessagesPage(pseudo: widget.pseudo)),
           );
         }),
       ],
@@ -131,19 +131,19 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GardiennagePage(pseudo: widget.pseudo)),
+            MaterialPageRoute(builder: (context) => const GardiennagePage()),
           );
         }),
         _buildMenuItem(context, Icons.search, 'Trouver des Plantes', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TrouverPage(pseudo: widget.pseudo)),
+            MaterialPageRoute(builder: (context) => const TrouverPage()),
           );
         }),
         _buildMenuItem(context, Icons.mail, 'Messages', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MessagesPage()),
+            MaterialPageRoute(builder: (context) => MessagesPage(pseudo: widget.pseudo)),
           );
         }),
       ],

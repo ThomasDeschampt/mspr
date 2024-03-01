@@ -2,22 +2,117 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class User {
-  final String id;
-  final String username;
+Future<List<List<String>>?> getConversationsFromAPI(String psd_utl) async {
+  final url = Uri.parse('http://15.237.169.255:3000/api/message/conversations?psd_utl=$psd_utl');
+  try {
+    final response = await http.get(url);
 
-  User({required this.id, required this.username});
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      List<List<String>> conversations = [];
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      username: json['username'],
-    );
+      if (jsonData.length % 2 != 0) {
+        throw Exception("Les données de conversation ne sont pas en paires.");
+      }
+
+      for (int i = 0; i < jsonData.length; i += 2) {
+        List<String> conversation = [jsonData[i], jsonData[i + 1]];
+        conversations.add(conversation);
+      }
+
+      return conversations;
+    } else {
+      throw Exception("Échec de chargement des conversations: ${response.statusCode}");
+    }
+  } catch (e) {
+    print(e); // Pour les besoins de débogage
+    return null;
   }
 }
 
-class MessagesPage extends StatelessWidget {
-  const MessagesPage({Key? key});
+Future<String> getPseudoFromAPI(String id_utl) async {
+  final url = Uri.parse('http://15.237.169.255:3000/api/utilisateurs/pseudo?id_utl=$id_utl');
+  try {
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return jsonData['psd_utl'];
+    } else {
+      throw Exception("Échec de chargement du pseudo: ${response.statusCode}");
+    }
+  } catch (e) {
+    print(e);
+    return '';
+  }
+}
+
+Future<List<List<String>>?> getPseudosFromAPI(List<List<String>> conversations) async {
+  List<List<String>> pseudos = [];
+  for (List<String> conversation in conversations) {
+    try {
+      String pseudoUt1 = await getPseudoFromAPI(conversation[0]);
+      String pseudoUt2 = await getPseudoFromAPI(conversation[1]);
+      List<String> pseudoPair = [pseudoUt1, pseudoUt2];
+      pseudos.add(pseudoPair);
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+  return pseudos;
+}
+
+class MessagesPage extends StatefulWidget {
+  final String pseudo;
+  const MessagesPage({Key? key, required this.pseudo}) : super(key: key);
+
+  @override
+  _MessagesPageState createState() => _MessagesPageState();
+}
+
+class _MessagesPageState extends State<MessagesPage> {
+  List<List<String>>? conversations;
+  List<List<String>>? pseudos;
+  bool isLoading = true;
+  String? errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchConversations(widget.pseudo);
+  }
+
+  Future<void> _fetchConversations(String psd_utl) async {
+    try {
+      final fetchedConversations = await getConversationsFromAPI(psd_utl);
+      if (fetchedConversations != null && fetchedConversations.isNotEmpty) {
+        final fetchedPseudos = await getPseudosFromAPI(fetchedConversations);
+        if (fetchedPseudos != null) {
+          setState(() {
+            conversations = fetchedConversations;
+            pseudos = fetchedPseudos;
+            isLoading = false;
+          });
+        } else {
+          setState(() {
+            errorMessage = "Impossible de charger les pseudos des utilisateurs.";
+            isLoading = false;
+          });
+        }
+      } else {
+        setState(() {
+          errorMessage = "Aucune conversation trouvée.";
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = e.toString();
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,139 +125,29 @@ class MessagesPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Ajoutez ici votre widget de conversation
-            Expanded(
-              child: ConversationPage(),
-            ),
+            if (isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (errorMessage != null)
+              Center(child: Text(errorMessage!))
+            else if (conversations != null && pseudos != null)
+              ..._buildConversationList(conversations!, pseudos!)
           ],
         ),
       ),
     );
   }
-}
 
-class Message {
-  final String text;
-  final bool isBot;
-
-  Message({required this.text, required this.isBot});
-}
-
-class ConversationPage extends StatefulWidget {
-  @override
-  _ConversationPageState createState() => _ConversationPageState();
-}
-
-class _ConversationPageState extends State<ConversationPage> {
-  final TextEditingController _textController = TextEditingController();
-  final List<Message> _messages = [];
-
-  void _sendMessage(String messageText) {
-    setState(() {
-      _messages.add(Message(text: messageText, isBot: false));
-      _messages.add(Message(text: 'Bot: $messageText', isBot: true));
+  List<Widget> _buildConversationList(
+      List<List<String>> conversations, List<List<String>> pseudos) {
+    return List.generate(conversations.length, (index) {
+      final String otherUserPseudo =
+          pseudos[index][0] == widget.pseudo ? pseudos[index][1] : pseudos[index][0];
+      return ListTile(
+        title: Text(otherUserPseudo),
+        onTap: () {
+          // Handle conversation tap.
+        },
+      );
     });
-    _textController.clear();
-  }
-
-Future<List<User>> fetchUsers() async {
-  try {
-    final response1 = await http.get(Uri.parse('http://15.237.169.255:3000/api/proprietaire/estProprietaire?psd_utl=proprietaire'));
-    final response2 = await http.get(Uri.parse('http://15.237.169.255:3000/api/gardien/estGardien?psd_utl=gardien'));
-
-    if (response1.statusCode == 200 && response2.statusCode == 200) {
-      final Map<String, dynamic> data1 = jsonDecode(response1.body);
-      final Map<String, dynamic> data2 = jsonDecode(response2.body);
-
-      
-      final List<dynamic>? usersData1 = data1['users'];
-      final List<dynamic>? usersData2 = data2['users'];
-
-      if (usersData1 != null && usersData2 != null) {
-        List<User> allUsers = [];
-
-        for (var userData in usersData1) {
-          allUsers.add(User.fromJson(userData));
-        }
-
-        for (var userData in usersData2) {
-          allUsers.add(User.fromJson(userData));
-        }
-
-        return allUsers;
-      } else {
-        throw Exception('Failed to load users: data is null');
-      }
-    } else {
-      throw Exception('Failed to load users: HTTP status code');
-    }
-  } catch (error) {
-    print('Error fetching users: $error');
-    throw error;
-  }
-}
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: FutureBuilder<List<User>>(
-            future: fetchUsers(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                List<User> users = snapshot.data ?? [];
-                return ListView.builder(
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    final user = users[index];
-                    return ListTile(
-                      title: Text(user.username),
-                      onTap: () {
-                        // Implémentez l'action pour commencer la conversation avec cet utilisateur
-                        _sendMessage("Vous avez commencé une conversation avec ${user.username}");
-                      },
-                    );
-                  },
-                );
-              }
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: TextField(
-                  controller: _textController,
-                  decoration: InputDecoration(
-                    hintText: 'Type a message...',
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () {
-                  if (_textController.text.isNotEmpty) {
-                    _sendMessage(_textController.text);
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
   }
 }
