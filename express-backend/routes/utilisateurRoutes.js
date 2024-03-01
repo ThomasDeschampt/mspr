@@ -29,6 +29,7 @@ router.post("/ajouter", async (req, res) => {
       psd_utl,
       mdp_utl,
     );
+    res.status(200).json({ message: "Utilisateur ajouté avec succès" });
   } catch (erreur) {
     console.error("Erreur lors de l'ajout de l'utilisateur:", erreur.message);
     res.status(500).json({
