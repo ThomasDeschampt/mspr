@@ -48,10 +48,10 @@ async function ajouterGardiensPlantes() {
 
 
 async function ajouterMessages() {
-  await ajouterMessage("Message 1 du gardien", 3, 1, 2);
-  await ajouterMessage("Message 1 du propriétaire", 2, 1, 2);
-  await ajouterMessage("Message 2 de propriétaire", 2, 1, 2);
-  await ajouterMessage("Message 2 du gardien", 3, 1, 2);
+  await ajouterMessage("Message 1 du gardien", 3, 2, 3);
+  await ajouterMessage("Message 1 du propriétaire", 2, 3, 2);
+  await ajouterMessage("Message 2 de propriétaire", 2, 2, 3);
+  await ajouterMessage("Message 2 du gardien", 3, 3, 2);
 }
 
 async function ajouterImages() {
