@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // Importez le package http
 import 'dart:convert'; // Pour utiliser json.decode
 import 'accueil.dart';
+import 'inscription.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart' as browser_http;
 
@@ -51,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
     // Effectuer la requête HTTP
     final response = await http.post(Uri.parse('http://15.237.169.255:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
+    // final response = await http.post(Uri.parse('localhost:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
 
     final Map<String, dynamic> responseData = json.decode(response.body);
 
@@ -83,6 +85,14 @@ class _LoginPageState extends State<LoginPage> {
           ],
         );
       },
+    );
+  }
+
+//naviguer vers page d'inscription
+  void _navigateToSignUp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => InscriptionPage()),
     );
   }
 
@@ -186,6 +196,15 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: const Text('Connexion', style: TextStyle(fontSize: 16, color: Colors.white),),
               ),
+              ElevatedButton(
+              onPressed: _navigateToSignUp, // Méthode pour naviguer vers la page d'inscription
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue, // Couleur du bouton d'inscription
+                minimumSize: Size(double.infinity, 50), // Taille du bouton d'inscription
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)), // Bordures arrondies
+              ),
+              child: const Text('Inscription', style: TextStyle(fontSize: 16, color: Colors.white),),
+            ),
             ],
           ),
         ),
