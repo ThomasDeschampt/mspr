@@ -35,9 +35,9 @@ router.get("/afficher", async (req, res) => {
 });
 
 router.get("/conversations", async (req, res) => {
-  const { id_utl } = req.query;
+  const { psd_utl } = req.query;
   try {
-    const conversations = await afficherConversations(id_utl);
+    const conversations = await afficherConversations(psd_utl);
     res.json(conversations);
   } catch (erreur) {
     console.error(

@@ -1,4 +1,5 @@
 const Message = require("../models/Message");
+const Utilisateur = require("../models/Utilisateur");
 
 async function ajouterMessage(txt_msg, exp_msg, id_utl, id_utl_1) {
   try {
@@ -33,11 +34,16 @@ async function afficherMessages(id_utl, id_utl_1) {
   }
 }
 
-async function afficherConversations(id_utl) {
+async function afficherConversations(psd_utl) {
+  const user = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
   try {
     const conversations = await Message.findAll({
       where: {
-        id_utl: id_utl,
+        id_utl: user.id_utl,
       },
       group: ["id_utl_1"],
     });
