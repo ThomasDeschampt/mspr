@@ -57,13 +57,11 @@ async function afficherConversations(psd_utl) {
     for (let i = 0; i < conversations.length; i++) {
       conv.push(conversations[i].id_utl_1);
       conv.push(user.id_utl);
-      conv.push("-");
     }
     for (let i = 0; i < conversations1.length; i++) {
       if (!conv.includes(conversations1[i].id_utl)) {
         conv.push(conversations1[i].id_utl);
         conv.push(user.id_utl);
-        conv.push("-");
       }
     }
     return conv;
