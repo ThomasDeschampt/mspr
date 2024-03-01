@@ -45,9 +45,9 @@ router.get("/afficherGardees", async (req, res) => {
 });
 
 router.get("/afficherFaitesGardees", async (req, res) => {
-  const { id_utl } = req.query;
+  const { psd_utl } = req.query;
   try {
-    const messages = await afficherPlanteFaitesGardees(id_utl);
+    const messages = await afficherPlanteFaitesGardees(psd_utl);
     res.json(messages);
   } catch (erreur) {
     console.error(

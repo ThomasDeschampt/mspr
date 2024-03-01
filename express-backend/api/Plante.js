@@ -12,7 +12,7 @@ async function afficherPlante(adr_plt) {
   } catch (erreur) {
     console.error(
       "Erreur lors de la récupération de la plante:",
-      erreur.message,
+      erreur.message
     );
   }
 }
@@ -28,23 +28,30 @@ async function afficherPlanteGardees(id_utl_1) {
   } catch (erreur) {
     console.error(
       "Erreur lors de la récupération des plantes gardees:",
-      erreur.message,
+      erreur.message
     );
   }
 }
 
-async function afficherPlanteFaitesGardees(id_utl) {
+async function afficherPlanteFaitesGardees(psd_utl) {
+  
+  const proprietaire = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
+
   try {
     const plantes = await Plante.findAll({
       where: {
-        id_utl: id_utl,
+        psd_utl: proprietaire.id_utl
       },
     });
     return plantes;
   } catch (erreur) {
     console.error(
       "Erreur lors de la récupération des plantes faites gardees:",
-      erreur.message,
+      erreur.message
     );
   }
 }
@@ -64,7 +71,7 @@ async function recupererlocalisation() {
   } catch (erreur) {
     console.error(
       "Erreur lors de la récupération de la localisation de la plante:",
-      erreur.message,
+      erreur.message
     );
   }
 }
@@ -76,7 +83,7 @@ async function ajouterPlante(
   adr_plt,
   dat_deb_plt,
   dat_fin_plt,
-  psd_utl,
+  psd_utl
 ) {
   const proprietaire = await Utilisateur.findOne({
     where: {
@@ -111,13 +118,13 @@ async function ajouterGardienPlante(id_plt, id_utl_1) {
         where: {
           id_plt: id_plt,
         },
-      },
+      }
     );
     console.log("Gardien ajouté à la plante");
   } catch (erreur) {
     console.error(
       "Erreur lors de l'ajout du gardien à la plante:",
-      erreur.message,
+      erreur.message
     );
   }
 }
