@@ -60,8 +60,8 @@ class _AccueilPageState extends State<AccueilPage> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: condition
-              ? _buildBotanistMenu()
-              : _buildNonBotanistMenu(),
+              ? _buildNonBotanistMenu()
+              : _buildBotanistMenu(),
         ),
       ),
     );
@@ -72,7 +72,7 @@ class _AccueilPageState extends State<AccueilPage> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        _buildMenuItem(context, Icons.person, 'Mon profil utilisateur', () {
+        _buildMenuItem(context, Icons.person, 'Mon profil gardien', () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -113,7 +113,7 @@ class _AccueilPageState extends State<AccueilPage> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        _buildMenuItem(context, Icons.person, 'Mon profil de gardien', () {
+        _buildMenuItem(context, Icons.person, 'Mon profil utilisateur', () {
           Navigator.push(
             context,
             MaterialPageRoute(
