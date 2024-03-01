@@ -36,6 +36,29 @@ Future<Map<String, dynamic>?> getPlantDataFromAPI(String address) async {
   return null;
 }
 
+  String formatDateTime(String dateString) {
+    // Analyser la chaîne de date en tant qu'objet DateTime
+    DateTime dateTime = DateTime.parse(dateString);
+
+    // Créer une liste des noms de mois
+    List<String> monthNames = [
+      "", "janvier", "février", "mars", "avril", "mai", "juin", "juillet",
+      "août", "septembre", "octobre", "novembre", "décembre"
+    ];
+
+    // Extraire le jour, le mois et l'année de la date
+    int day = dateTime.day;
+    int month = dateTime.month;
+    int year = dateTime.year;
+    int hour = dateTime.hour;
+    int minute = dateTime.minute;
+
+    // Formater la date dans le format souhaité
+    String formattedDate = "$day ${monthNames[month]} $year à ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
+
+    return formattedDate;
+  }
+
 Future<List<String>?> getAddressesFromAPI() async {
   final url = Uri.parse('http://15.237.169.255:3000/api/plante/recupererlocalisation');
   final response = await http.get(url);
@@ -87,8 +110,8 @@ Marker createMarker(LatLng latLng, String address) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Adresse: ${plantData['adr_plt']}'),
-                      Text('Date de début: ${plantData['dat_deb_plt'] ?? 'N/A'}'),
-                      Text('Date de fin: ${plantData['dat_fin_plt'] ?? 'N/A'}'),
+                     Text('Date de début: ${formatDateTime(plantData['dat_deb_plt'])}'),
+                Text('Date de fin: ${formatDateTime(plantData['dat_fin_plt'])}'),
                     ],
                   ),
                   actions: <Widget>[
