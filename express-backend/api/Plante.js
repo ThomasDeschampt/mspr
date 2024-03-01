@@ -17,11 +17,17 @@ async function afficherPlante(adr_plt) {
   }
 }
 
-async function afficherPlanteGardees(id_utl_1) {
+async function afficherPlanteGardees(psd_utl) {
+  const proprietaire = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
+
   try {
     const plantes = await Plante.findAll({
       where: {
-        id_utl_1: id_utl_1,
+        psd_utl: proprietaire.psd_utl,
       },
     });
     return plantes;
@@ -34,7 +40,6 @@ async function afficherPlanteGardees(id_utl_1) {
 }
 
 async function afficherPlanteFaitesGardees(psd_utl) {
-  
   const proprietaire = await Utilisateur.findOne({
     where: {
       psd_utl: psd_utl,
@@ -44,7 +49,7 @@ async function afficherPlanteFaitesGardees(psd_utl) {
   try {
     const plantes = await Plante.findAll({
       where: {
-        psd_utl: proprietaire.id_utl
+        psd_utl: proprietaire.id_utl,
       },
     });
     return plantes;
