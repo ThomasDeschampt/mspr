@@ -51,6 +51,29 @@ async function verifierUtilisateur(psd_utl, mdp_utl) {
   }
 }
 
+async function afficherPseudo(id_utl){
+  try {
+    const utilisateur = await Utilisateur.findOne({
+      where: {
+        id_utl: id_utl,
+      },
+    });
+
+    if (utilisateur) {
+      console.log("utilisateur trouvé");
+      return utilisateur.psd_utl;
+    } else {
+      console.log("utilisateur non trouvé");
+      return false;
+    }
+  } catch (erreur) {
+    console.error(
+      "Erreur lors de la vérification de l'utilisateur:",
+      erreur.message,
+    );
+  }
+}
+
 async function supprimerUtilisateur(psd_utl) {
   try {
     const utilisateur = await Utilisateur.findOne({
@@ -79,4 +102,5 @@ module.exports = {
   ajouterUtilisateur,
   verifierUtilisateur,
   supprimerUtilisateur,
+  afficherPseudo
 };

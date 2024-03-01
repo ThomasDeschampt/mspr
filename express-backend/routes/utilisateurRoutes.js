@@ -4,6 +4,7 @@ const {
   ajouterUtilisateur,
   verifierUtilisateur,
   supprimerUtilisateur,
+  afficherPseudo
 } = require("../api/Utilisateur");
 const Utilisateur = require("../models/Utilisateur");
 
@@ -74,6 +75,23 @@ router.delete("/supprimer", async (req, res) => {
     res
       .status(500)
       .json({ message: "Erreur lors de la suppression de l'utilisateur" });
+  }
+});
+
+router.get("/pseudo", async (req, res) => {
+  const { id_utl } = req.query;
+  try {
+    const utilisateur = await afficherPseudo(id_utl);
+    res.status(200).json({ utilisateur });
+  } catch (erreur) {
+    console.error(
+      "Erreur lors de la récupération du pseudo de l'utilisateur:",
+      erreur.message,
+    );
+    res.status(500).json({
+      message: "Erreur lors de la récupération du pseudo de l'utilisateur",
+      erreur: erreur.message,
+    });
   }
 });
 
