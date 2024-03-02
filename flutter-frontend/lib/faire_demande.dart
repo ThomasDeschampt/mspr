@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http; 
 
 class PlantePage extends StatelessWidget {
@@ -15,7 +16,24 @@ class PlantePage extends StatelessWidget {
     TextEditingController debutController = TextEditingController();
     TextEditingController finController = TextEditingController();
 
+    // Formatter to limit date input to 10 characters and automatically add "/"
+    var dateInputFormatter = FilteringTextInputFormatter.deny(RegExp(r'[^0-9/]'));
 
+    debutController
+        .addListener(() {
+          if (debutController.text.length == 2 || debutController.text.length == 5) {
+            debutController.text += '/';
+            debutController.selection = TextSelection.fromPosition(TextPosition(offset: debutController.text.length));
+          }
+        });
+
+    finController
+        .addListener(() {
+          if (finController.text.length == 2 || finController.text.length == 5) {
+            finController.text += '/';
+            finController.selection = TextSelection.fromPosition(TextPosition(offset: finController.text.length));
+          }
+        });
     Future<void> ajouterPlante() async {
       if (especeController.text.isEmpty ||
           descriptionController.text.isEmpty ||
@@ -37,8 +55,8 @@ class PlantePage extends StatelessWidget {
           ),
         );
       } else {
-        String url0 = 'http://15.237.169.255:3000/api/proprietaire/ajouter?id_utl=$pseudo';
-        var response0 = await http.post(Uri.parse(url0));
+        String url0 = 'http://15.237.169.255:3000/api/proprietaire/ajouter?psd_utl=$pseudo';
+        var response0 = http.post(Uri.parse(url0));
 
         String url = 'http://15.237.169.255:3000/api/plante/ajouter?'
             'esp_plt=${especeController.text}&'
@@ -59,7 +77,11 @@ class PlantePage extends StatelessWidget {
               content: Text('La demande a été ajoutée avec succès.'),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => 
+                  {
+                    Navigator.pop(context),
+                    Navigator.pop(context),
+                  },
                   child: Text('OK'),
                 ),
               ],
@@ -111,10 +133,12 @@ class PlantePage extends StatelessWidget {
             TextFormField(
               controller: debutController,
               decoration: InputDecoration(labelText: 'Date de début'),
+              inputFormatters: [LengthLimitingTextInputFormatter(10), dateInputFormatter],
             ),
             TextFormField(
               controller: finController,
               decoration: InputDecoration(labelText: 'Date de fin'),
+              inputFormatters: [LengthLimitingTextInputFormatter(10), dateInputFormatter],
             ),
             SizedBox(height: 20),
             ElevatedButton(
