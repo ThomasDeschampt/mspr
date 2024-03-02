@@ -2,13 +2,25 @@ const Message = require("../models/Message");
 const Utilisateur = require("../models/Utilisateur");
 const { Op } = require('sequelize');
 
-async function ajouterMessage(txt_msg, exp_msg, id_utl, id_utl_1) {
+async function ajouterMessage(txt_msg, exp_msg, psd_utl, psd_utl_1) {
+  const expediteur = await Utilisateur.findOne({ where: { psd_utl: exp_msg } });
+
+  const user1 = await Utilisateur.findOne({ where: { psd_utl: psd_utl } });
+  const proprio = await Proprietaire.findOne({ where: { id_utl: user1.id_utl } });
+
+  const user2 = await Utilisateur.findOne({ where: { psd_utl: psd_utl_1 } });
+  const gardien = await Gardien.findOne({ where: { id_utl: user2.id_utl } });
+
+  id_exp = expediteur.id_utl;
+  id_prop = proprio.id_utl;
+  id_gard = gardien.id_utl;
+
   try {
     const nouveauMessage = await Message.create({
       txt_msg,
-      exp_msg,
-      id_utl,
-      id_utl_1,
+      id_utl: id_exp,
+      id_utl_1: id_prop,
+      exp_msg: id_gard, 
     });
     console.log("Nouveau message ajouté:", nouveauMessage);
   } catch (erreur) {
