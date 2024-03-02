@@ -55,9 +55,16 @@ async function afficherMessages(psd_utl, psd_utl_1) {
   try {
     const messages = await Message.findAll({
       where: {
-        [Op.or]: [
-          { id_utl: user1.id_utl, id_utl_1: user2.id_utl },
-          { id_utl: user2.id_utl, id_utl_1: user1.id_utl },
+        // Use an 'or' operator to retrieve messages where the IDs are either matching or reversed
+        or: [
+          {
+            id_utl: user1.id_utl,
+            id_utl_1: user2.id_utl,
+          },
+          {
+            id_utl: user2.id_utl,
+            id_utl_1: user1.id_utl,
+          },
         ],
       },
       order: [["dat_msg", "ASC"]],
