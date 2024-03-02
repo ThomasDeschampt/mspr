@@ -1,35 +1,12 @@
 const Message = require("../models/Message");
 const Utilisateur = require("../models/Utilisateur");
-const Gardien = require("../models/Gardien");
-const Proprietaire = require("../models/Proprietaire");
+const { Op } = require('sequelize');
 
-async function ajouterMessage(txt_msg, exp_msg, psd_utl, psd_utl_1) {
-  const expediteur = await Utilisateur.findOne({
-    where: {
-      psd_utl: exp_msg,
-    },
-  });
-
-  const user1 = await Utilisateur.findOne({
-    where: {
-      psd_utl: psd_utl,
-    },
-  });
-
-  const user2 = await Utilisateur.findOne({
-    where: {
-      psd_utl: psd_utl_1,
-    },
-  });
-
-  const exp_msg_psd = expediteur.id_utl;
-  const id_utl = user1.id_utl;
-  const id_utl_1 = user2.id_utl;
-
+async function ajouterMessage(txt_msg, exp_msg, id_utl, id_utl_1) {
   try {
     const nouveauMessage = await Message.create({
       txt_msg,
-      exp_msg : exp_msg_psd,
+      exp_msg,
       id_utl,
       id_utl_1,
     });
@@ -40,31 +17,23 @@ async function ajouterMessage(txt_msg, exp_msg, psd_utl, psd_utl_1) {
 }
 
 async function afficherMessages(psd_utl, psd_utl_1) {
-  const user1 = await Utilisateur.findOne({
-    where: {
-      psd_utl: psd_utl,
-    },
-  });
-
-  const user2 = await Utilisateur.findOne({
-    where: {
-      psd_utl: psd_utl_1,
-    },
-  });
-
   try {
+    // Trouver les utilisateurs par leur pseudo
+    const user1 = await Utilisateur.findOne({ where: { psd_utl: psd_utl } });
+    const user2 = await Utilisateur.findOne({ where: { psd_utl: psd_utl_1 } });
+  
+    // Vérifier si les deux utilisateurs ont été trouvés
+    if (!user1 || !user2) {
+      console.error("L'un des utilisateurs n'a pas été trouvé.");
+      return []; // Retourner un tableau vide ou lever une erreur
+    }
+  
+    // Récupérer les messages où les ID sont soit dans un ordre, soit dans l'ordre inverse
     const messages = await Message.findAll({
       where: {
-        // Use an 'or' operator to retrieve messages where the IDs are either matching or reversed
-        or: [
-          {
-            id_utl: user1.id_utl,
-            id_utl_1: user2.id_utl,
-          },
-          {
-            id_utl: user2.id_utl,
-            id_utl_1: user1.id_utl,
-          },
+        [Op.or]: [
+          { id_utl: user1.id_utl, id_utl_1: user2.id_utl },
+          { id_utl: user2.id_utl, id_utl_1: user1.id_utl },
         ],
       },
       order: [["dat_msg", "ASC"]],
@@ -72,10 +41,8 @@ async function afficherMessages(psd_utl, psd_utl_1) {
     console.log("messages trouvés");
     return messages;
   } catch (erreur) {
-    console.error(
-      "Erreur lors de la récupération des messages:",
-      erreur.message,
-    );
+    console.error("Erreur lors de la récupération des messages:", erreur.message);
+    throw erreur; // Propager l'erreur pour un traitement ultérieur
   }
 }
 
