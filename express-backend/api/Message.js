@@ -1,7 +1,43 @@
 const Message = require("../models/Message");
 const Utilisateur = require("../models/Utilisateur");
+const Gardien = require("../models/Gardien");
+const Proprietaire = require("../models/Proprietaire");
 
-async function ajouterMessage(txt_msg, exp_msg, id_utl, id_utl_1) {
+async function ajouterMessage(txt_msg, exp_msg, psd_utl, psd_utl_1) {
+  const expediteur = await Utilisateur.findOne({
+    where: {
+      psd_utl: exp_msg,
+    },
+  });
+
+  const user1 = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
+
+  const user2 = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl_1,
+    },
+  });
+
+  const proprio = await Proprietaire.findOne({
+    where: {
+      id_utl: user1.id_utl,
+    },
+  });
+
+  const gardien = await Gardien.findOne({
+    where: {
+      id_utl: user1.id_utl,
+    },
+  });
+
+  const exp_msg = expediteur.id_utl;
+  const id_utl = user1.id_utl;
+  const id_utl_1 = user2.id_utl;
+
   try {
     const nouveauMessage = await Message.create({
       txt_msg,
@@ -15,12 +51,24 @@ async function ajouterMessage(txt_msg, exp_msg, id_utl, id_utl_1) {
   }
 }
 
-async function afficherMessages(id_utl, id_utl_1) {
+async function afficherMessages(psd_utl, psd_utl_1) {
+  const user1 = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
+
+  const user2 = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl_1,
+    },
+  });
+
   try {
     const messages = await Message.findAll({
       where: {
-        id_utl: id_utl,
-        id_utl_1: id_utl_1,
+        id_utl: user1.id_utl,
+        id_utl_1: user2.id_utl,
       },
       order: [["dat_msg", "ASC"]],
     });
