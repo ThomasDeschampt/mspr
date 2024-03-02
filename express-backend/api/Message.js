@@ -22,26 +22,14 @@ async function ajouterMessage(txt_msg, exp_msg, psd_utl, psd_utl_1) {
     },
   });
 
-  const proprio = await Proprietaire.findOne({
-    where: {
-      id_utl: user1.id_utl,
-    },
-  });
-
-  const gardien = await Gardien.findOne({
-    where: {
-      id_utl: user1.id_utl,
-    },
-  });
-
-  const exp_msg = expediteur.id_utl;
+  const exp_msg_psd = expediteur.id_utl;
   const id_utl = user1.id_utl;
   const id_utl_1 = user2.id_utl;
 
   try {
     const nouveauMessage = await Message.create({
       txt_msg,
-      exp_msg,
+      exp_msg : exp_msg_psd,
       id_utl,
       id_utl_1,
     });
