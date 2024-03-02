@@ -1,5 +1,7 @@
 const Message = require("../models/Message");
 const Utilisateur = require("../models/Utilisateur");
+const Proprietaire = require("../models/Proprietaire");
+const Gardien = require("../models/Gardien");
 const { Op } = require('sequelize');
 
 async function ajouterMessage(txt_msg, exp_msg, psd_utl, psd_utl_1) {
