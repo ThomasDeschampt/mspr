@@ -1,6 +1,7 @@
 const Plante = require("../models/Plante");
 const Utilisateur = require("../models/Utilisateur");
 
+
 async function afficherPlante(adr_plt) {
   try {
     const plante = await Plante.findOne({
@@ -12,6 +13,18 @@ async function afficherPlante(adr_plt) {
   } catch (erreur) {
     console.error(
       "Erreur lors de la récupération de la plante:",
+      erreur.message
+    );
+  }
+}
+
+async function afficherPlantes() {
+  try {
+    const plantes = await Plante.findAll();
+    return plantes;
+  } catch (erreur) {
+    console.error(
+      "Erreur lors de la récupération des plantes:",
       erreur.message
     );
   }
@@ -146,4 +159,5 @@ module.exports = {
   recupererlocalisation,
   ajouterPlante,
   ajouterGardienPlante,
+  afficherPlantes
 };
