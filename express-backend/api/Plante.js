@@ -18,6 +18,18 @@ async function afficherPlante(adr_plt) {
   }
 }
 
+async function afficherPlantes() {
+  try {
+    const plantes = await Plante.findAll();
+    return plantes;
+  } catch (erreur) {
+    console.error(
+      "Erreur lors de la récupération des plantes:",
+      erreur.message
+    );
+  }
+}
+
 async function afficherPlanteGardees(psd_utl) {
   const proprietaire = await Utilisateur.findOne({
     where: {
@@ -147,4 +159,5 @@ module.exports = {
   recupererlocalisation,
   ajouterPlante,
   ajouterGardienPlante,
+  afficherPlantes
 };
