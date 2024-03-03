@@ -1,6 +1,15 @@
 const Conseil = require("../models/Conseil");
+const Utilisateur = require("../models/Utilisateur");
 
-async function ajouterConseil(dsc_csn, id_plt, id_utl) {
+async function ajouterConseil(dsc_csn, id_plt, psd_utl) {
+  const proprietaire = await Utilisateur.findOne({
+    where: {
+      psd_utl: psd_utl,
+    },
+  });
+
+  const id_utl = proprietaire.id_utl;
+
   try {
     const nouveauConseil = await Conseil.create({
       dsc_csn: dsc_csn,
