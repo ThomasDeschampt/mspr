@@ -25,7 +25,7 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install && npm update
 
       - name: Run Jest
         run: cd express-backend && npx jest --config=/home/runner/work/mspr/mspr/express-backend/jest.config.js
