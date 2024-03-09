@@ -3,7 +3,7 @@ name: Run Jest Tests
 on:
   push:
     branches:
-      - main  # ou le nom de votre branche principale
+      - main  
 
 jobs:
   test:
@@ -16,10 +16,16 @@ jobs:
       - name: Change directory to express-backend
         run: cd express-backend
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Run Jest
         run: cd express-backend && npx jest --config=/home/runner/work/mspr/mspr/express-backend/jest.config.js
