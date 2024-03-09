@@ -90,6 +90,7 @@ describe("Test des fonctions liées aux plantes", () => {
 
       const resultat = await afficherPlanteFaitesGardees(1);
 
+      
       expect(resultat).toEqual(plantesFaitesGardeesMock);
       expect(Plante.findAll).toHaveBeenCalledWith({ where: { psd_utl: 1 } });
     });
