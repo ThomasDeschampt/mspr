@@ -12,7 +12,7 @@ async function ajouterGardien(psd_utl) {
     const nouveauGardien = await Gardien.create({
       id_utl,
     });
-    console.log("Nouveau gardien ajouté:", nouveauGardien.toJSON());
+    console.log("Nouveau gardien ajouté:");
   } catch (erreur) {
     console.error("Erreur lors de l'ajout du gardien:", erreur.message);
   }

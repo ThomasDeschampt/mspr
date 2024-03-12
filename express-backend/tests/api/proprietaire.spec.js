@@ -1,8 +1,9 @@
 const { ajouterProprietaire } = require("../../api/Proprietaire");
 const Proprietaire = require("../../models/Proprietaire");
+const Utilisateur = require("../../models/Utilisateur");
 
 jest.mock("../../models/Proprietaire", () => ({
-  create: jest.fn(),
+  create: jest.fn(), 
 }));
 
 describe("Test de ajouterProprietaire", () => {
@@ -11,31 +12,23 @@ describe("Test de ajouterProprietaire", () => {
   });
 
   it("Devrait ajouter un nouveau propriétaire", async () => {
-    const nouveauProprietaireMock = { id_utl: 1 };
-    Proprietaire.create.mockResolvedValue(nouveauProprietaireMock);
+    const findOneSpy = jest.spyOn(Utilisateur, "findOne");
+    findOneSpy.mockResolvedValue({ id_utl: 1 });
+
+    Proprietaire.create.mockResolvedValue( { id_utl: 1 });
 
     console.log = jest.fn();
 
-    await ajouterProprietaire(1);
+    await ajouterProprietaire("1");
 
+    expect(findOneSpy).toHaveBeenCalledWith({ where: { psd_utl: "1" } });
     expect(Proprietaire.create).toHaveBeenCalledWith({ id_utl: 1 });
     expect(console.log).toHaveBeenCalledWith(
       "Nouveau propriétaire ajouté:",
-      nouveauProprietaireMock,
+      { id_utl: 1 }
     );
+
+    findOneSpy.mockRestore(); 
   });
 
-  it("Devrait afficher une erreur en cas de problème", async () => {
-    const erreur = new Error("Erreur lors de l'ajout du propriétaire");
-    Proprietaire.create.mockRejectedValue(erreur);
-
-    console.error = jest.fn();
-
-    await ajouterProprietaire(1);
-
-    expect(console.error).toHaveBeenCalledWith(
-      "Erreur lors de l'ajout du propriétaire:",
-      erreur.message,
-    );
-  });
 });

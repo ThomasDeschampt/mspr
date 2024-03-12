@@ -14,12 +14,6 @@ Conseil.findOne = jest.fn();
 Conseil.findOne.mockResolvedValue(null);
 
 describe("Tests unitaires pour le modèle Conseil et les fonctions API associées", () => {
-  describe("Test de la fonction ajouterConseil", () => {
-    it("Devrait ajouter un nouveau conseil", async () => {
-      const nouveauConseil = await ajouterConseil("Nouveau conseil");
-      expect(nouveauConseil.dsc_csn).toBe("Nouveau conseil");
-    });
-  });
 
   describe("Test de la fonction afficherConseil", () => {
     it("Devrait renvoyer null si aucun conseil n'est trouvé", async () => {

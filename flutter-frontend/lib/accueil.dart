@@ -33,6 +33,7 @@ class _AccueilPageState extends State<AccueilPage> {
   final pseudo = widget.pseudo;
   try {
     final response = await http.get(Uri.parse('http://15.237.169.255:3000/api/botaniste/estBotaniste?psd_utl=$pseudo'));
+    // final response = await http.get(Uri.parse('http://localhost:3000/api/botaniste/estBotaniste?psd_utl=$pseudo'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -60,8 +61,8 @@ class _AccueilPageState extends State<AccueilPage> {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: condition
-              ? _buildNonBotanistMenu()
-              : _buildBotanistMenu(),
+              ? _buildBotanistMenu()
+              : _buildNonBotanistMenu(),
         ),
       ),
     );
@@ -72,7 +73,7 @@ class _AccueilPageState extends State<AccueilPage> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
-        _buildMenuItem(context, Icons.person, 'Mon profil gardien', () {
+        _buildMenuItem(context, Icons.person, 'Mon profil botaniste', () {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -83,7 +84,7 @@ class _AccueilPageState extends State<AccueilPage> {
         _buildMenuItem(context, Icons.check, 'Valider une demande', () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const ValiderPage()),
+            MaterialPageRoute(builder: (context) => ValiderPage(pseudo: widget.pseudo)),
           );
         }),
         _buildMenuItem(context, Icons.home, 'Mes gardiennages', () {

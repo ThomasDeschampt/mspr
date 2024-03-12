@@ -8,6 +8,7 @@ const {
   recupererlocalisation,
   ajouterPlante,
   ajouterGardienPlante,
+  afficherPlantes,
 } = require("../api/Plante");
 
 router.get("/afficher", async (req, res) => {
@@ -22,6 +23,22 @@ router.get("/afficher", async (req, res) => {
     );
     res.status(500).json({
       message: "Erreur lors de la récupération de la plante:",
+      erreur: erreur.message,
+    });
+  }
+});
+
+router.get("/afficherTout", async (req, res) => {
+  try {
+    const messages = await afficherPlantes();
+    res.json(messages);
+  } catch (erreur) {
+    console.error(
+      "Erreur lors de la récupération des plantes:",
+      erreur.message,
+    );
+    res.status(500).json({
+      message: "Erreur lors de la récupération des plantes:",
       erreur: erreur.message,
     });
   }

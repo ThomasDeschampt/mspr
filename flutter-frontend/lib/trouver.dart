@@ -190,7 +190,9 @@ class _TrouverPageState extends State<TrouverPage> {
     return MaterialApp(
       title: "OpenStreetMap Map",
       home: Scaffold(
-        body: FlutterMap(
+        body: Stack(
+          children: [
+            FlutterMap(
           options: MapOptions(
             center: LatLng(45.76, 4.83), // Centre de la carte sur Lyon
             zoom: 13.0,
@@ -202,6 +204,18 @@ class _TrouverPageState extends State<TrouverPage> {
             ),
             MarkerLayer(
               markers: markerList,
+            ),
+          ],
+        ),
+            Positioned(
+              top: 20,
+              left: 10,
+              child: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ],
         ),

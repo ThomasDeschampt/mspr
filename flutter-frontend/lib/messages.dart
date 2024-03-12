@@ -65,15 +65,15 @@ Future<List<List<String>>?> getPseudosFromAPI(List<List<String>> conversations) 
     String idUt1 = conversation[0];
     String idUt2 = conversation[1];
 
-    String? pseudoUt1 = await getPseudoFromAPI(idUt1);
-    String? pseudoUt2 = await getPseudoFromAPI(idUt2);
+    String? gardien = await getPseudoFromAPI(idUt1);
+    String? proprietaire = await getPseudoFromAPI(idUt2);
 
     List<String> pseudoPair = [];
-    if (pseudoUt1 != null) {
-      pseudoPair.add(pseudoUt1);
+    if (gardien != null) {
+      pseudoPair.add(gardien);
     }
-    if (pseudoUt2 != null) {
-      pseudoPair.add(pseudoUt2);
+    if (proprietaire != null) {
+      pseudoPair.add(proprietaire);
     }
     pseudos.add(pseudoPair);
   }
@@ -116,9 +116,9 @@ Widget build(BuildContext context) {
       context,
       MaterialPageRoute(
         builder: (context) => chatpage(
-          myId: widget.pseudo, // Assurez-vous que c'est le bon identifiant
-          otherUserId: pseudo2, // Ou l'ID correspondant
-          otherUserPseudo: pseudo2, // Le pseudo pour afficher dans l'appBar
+          myPseudo: widget.pseudo, // Assurez-vous que c'est le bon identifiant
+          gardien: pseudo1, // Ou l'ID correspondant
+          proprietaire: pseudo2, // Le pseudo pour afficher dans l'appBar
         ),
       ),
     );

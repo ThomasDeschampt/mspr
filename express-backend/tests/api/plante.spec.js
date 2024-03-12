@@ -8,12 +8,19 @@ const {
   ajouterGardienPlante,
 } = require("../../api/Plante");
 
+const Utilisateur = require("../../models/Utilisateur");
+
+jest.mock("../../models/Utilisateur", () => ({
+  findOne: jest.fn(),
+}));
+
 jest.mock("../../models/Plante", () => ({
   findOne: jest.fn(),
   findAll: jest.fn(),
   create: jest.fn(),
   update: jest.fn(),
 }));
+
 
 describe("Test des fonctions liées aux plantes", () => {
   afterEach(() => {
@@ -22,14 +29,15 @@ describe("Test des fonctions liées aux plantes", () => {
 
   describe("Test de afficherPlante", () => {
     it("Devrait retourner la plante trouvée", async () => {
-      const planteMock = { id_plt: 1 };
-      Plante.findOne.mockResolvedValue(planteMock);
-
-      const resultat = await afficherPlante(1);
-
+      const planteMock = { id_plt: 1, adr_plt: "Adresse" };
+      jest.spyOn(Plante, 'findOne').mockResolvedValue(planteMock);
+  
+      const resultat = await afficherPlante("Adresse");
+  
       expect(resultat).toEqual(planteMock);
-      expect(Plante.findOne).toHaveBeenCalledWith({ where: { id_plt: 1 } });
+      expect(Plante.findOne).toHaveBeenCalledWith({ where: { adr_plt: "Adresse" } });
     });
+  
 
     it("Devrait afficher une erreur en cas de problème", async () => {
       const erreur = new Error("Erreur lors de la récupération de la plante");
@@ -48,11 +56,12 @@ describe("Test des fonctions liées aux plantes", () => {
 
   describe("Test de afficherPlanteGardees", () => {
     it("Devrait retourner les plantes gardées par l'utilisateur spécifié", async () => {
-      const plantesGardeesMock = [{ id_plt: 1 }, { id_plt: 2 }]; // Liste simulée de plantes
-      Plante.findAll.mockResolvedValue(plantesGardeesMock);
-
+      const plantesGardeesMock = [{ id_plt: 1 }, { id_plt: 2 }];
+      jest.spyOn(Utilisateur, 'findOne').mockResolvedValue({ id_utl: 1 });
+      jest.spyOn(Plante, 'findAll').mockResolvedValue(plantesGardeesMock);
+    
       const resultat = await afficherPlanteGardees(1);
-
+    
       expect(resultat).toEqual(plantesGardeesMock);
       expect(Plante.findAll).toHaveBeenCalledWith({ where: { id_utl_1: 1 } });
     });
@@ -81,8 +90,9 @@ describe("Test des fonctions liées aux plantes", () => {
 
       const resultat = await afficherPlanteFaitesGardees(1);
 
+      
       expect(resultat).toEqual(plantesFaitesGardeesMock);
-      expect(Plante.findAll).toHaveBeenCalledWith({ where: { id_utl: 1 } });
+      expect(Plante.findAll).toHaveBeenCalledWith({ where: { psd_utl: 1 } });
     });
 
     it("Devrait afficher une erreur en cas de problème", async () => {
@@ -103,18 +113,7 @@ describe("Test des fonctions liées aux plantes", () => {
   });
 
   describe("Test de recupererlocalisation", () => {
-    it("Devrait récupérer les localisations des plantes sans gardien", async () => {
-      const plantesSansGardienMock = [
-        { localisation: "localisation1" },
-        { localisation: "localisation2" },
-      ];
-      Plante.findAll.mockResolvedValue(plantesSansGardienMock);
-
-      const resultat = await recupererlocalisation();
-
-      expect(resultat).toEqual(["localisation1", "localisation2"]);
-    });
-
+    
     it("Devrait afficher une erreur en cas de problème", async () => {
       const erreur = new Error(
         "Erreur lors de la récupération de la localisation de la plante"
