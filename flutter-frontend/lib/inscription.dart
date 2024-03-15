@@ -34,6 +34,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
   TextEditingController adresseController = TextEditingController();
   TextEditingController pseudoController = TextEditingController();
   TextEditingController motDePasseController = TextEditingController();
+  bool isChecked = false;
 
   Future<void> _inscription() async {
     final url = Uri.parse('http://15.237.169.255:3000/api/utilisateurs/ajouter');
@@ -67,6 +68,26 @@ class _InscriptionPageState extends State<InscriptionPage> {
     }
   }
 
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Conditions d\'utilisation'),
+          content: Text('Bienvenue sur notre application mobile ! Nous sommes ravis de vous compter parmi nos utilisateurs. Veuillez lire attentivement les présentes Conditions d\'utilisation, car elles régissent votre accès et votre utilisation de nos services. \n\n1. Acceptation des Conditions d\'utilisation\nEn accédant et en utilisant notre application, vous acceptez d\'être lié par les présentes Conditions d\'utilisation. Si vous n\'acceptez pas ces conditions, veuillez ne pas accéder ou utiliser notre application. \n\n2. Modifications des Conditions d\'utilisation\nNous nous réservons le droit de modifier ces Conditions d\'utilisation à tout moment. Toute modification entrera en vigueur immédiatement après sa publication dans l\'application. L\'utilisation continue de l\'application après la publication des modifications constitue votre acceptation de ces modifications. \n\n3. Utilisation de l\'Application\nVous êtes autorisé à utiliser notre application à des fins personnelles et non commerciales. Vous ne devez pas utiliser notre application d\'une manière qui enfreint les lois ou règlements applicables. \n\n4. Compte Utilisateur\nPour accéder à certaines fonctionnalités de notre application, vous devrez peut-être créer un compte. Vous êtes responsable de maintenir la confidentialité de votre compte et mot de passe, et vous acceptez d\'être responsable de toutes les activités qui se produisent sous votre compte. \n\n5. Propriété Intellectuelle\nTout le contenu de notre application, y compris, mais sans s\'y limiter, le texte, les graphiques, les logos, les icônes de boutons, les images, les clips audio, les téléchargements numériques, les compilations de données, et les logiciels, sont la propriété de notre société ou de nos fournisseurs de contenu et sont protégés par les lois internationales sur le copyright. \n\n6. Limitation de Responsabilité\nEn aucun cas, notre société ou ses fournisseurs ne seront responsables de tout dommage (y compris, sans limitation, les dommages pour perte de données ou de profit, ou en raison d\'une interruption d\'activité) découlant de l\'utilisation ou de l\'impossibilité d\'utiliser notre application. \n\n7. Résiliation\nNous nous réservons le droit de résilier votre accès à notre application à tout moment, avec ou sans cause, avec ou sans préavis. \n\n8. Loi Applicable\nLes présentes Conditions d\'utilisation sont régies et interprétées conformément aux lois de votre pays de résidence. \n\nEn utilisant notre application, vous acceptez les termes et conditions énoncés ci-dessus. Si vous avez des questions concernant nos Conditions d\'utilisation, veuillez nous contacter.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +100,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
           key: _formKey,
           child: ListView(
             children: [
-              TextFormField(
+                            TextFormField(
                 controller: nomController,
                 decoration: InputDecoration(labelText: 'Nom'),
                 validator: (value) {
@@ -160,9 +181,25 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   return null;
                 },
               ),
+              CheckboxListTile(
+                title: Text('J\'accepte les conditions d\'utilisation'),
+                value: isChecked,
+                onChanged: (newValue) {
+                  setState(() {
+                    isChecked = newValue!;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
+              InkWell(
+                onTap: () {
+                  _showDialog();
+                },
+                child: Text('Voir les conditions d\'utilisation'),
+              ),
               ElevatedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+                  if (_formKey.currentState!.validate() && isChecked) {
                     _inscription();
                   }
                 },
