@@ -44,6 +44,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String? _jwtToken; 
+
 
   Future<void> _login() async {
     final pseudo = _usernameController.text;
@@ -58,9 +60,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (responseData.containsKey('message') && responseData['message'] == 'Utilisateur trouvé') {
       print('Utilisateur trouvé');
+      // Extraire et stocker le token JWT de la réponse
+      _jwtToken = responseData['token'];
+      // Naviguer vers la page d'accueil en passant le pseudo et le token JWT
       Navigator.push(
-        currentContext,  // Utiliser la variable locale du BuildContext
-        MaterialPageRoute(builder: (context) => AccueilPage(pseudo: pseudo)),
+        currentContext,
+        MaterialPageRoute(builder: (context) => AccueilPage(pseudo: pseudo, token: _jwtToken)),
       );
     } else {
       print('Utilisateur non trouvé');

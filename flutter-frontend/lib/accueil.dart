@@ -14,7 +14,7 @@ import 'valider.dart';
 class AccueilPage extends StatefulWidget {
   final String pseudo;
 
-  AccueilPage({Key? key, required this.pseudo}) : super(key: key);
+  AccueilPage({Key? key, required this.pseudo, String? token}) : super(key: key);
 
   @override
   _AccueilPageState createState() => _AccueilPageState();
