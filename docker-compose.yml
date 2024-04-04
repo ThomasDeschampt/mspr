@@ -1,0 +1,26 @@
+version: '3'
+services:
+  flutter-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - express-backend
+
+  express-backend:
+    build:
+      context: ./express-backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - sqlite_db
+
+  sqlite_db:
+    image: "esolang/sqlite3:latest"
+    environment:
+      - SQL_FILE=/database/database_development.db
+    volumes:
+      - ./sqlite:/database

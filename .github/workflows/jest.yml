@@ -3,7 +3,7 @@ name: Run Jest Tests
 on:
   push:
     branches:
-      - main  # ou le nom de votre branche principale
+      - main  
 
 jobs:
   test:
