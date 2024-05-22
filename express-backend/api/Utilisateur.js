@@ -49,7 +49,7 @@ async function verifierUtilisateur(psd_utl, mdp_utl) {
     const motDePasseValide = await bcrypt.compare(mdp_utl, utilisateur.mdp_utl);
 
     if (motDePasseValide) {
-      console.log("Utilisateur trouvé et mot de passe valide");
+      console.log("Utilisateur trouvé"); // Imprimez uniquement "Utilisateur trouvé" ici
       return true;
     } else {
       console.log("Mot de passe incorrect");

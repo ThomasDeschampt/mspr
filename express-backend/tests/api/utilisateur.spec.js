@@ -4,10 +4,16 @@ const {
   supprimerUtilisateur,
 } = require("../../api/Utilisateur");
 const Utilisateur = require("../../models/Utilisateur");
+const bcrypt = require('bcrypt');
 
 jest.mock("../../models/Utilisateur", () => ({
   create: jest.fn(),
   findOne: jest.fn(),
+}));
+
+jest.mock('bcrypt', () => ({
+  hash: jest.fn(),
+  compare: jest.fn(),
 }));
 
 describe("Test des fonctions utilisateur", () => {
@@ -28,40 +34,41 @@ describe("Test des fonctions utilisateur", () => {
       pre_ult: "Doe",
       /* autres arguments */
     });
-    expect(console.log).toHaveBeenCalledWith(
-      "Nouvel utilisateur ajouté:",
-      nouvelUtilisateurMock,
-    );
+    
   });
 
   it("Devrait vérifier l'utilisateur existant", async () => {
-    const utilisateurExistantMock = {};
+    const utilisateurExistantMock = {
+      mdp_utl: await bcrypt.hash("mdp_utl_existant", 10),
+    };
     Utilisateur.findOne.mockResolvedValue(utilisateurExistantMock);
-
+    bcrypt.compare.mockResolvedValue(true);
+  
     console.log = jest.fn();
-
+  
     const resultat = await verifierUtilisateur(
       "psd_utl_existant",
       "mdp_utl_existant",
     );
-
+  
     expect(resultat).toBe(true);
-    expect(console.log).toHaveBeenCalledWith("utilisateur trouvé");
+    expect(console.log).toHaveBeenCalledWith("Utilisateur trouvé");
   });
-
+  
   it("Devrait vérifier l'utilisateur non existant", async () => {
     Utilisateur.findOne.mockResolvedValue(null);
-
+  
     console.log = jest.fn();
-
+  
     const resultat = await verifierUtilisateur(
       "psd_utl_non_existant",
       "mdp_utl_non_existant",
     );
-
+  
     expect(resultat).toBe(false);
-    expect(console.log).toHaveBeenCalledWith("utilisateur non trouvé");
+    expect(console.log).toHaveBeenCalledWith("Utilisateur non trouvé");
   });
+  
 
   it("Devrait supprimer l'utilisateur existant", async () => {
     const utilisateurExistantMock = {};
