@@ -1,10 +1,14 @@
 name: Deploy Backend
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Jest"]
+    types:
+      - completed
+    result:
+      - success
     branches:
-      - main 
-
+    - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -28,4 +32,4 @@ jobs:
           cd /home/ubuntu/mspr && git pull
           cd /home/ubuntu/mspr && sudo docker build -t express-image express-backend/
           sudo docker run --name express-backend -d -p 3000:3000 express-image
-          
+
