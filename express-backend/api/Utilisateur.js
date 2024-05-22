@@ -1,4 +1,5 @@
 const Utilisateur = require("../models/Utilisateur");
+const bcrypt = require('bcrypt');
 
 async function ajouterUtilisateur(
   nom_utl,
@@ -11,6 +12,9 @@ async function ajouterUtilisateur(
   mdp_utl,
 ) {
   try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(mdp_utl, saltRounds);
+
     const nouvelUtilisateur = await Utilisateur.create({
       nom_utl,
       pre_ult,
@@ -19,7 +23,7 @@ async function ajouterUtilisateur(
       eml_utl,
       adr_utl,
       psd_utl,
-      mdp_utl,
+      mdp_utl: hashedPassword,
     });
     console.log("Nouvel utilisateur ajouté:", nouvelUtilisateur);
   } catch (erreur) {
@@ -27,29 +31,35 @@ async function ajouterUtilisateur(
   }
 }
 
+
 async function verifierUtilisateur(psd_utl, mdp_utl) {
   try {
     const utilisateur = await Utilisateur.findOne({
       where: {
         psd_utl: psd_utl,
-        mdp_utl: mdp_utl,
       },
     });
 
-    if (utilisateur) {
-      console.log("utilisateur trouvé");
+    if (!utilisateur) {
+      console.log("Utilisateur non trouvé");
+      return false;
+    }
+
+    // Comparaison du mot de passe fourni avec le mot de passe haché stocké
+    const motDePasseValide = await bcrypt.compare(mdp_utl, utilisateur.mdp_utl);
+
+    if (motDePasseValide) {
+      console.log("Utilisateur trouvé et mot de passe valide");
       return true;
     } else {
-      console.log("utilisateur non trouvé");
+      console.log("Mot de passe incorrect");
       return false;
     }
   } catch (erreur) {
-    console.error(
-      "Erreur lors de la vérification de l'utilisateur:",
-      erreur.message,
-    );
+    console.error("Erreur lors de la vérification de l'utilisateur:", erreur.message);
   }
 }
+
 
 async function afficherPseudo(id_utl){
   try {
