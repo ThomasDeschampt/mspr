@@ -21,6 +21,7 @@ const imageRoutes = require("./routes/imageRoutes");
 const planteRoutes = require("./routes/planteRoutes");
 const gardienRoutes = require("./routes/gardienRoutes");
 const proprietaireRoutes = require("./routes/proprietaireRoutes");
+const setupSwagger = require("./swagger");
 
 app.use(cors());
 app.use(express.json());
@@ -40,9 +41,13 @@ app.use("/api/gardien", gardienRoutes);
 
 app.use("/api/proprietaire", proprietaireRoutes);
 
+
+setupSwagger(app)
+
 app.get("/", (req, res) => {
   res.send("Bienvenue sur mon serveur Express !");
 });
+
 
 
 app.listen(port, () => {
