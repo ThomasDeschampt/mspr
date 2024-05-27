@@ -1,8 +1,12 @@
-// sequelize.js
-
 const { Sequelize } = require("sequelize");
-const config = require("./config/config.json");
 
-const sequelize = new Sequelize(config.development);
+const sequelize = new Sequelize({
+  dialect: 'mysql',
+  host: 'localhost', 
+  port: 8889,
+  username: 'root@localhost',
+  password: 'root', 
+  database: 'mspr' 
+});
 
 module.exports = sequelize;
