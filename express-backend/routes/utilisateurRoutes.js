@@ -8,10 +8,10 @@ const {
 } = require("../api/Utilisateur");
 const Utilisateur = require("../models/Utilisateur");
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 
-
-const JWT_SECRET = 'yhYS/U54kbwriU1CNGETOJnsmDNdCPJy2MUbM8GLVik=';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 
 function authenticateToken(req, res, next) {
