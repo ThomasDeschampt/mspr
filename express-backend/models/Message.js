@@ -1,40 +1,37 @@
-const { DataTypes, literal } = require("sequelize");
+const { DataTypes } = require("sequelize");
 const sequelize = require("../sequelize");
-const Proprietaire = require("./Proprietaire");
-const Gardien = require("./Gardien");
+const Conversation = require("./Conversation");
 const Utilisateur = require("./Utilisateur");
 
-const Message = sequelize.define("Message", {
+const MessageConversation = sequelize.define("MessageConversation", {
   id_msg: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
+  id_conv: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   dat_msg: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: literal("CURRENT_TIMESTAMP"),
   },
   txt_msg: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
-  exp_msg: {
+  id_sender: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  id_utl: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  id_utl_1: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+  status: {
+    type: DataTypes.STRING(20),
+    defaultValue: 'unread',
   },
 });
 
-Message.belongsTo(Proprietaire, { foreignKey: "id_utl" });
-Message.belongsTo(Gardien, { foreignKey: "id_utl_1" });
-Message.belongsTo(Utilisateur, { foreignKey: "exp_msg" })
+MessageConversation.belongsTo(Conversation, { foreignKey: 'id_conv' });
+MessageConversation.belongsTo(Utilisateur, { foreignKey: 'id_sender', as: 'sender' });
 
-module.exports = Message;
+module.exports = MessageConversation;

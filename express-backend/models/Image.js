@@ -1,7 +1,6 @@
 const { DataTypes, literal } = require("sequelize");
 const sequelize = require("../sequelize");
-const Proprietaire = require("./Proprietaire");
-const Gardien = require("./Gardien");
+const Utilisateur = require("./Utilisateur");
 const Plante = require("./Plante");
 
 const Image = sequelize.define("Image", {
@@ -16,15 +15,11 @@ const Image = sequelize.define("Image", {
     defaultValue: literal("CURRENT_TIMESTAMP"),
   },
   url_img: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(200),
     allowNull: false,
     unique: true,
   },
   id_utl: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  id_utl_1: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -34,8 +29,7 @@ const Image = sequelize.define("Image", {
   },
 });
 
-Image.belongsTo(Proprietaire, { foreignKey: "id_utl" });
-Image.belongsTo(Gardien, { foreignKey: "id_utl_1" });
-Image.belongsTo(Plante, { foreignKey: "id_plt" });
+Image.belongsTo(Utilisateur, { foreignKey: 'id_utl' });
+Image.belongsTo(Plante, { foreignKey: 'id_plt' });
 
 module.exports = Image;

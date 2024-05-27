@@ -1,16 +1,16 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../sequelize");
 
-const Conseil = sequelize.define("Conseil", {
-  id_cns: {
+const Role = sequelize.define("Role", {
+  id_role: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  dsc_csn: {
-    type: DataTypes.TEXT,
+  role_name: {
+    type: DataTypes.STRING(50),
     allowNull: false,
   },
 });
 
-module.exports = Conseil;
+module.exports = Role;

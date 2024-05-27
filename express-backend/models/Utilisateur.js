@@ -8,11 +8,11 @@ const Utilisateur = sequelize.define("Utilisateur", {
     autoIncrement: true,
   },
   nom_utl: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(100),
     allowNull: false,
   },
   pre_ult: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(100),
     allowNull: false,
   },
   age_utl: {
@@ -20,26 +20,26 @@ const Utilisateur = sequelize.define("Utilisateur", {
     allowNull: false,
   },
   num_utl: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(15),
     allowNull: false,
     unique: true,
   },
   eml_utl: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(100),
     allowNull: false,
     unique: true,
   },
   adr_utl: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(200),
     allowNull: false,
   },
   psd_utl: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(50),
     allowNull: false,
     unique: true,
   },
   mdp_utl: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING(100),
     allowNull: false,
   },
 });
