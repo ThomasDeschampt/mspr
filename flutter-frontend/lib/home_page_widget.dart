@@ -47,6 +47,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
       );
     }
+    List<dynamic> Deleteuser = [];
+
+    Future<void> deleteuser(String pseudo) async {
+    try {
+      // final response = await http.get(Uri.parse('http://15.237.169.255:3000/api/plante/afficherTout?psd_utl=$pseudo'));
+      final response = await http.delete(Uri.parse('http://localhost:3000/api/utilisateurs/supprimer?psd_utl=$pseudo'));
+      if (response.statusCode == 200) {
+        setState(() {
+          Deleteuser = json.decode(response.body);
+        });
+      } else {
+        throw Exception('Erreur lors de la suppression du compte');
+      }
+    } catch (error) {
+      print('Erreur lors de la suppression du compte: $error');
+    }
+  }
 
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
@@ -288,10 +305,33 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
               ),
-            ],
+            SizedBox(height: 16),
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+            child: FFButtonWidget(
+              onPressed: () {
+                deleteuser(widget.pseudo);
+              },
+              text: 'Supprimer mon compte',
+              options: FFButtonOptions(
+                width: double.infinity,
+                height: 60,
+                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                color: Colors.blue,
+                textStyle: FlutterFlowTheme.of(context).titleMedium.override(
+                  fontFamily: 'Plus Jakarta Sans',
+                  color: Colors.white,
+                ),
+                elevation: 2,
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 }
