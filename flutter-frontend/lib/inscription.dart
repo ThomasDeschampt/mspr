@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:encrypt/encrypt.dart' as encrypt;
 
 Future<void> main() async {
   runApp(MyApp());
@@ -40,40 +39,20 @@ class _InscriptionPageState extends State<InscriptionPage> {
   TextEditingController motDePasseController = TextEditingController();
   bool isChecked = false;
 
-  String encryptData(String data) {
-    final key = encrypt.Key.fromUtf8(encryptionKey);
-    final iv = encrypt.IV
-        .fromLength(16); // Générer un vecteur d'initialisation (IV) aléatoire
 
-    final encrypter =
-        encrypt.Encrypter(encrypt.AES(key)); // Utiliser AES avec la clé donnée
-
-    final encrypted = encrypter.encrypt(data, iv: iv);
-    return encrypted
-        .base64; // Retourner les données chiffrées sous forme de base64
-  }
 
   Future<void> _inscription() async {
     final url = Uri.parse('http://localhost:3000/api/utilisateurs/ajouter');
-    try {
-        final encryptedNom = encryptData(nomController.text);
-        final encryptedPrenom = encryptData(prenomController.text);
-        final encryptedAge = encryptData(ageController.text);
-        final encryptedNumero = encryptData(numeroController.text);
-        final encryptedEmail = encryptData(emailController.text);
-        final encryptedAdresse = encryptData(adresseController.text);
-        final encryptedPseudo = encryptData(pseudoController.text);
-        final encryptedMotDePasse = encryptData(motDePasseController.text);
-
+      try {
         final encryptedData = json.encode({
-          'nom_utl': encryptedNom,
-          'pre_ult': encryptedPrenom,
-          'age_utl': encryptedAge,
-          'num_utl': encryptedNumero,
-          'eml_utl': encryptedEmail,
-          'adr_utl': encryptedAdresse,
-          'psd_utl': encryptedPseudo,
-          'mdp_utl': encryptedMotDePasse,
+          'nom_utl': nomController.text,
+          'pre_ult': prenomController.text,
+          'age_utl': ageController.text,
+          'num_utl': numeroController.text,
+          'eml_utl': emailController.text,
+          'adr_utl': adresseController.text,
+          'psd_utl': pseudoController.text,
+          'mdp_utl': motDePasseController.text,
         });
 
       final response = await http.post(
