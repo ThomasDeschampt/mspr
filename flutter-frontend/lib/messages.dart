@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:mspr/Chatpage.dart';
 
 class MessagesPage extends StatefulWidget {
   final String pseudo;
@@ -14,6 +14,7 @@ class MessagesPage extends StatefulWidget {
 
 class _MessagesPageState extends State<MessagesPage> {
   List<Map<String, dynamic>>? conversations;
+  Map<int, String> userPseudos = {}; // Cache for user pseudonyms
 
   @override
   void initState() {
@@ -27,7 +28,6 @@ class _MessagesPageState extends State<MessagesPage> {
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      print("User ID: ${jsonData['utilisateur']}");
       return jsonData['utilisateur'].toString();
     } else {
       throw Exception('Failed to load user ID');
@@ -58,7 +58,9 @@ class _MessagesPageState extends State<MessagesPage> {
         for (var conv in jsonData) {
           conversations.add({
             'id_conv': conv['id_conv'],
-            'last_message': conv['type'],  // Adjust this if you have another field for the last message
+            'id_utl1': conv['id_utl1'],
+            'id_utl2': conv['id_utl2'],
+            'other_user_id': conv['id_utl1'] == id ? conv['id_utl2'] : conv['id_utl1'],
           });
         }
 
@@ -69,6 +71,27 @@ class _MessagesPageState extends State<MessagesPage> {
     } catch (e) {
       print('Error in getConversationsFromAPI: $e');
       return null;
+    }
+  }
+
+  Future<String> getPseudo(int userId) async {
+    if (userPseudos.containsKey(userId)) {
+      return userPseudos[userId]!;
+    }
+    try {
+      final url = Uri.parse('http://localhost:3000/api/utilisateurs/pseudo?id_utl=$userId');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        userPseudos[userId] = jsonData['utilisateur'];
+        return jsonData['utilisateur'];
+      } else {
+        throw Exception('Failed to load pseudo');
+      }
+    } catch (e) {
+      print('Error in getPseudo: $e');
+      return 'Unknown';
     }
   }
 
@@ -83,15 +106,30 @@ class _MessagesPageState extends State<MessagesPage> {
           : ListView.builder(
               itemCount: conversations!.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Conversation ID: ${conversations![index]['id_conv']}'),
-                  subtitle: Text('Last Message: ${conversations![index]['last_message']}'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatPage(conversationId: conversations![index]['id_conv'].toString()),
-                      ),
+                return FutureBuilder<String>(
+                  future: getPseudo(conversations![index]['other_user_id']),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return ListTile(
+                        title: Text('Loading...'),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return ListTile(
+                        title: Text('Error: ${snapshot.error}'),
+                      );
+                    }
+                    String pseudo = snapshot.data ?? 'Unknown';
+                    return ListTile(
+                      title: Text('Conversation avec : $pseudo'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatPage(conversationId: conversations![index]['id_conv'].toString()),
+                          ),
+                        );
+                      },
                     );
                   },
                 );
@@ -102,21 +140,38 @@ class _MessagesPageState extends State<MessagesPage> {
 }
 
 class ChatPage extends StatefulWidget {
-  final String conversationId;
+final String conversationId;
 
-  const ChatPage({Key? key, required this.conversationId}) : super(key: key);
+const ChatPage({Key? key, required this.conversationId}) : super(key: key);
 
-  @override
-  _ChatPageState createState() => _ChatPageState();
+@override
+_ChatPageState createState() => _ChatPageState();
 }
-
 class _ChatPageState extends State<ChatPage> {
   List<Map<String, dynamic>>? messages;
+  TextEditingController messageController = TextEditingController();
+  Timer? _timer;
+  Map<int, String> userPseudos = {}; // Cache for user pseudonyms
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     fetchMessages();
+    startAutoRefresh();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void startAutoRefresh() {
+    _timer = Timer.periodic(Duration(seconds: 30), (timer) {
+      fetchMessages();
+    });
   }
 
   Future<void> fetchMessages() async {
@@ -125,10 +180,22 @@ class _ChatPageState extends State<ChatPage> {
       setState(() {
         messages = fetchedMessages;
       });
+      _scrollToBottom();
     } catch (e) {
       print('Error fetching messages: $e');
     }
   }
+
+void _scrollToBottom() {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    Future.delayed(Duration(milliseconds: 100), () {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+  });
+}
+
 
   Future<List<Map<String, dynamic>>?> getMessagesFromAPI(String conversationId) async {
     try {
@@ -158,23 +225,150 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  Future<String> getPseudo(int userId) async {
+    if (userPseudos.containsKey(userId)) {
+      return userPseudos[userId]!;
+    }
+    try {
+      final url = Uri.parse('http://localhost:3000/api/utilisateurs/pseudo?id_utl=$userId');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        userPseudos[userId] = jsonData['utilisateur'];
+        return jsonData['utilisateur'];
+      } else {
+        throw Exception('Failed to load pseudo');
+      }
+    } catch (e) {
+      print('Error in getPseudo: $e');
+      return 'Unknown';
+    }
+  }
+
+  Future<void> addMessage(String txtMsg) async {
+    try {
+      final url = Uri.parse(
+          'http://localhost:3000/api/message/ajouter?id_conv=${widget.conversationId}&dat_msg=${DateTime.now().toIso8601String()}&txt_msg=$txtMsg&id_sender=1');
+      final response = await http.post(url);
+
+      if (response.statusCode == 200) {
+        fetchMessages();
+        messageController.clear();
+        _scrollToBottom();
+      } else {
+        throw Exception('Failed to add message');
+      }
+    } catch (e) {
+      print('Error adding message: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chat Page'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: fetchMessages,
+          ),
+        ],
       ),
-      body: messages == null
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: messages!.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Message: ${messages![index]['txt_msg']}'),
-                  subtitle: Text('Sender ID: ${messages![index]['id_sender']} at ${messages![index]['createdAt']}'),
-                );
-              },
+      body: Column(
+        children: [
+          Expanded(
+            child: messages == null
+                ? Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    controller: _scrollController,
+                    itemCount: messages!.length,
+                    itemBuilder: (context, index) {
+                      bool isSentByMe = messages![index]['id_sender'] == 1;
+                      return FutureBuilder<String>(
+                        future: getPseudo(messages![index]['id_sender']),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          String pseudo = snapshot.data ?? 'Unknown';
+                          return Row(
+                            mainAxisAlignment: isSentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                                decoration: BoxDecoration(
+                                  color: isSentByMe ? Colors.blue : Colors.grey[300],
+                                  borderRadius: isSentByMe
+                                      ? BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                          bottomLeft: Radius.circular(10),
+                                        )
+                                      : BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10),
+                                          bottomRight: Radius.circular(10),
+                                        ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: isSentByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      pseudo,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: isSentByMe ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      messages![index]['txt_msg'],
+                                      style: TextStyle(
+                                        color: isSentByMe ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: messageController,
+                    decoration: InputDecoration(
+                      hintText: 'Type a message',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: () {
+                    if (messageController.text.isNotEmpty) {
+                      addMessage(messageController.text);
+                    }
+                  },
+                ),
+              ],
             ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -10,16 +10,9 @@ async function ajouterMessage(id_conv, dat_msg, txt_msg, id_sender) {
         txt_msg: txt_msg,
         id_sender: id_sender,
     });
-    res.status(200).json({
-      message: "Message ajouté",
-    });
     console.log("Nouveau message ajouté:", nouveauMessage);
   } catch (erreur) {
     console.error("Erreur lors de l'ajout du message:", erreur.message);
-    res.status(500).json({
-      message: "Erreur lors de l'ajout du message",
-      erreur: erreur.message,
-    });
   }
 }
 
@@ -29,7 +22,7 @@ async function afficherMessages(id_conv) {
       where: {
         id_conv: id_conv,
       },
-      order: [["dat_msg", "ASC"]],
+      order: [["createdAt", "ASC"]],
     });
     console.log("messages trouvés");
     return messages;
