@@ -1,23 +1,23 @@
 openapi: 3.0.0
 info:
-  title: API Documentation
+  title: Documentation de l'API
   version: 1.0.0
-  description: Documentation of the API endpoints
+  description: Documentation des points d'accès de l'API
 servers:
   - url: http://localhost:3000
-    description: Local server
+    description: Serveur local
 tags:
   - name: Utilisateur
-    description: API for managing users
+    description: API pour la gestion des utilisateurs
   - name: Conversation
-    description: API for managing conversations
+    description: API pour la gestion des conversations
   - name: Message
-    description: API for managing messages
+    description: API pour la gestion des messages
 
 paths:
   /ajouter:
     post:
-      summary: Add a new user
+      summary: Ajouter un nouvel utilisateur
       tags: 
         - Utilisateur
       requestBody:
@@ -54,15 +54,15 @@ paths:
                 - mdp_utl
       responses:
         '200':
-          description: User added successfully
+          description: Utilisateur ajouté avec succès
         '400':
-          description: All fields are required
+          description: Tous les champs sont requis
         '500':
-          description: Error adding user
+          description: Erreur lors de l'ajout de l'utilisateur
 
   /verifier:
     post:
-      summary: Verify user credentials
+      summary: Vérifier les informations d'utilisateur
       tags: 
         - Utilisateur
       requestBody:
@@ -81,7 +81,7 @@ paths:
                 - mdp_utl
       responses:
         '200':
-          description: User verified successfully
+          description: Utilisateur vérifié avec succès
           content:
             application/json:
               schema:
@@ -90,15 +90,15 @@ paths:
                   token:
                     type: string
         '400':
-          description: Username and password are required
+          description: Le nom d'utilisateur et le mot de passe sont requis
         '401':
-          description: Incorrect credentials
+          description: Informations d'identification incorrectes
         '500':
-          description: Error verifying user
+          description: Erreur lors de la vérification de l'utilisateur
 
   /supprimer:
     delete:
-      summary: Delete a user
+      summary: Supprimer un utilisateur
       tags: 
         - Utilisateur
       parameters:
@@ -107,18 +107,18 @@ paths:
           required: true
           schema:
             type: string
-          description: Username of the user to delete
+          description: Nom d'utilisateur de l'utilisateur à supprimer
       responses:
         '200':
-          description: User deleted successfully
+          description: Utilisateur supprimé avec succès
         '400':
-          description: Username is required
+          description: Le nom d'utilisateur est requis
         '500':
-          description: Error deleting user
+          description: Erreur lors de la suppression de l'utilisateur
 
   /pseudo:
     get:
-      summary: Get user pseudonym
+      summary: Obtenir le pseudonyme de l'utilisateur
       tags: 
         - Utilisateur
       parameters:
@@ -127,10 +127,10 @@ paths:
           required: true
           schema:
             type: integer
-          description: ID of the user
+          description: ID de l'utilisateur
       responses:
         '200':
-          description: User pseudonym retrieved successfully
+          description: Pseudonyme de l'utilisateur récupéré avec succès
           content:
             application/json:
               schema:
@@ -144,13 +144,13 @@ paths:
                       pseudo:
                         type: string
         '400':
-          description: User ID is required
+          description: L'ID de l'utilisateur est requis
         '500':
-          description: Error retrieving user pseudonym
+          description: Erreur lors de la récupération du pseudonyme de l'utilisateur
 
   /conversation/ajouter:
     post:
-      summary: Add a new conversation
+      summary: Ajouter une nouvelle conversation
       tags: 
         - Conversation
       requestBody:
@@ -175,13 +175,13 @@ paths:
                 - type
       responses:
         '200':
-          description: Conversation added successfully
+          description: Conversation ajoutée avec succès
         '500':
-          description: Error adding conversation
+          description: Erreur lors de l'ajout de la conversation
 
   /message/ajouter:
     post:
-      summary: Add a new message
+      summary: Ajouter un nouveau message
       tags: 
         - Message
       requestBody:
@@ -207,13 +207,13 @@ paths:
                 - id_sender
       responses:
         '200':
-          description: Message added successfully
+          description: Message ajouté avec succès
         '500':
-          description: Error adding message
+          description: Erreur lors de l'ajout du message
 
   /message:
     get:
-      summary: Get messages by conversation ID
+      summary: Obtenir les messages par ID de conversation
       tags: 
         - Message
       parameters:
@@ -222,10 +222,10 @@ paths:
           required: true
           schema:
             type: integer
-          description: ID of the conversation
+          description: ID de la conversation
       responses:
         '200':
-          description: Messages retrieved successfully
+          description: Messages récupérés avec succès
           content:
             application/json:
               schema:
@@ -245,4 +245,4 @@ paths:
                     id_sender:
                       type: integer
         '500':
-          description: Error retrieving messages
+          description: Erreur lors de la récupération des messages
