@@ -1,5 +1,5 @@
 const Conversation = require("../models/Conversation");
-
+const { Op } = require('sequelize');
 
 async function ajouterConversation(id_plt, id_utl1, id_utl2, type) {
   try {
@@ -22,5 +22,21 @@ async function ajouterConversation(id_plt, id_utl1, id_utl2, type) {
   }
 }
 
+async function afficherConversations(id_utl) {
+  try {
+    const conversations = await Conversation.findAll({
+      where: {
+        [Op.or]: [{id_utl1: id_utl}, {id_utl2: id_utl}]
+      }
+    });
+    console.log("conversations trouvées");
+    return conversations;
+  } catch (erreur) {
+    console.error("Erreur lors de la récupération des conversations:", erreur.message);
+    throw erreur;
+  }
+}
 
-module.exports = { ajouterConversation };
+
+
+module.exports = { ajouterConversation, afficherConversations };
