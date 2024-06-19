@@ -66,7 +66,7 @@ router.post("/verifier", async (req, res) => {
   }
 });
 
-router.delete("/supprimer", authenticateToken, async (req, res) => {
+router.delete("/supprimer", async (req, res) => {
   const { psd_utl } = req.query;
   if (!psd_utl) {
     return res.status(400).json({ message: "Le nom d'utilisateur est requis" });
