@@ -1,26 +1,26 @@
 const express = require("express");
 const router = express.Router();
 
-const { ajouterMessage, afficherMessages, afficherConversations } = require("../api/Message");
+const { ajouterMessage, afficherMessages } = require("../api/Message");
 
 router.post("/ajouter", async (req, res) => {
-  const { txt_msg, exp_msg, psd_utl, psd_utl_1 } = req.query;
+  const { id_conv, dat_msg, txt_msg, id_sender } = req.query;
 
   try {
-    await ajouterMessage(txt_msg, exp_msg, psd_utl, psd_utl_1);
+    await ajouterMessage(id_conv, dat_msg, txt_msg, id_sender);
   } catch (erreur) {
-    console.error("Erreur lors de l'ajout de l'utilisateur:", erreur.message);
+    console.error("Erreur lors de l'ajout du message:", erreur.message);
     res.status(500).json({
-      message: "Erreur lors de l'ajout de l'utilisateur",
+      message: "Erreur lors de l'ajout du message",
       erreur: erreur.message,
     });
   }
 });
 
 router.get("/afficher", async (req, res) => {
-  const { psd_utl, psd_utl_1 } = req.query;
+  const { id_conv } = req.query;
   try {
-    const messages = await afficherMessages(psd_utl, psd_utl_1);
+    const messages = await afficherMessages(id_conv);
     res.json(messages);
   } catch (erreur) {
     console.error(
@@ -29,23 +29,6 @@ router.get("/afficher", async (req, res) => {
     );
     res.status(500).json({
       message: "Erreur lors de la récupération des messages",
-      erreur: erreur.message,
-    });
-  }
-});
-
-router.get("/conversations", async (req, res) => {
-  const { psd_utl } = req.query;
-  try {
-    const conversations = await afficherConversations(psd_utl);
-    res.json(conversations);
-  } catch (erreur) {
-    console.error(
-      "Erreur lors de la récupération des conversations:",
-      erreur.message,
-    );
-    res.status(500).json({
-      message: "Erreur lors de la récupération des conversations",
       erreur: erreur.message,
     });
   }
