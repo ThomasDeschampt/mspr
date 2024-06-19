@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http; 
@@ -34,6 +36,22 @@ class PlantePage extends StatelessWidget {
             finController.selection = TextSelection.fromPosition(TextPosition(offset: finController.text.length));
           }
         });
+
+
+
+    Future<String> getId(String pseudo) async {
+    final url = Uri.parse('http://localhost:3000/api/utilisateurs/id?psd_utl=$pseudo');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return jsonData['utilisateur'].toString();
+    } else {
+      throw Exception('Failed to load user ID');
+    }
+  }
+
+
     Future<void> ajouterPlante() async {
       if (especeController.text.isEmpty ||
           descriptionController.text.isEmpty ||
@@ -55,17 +73,15 @@ class PlantePage extends StatelessWidget {
           ),
         );
       } else {
-        String url0 = 'http://15.237.169.255:3000/api/proprietaire/ajouter?psd_utl=$pseudo';
-        var response0 = http.post(Uri.parse(url0));
-
-        String url = 'http://15.237.169.255:3000/api/plante/ajouter?'
+        String id = await getId(pseudo);
+        String url = 'http://localhost:3000/api/plante/ajouter?'
             'esp_plt=${especeController.text}&'
             'des_plt=${descriptionController.text}&'
             'nom_plt=${nomController.text}&'
             'adr_plt=${adresseController.text}&'
             'dat_deb_plt=${debutController.text}&'
             'dat_fin_plt=${finController.text}&'
-            'psd_utl=$pseudo';
+            'id_proprietaire=$id';
 
         var response = await http.post(Uri.parse(url));
 

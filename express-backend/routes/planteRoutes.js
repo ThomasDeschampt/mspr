@@ -128,7 +128,7 @@ router.post("/ajouter", async (req, res) => {
 router.patch("/ajouterGardien", async (req, res) => {
   const { id_plt, id_utl } = req.query;
   try {
-    const messages = await ajouterGardienPlante(id_plt, psd_utl);
+    const messages = await ajouterGardienPlante(id_plt, id_utl);
     res.json(messages);
   } catch (erreur) {
     console.error("Erreur lors de l'ajout du gardien:", erreur.message);
