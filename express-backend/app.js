@@ -6,7 +6,7 @@ const port = 3000;
 const bodyParser = require("body-parser");
 const sequelize = require("./sequelize");
 const Utilisateur = require("./models/Utilisateur");
-// const Proprietaire = require("./models/Proprietaire");
+const Conversation = require("./models/Conversation");
 // const Gardien = require("./models/Gardien");
 // const Botaniste = require("./models/Botaniste");
 const Conseil = require("./models/Conseil");
@@ -20,7 +20,7 @@ const conseilRoutes = require("./routes/conseilRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const planteRoutes = require("./routes/planteRoutes");
 // const gardienRoutes = require("./routes/gardienRoutes");
-// const proprietaireRoutes = require("./routes/proprietaireRoutes");
+const conversationRoutes = require("./routes/conversationRoutes");
 const setupSwagger = require("./swagger");
 
 app.use(cors());
@@ -39,7 +39,7 @@ app.use("/api/plante", planteRoutes);
 
 // app.use("/api/gardien", gardienRoutes);
 
-// app.use("/api/proprietaire", proprietaireRoutes);
+app.use("/api/conversation", conversationRoutes);
 
 
 setupSwagger(app)
