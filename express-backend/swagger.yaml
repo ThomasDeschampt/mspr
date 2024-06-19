@@ -1,0 +1,248 @@
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+  description: Documentation of the API endpoints
+servers:
+  - url: http://localhost:3000
+    description: Local server
+tags:
+  - name: Utilisateur
+    description: API for managing users
+  - name: Conversation
+    description: API for managing conversations
+  - name: Message
+    description: API for managing messages
+
+paths:
+  /ajouter:
+    post:
+      summary: Add a new user
+      tags: 
+        - Utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom_utl:
+                  type: string
+                pre_ult:
+                  type: string
+                age_utl:
+                  type: integer
+                num_utl:
+                  type: string
+                eml_utl:
+                  type: string
+                adr_utl:
+                  type: string
+                psd_utl:
+                  type: string
+                mdp_utl:
+                  type: string
+              required:
+                - nom_utl
+                - pre_ult
+                - age_utl
+                - num_utl
+                - eml_utl
+                - adr_utl
+                - psd_utl
+                - mdp_utl
+      responses:
+        '200':
+          description: User added successfully
+        '400':
+          description: All fields are required
+        '500':
+          description: Error adding user
+
+  /verifier:
+    post:
+      summary: Verify user credentials
+      tags: 
+        - Utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                psd_utl:
+                  type: string
+                mdp_utl:
+                  type: string
+              required:
+                - psd_utl
+                - mdp_utl
+      responses:
+        '200':
+          description: User verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Username and password are required
+        '401':
+          description: Incorrect credentials
+        '500':
+          description: Error verifying user
+
+  /supprimer:
+    delete:
+      summary: Delete a user
+      tags: 
+        - Utilisateur
+      parameters:
+        - in: query
+          name: psd_utl
+          required: true
+          schema:
+            type: string
+          description: Username of the user to delete
+      responses:
+        '200':
+          description: User deleted successfully
+        '400':
+          description: Username is required
+        '500':
+          description: Error deleting user
+
+  /pseudo:
+    get:
+      summary: Get user pseudonym
+      tags: 
+        - Utilisateur
+      parameters:
+        - in: query
+          name: id_utl
+          required: true
+          schema:
+            type: integer
+          description: ID of the user
+      responses:
+        '200':
+          description: User pseudonym retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  utilisateur:
+                    type: object
+                    properties:
+                      id_utl:
+                        type: integer
+                      pseudo:
+                        type: string
+        '400':
+          description: User ID is required
+        '500':
+          description: Error retrieving user pseudonym
+
+  /conversation/ajouter:
+    post:
+      summary: Add a new conversation
+      tags: 
+        - Conversation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_plt:
+                  type: integer
+                id_utl1:
+                  type: integer
+                id_utl2:
+                  type: integer
+                type:
+                  type: string
+              required:
+                - id_plt
+                - id_utl1
+                - id_utl2
+                - type
+      responses:
+        '200':
+          description: Conversation added successfully
+        '500':
+          description: Error adding conversation
+
+  /message/ajouter:
+    post:
+      summary: Add a new message
+      tags: 
+        - Message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_conv:
+                  type: integer
+                dat_msg:
+                  type: string
+                  format: date-time
+                txt_msg:
+                  type: string
+                id_sender:
+                  type: integer
+              required:
+                - id_conv
+                - dat_msg
+                - txt_msg
+                - id_sender
+      responses:
+        '200':
+          description: Message added successfully
+        '500':
+          description: Error adding message
+
+  /message:
+    get:
+      summary: Get messages by conversation ID
+      tags: 
+        - Message
+      parameters:
+        - in: query
+          name: id_conv
+          required: true
+          schema:
+            type: integer
+          description: ID of the conversation
+      responses:
+        '200':
+          description: Messages retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_msg:
+                      type: integer
+                    id_conv:
+                      type: integer
+                    dat_msg:
+                      type: string
+                      format: date-time
+                    txt_msg:
+                      type: string
+                    id_sender:
+                      type: integer
+        '500':
+          description: Error retrieving messages
