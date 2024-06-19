@@ -98,13 +98,8 @@ async function ajouterPlante(
   adr_plt,
   dat_deb_plt,
   dat_fin_plt,
-  psd_utl
-) {
-  const proprietaire = await Utilisateur.findOne({
-    where: {
-      psd_utl: psd_utl,
-    },
-  });
+  id_proprietaire
+){
   try {
     const plante = await Plante.create({
       esp_plt: esp_plt,
@@ -113,8 +108,8 @@ async function ajouterPlante(
       adr_plt: adr_plt,
       dat_deb_plt: dat_deb_plt,
       dat_fin_plt: dat_fin_plt,
-      id_utl: proprietaire.id_utl,
-      id_utl_1: 1,
+      id_proprietaire: id_proprietaire,
+      id_gardien: null
     });
     console.log("Nouvelle plante ajoutée:", plante);
     return plante;
@@ -123,16 +118,11 @@ async function ajouterPlante(
   }
 }
 
-async function ajouterGardienPlante(id_plt, psd_utl) {
-  const gardien = await Utilisateur.findOne({
-    where: {
-      psd_utl: psd_utl,
-    },
-  });
+async function ajouterGardienPlante(id_plt, id_utl) {
   try {
     const plante = await Plante.update(
       {
-        id_utl_1: gardien.id_utl,
+        id_gardien  : id_utl,
       },
       {
         where: {

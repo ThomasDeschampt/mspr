@@ -103,7 +103,7 @@ router.post("/ajouter", async (req, res) => {
     adr_plt,
     dat_deb_plt,
     dat_fin_plt,
-    psd_utl,
+    id_proprietaire,
   } = req.query;
   try {
     const messages = await ajouterPlante(
@@ -113,7 +113,7 @@ router.post("/ajouter", async (req, res) => {
       adr_plt,
       dat_deb_plt,
       dat_fin_plt,
-      psd_utl,
+      id_proprietaire,
     );
     res.json(messages);
   } catch (erreur) {
@@ -126,7 +126,7 @@ router.post("/ajouter", async (req, res) => {
 });
 
 router.patch("/ajouterGardien", async (req, res) => {
-  const { id_plt, psd_utl } = req.query;
+  const { id_plt, id_utl } = req.query;
   try {
     const messages = await ajouterGardienPlante(id_plt, psd_utl);
     res.json(messages);

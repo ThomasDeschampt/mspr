@@ -38,7 +38,7 @@ const Plante = sequelize.define("Plante", {
   },
   id_gardien: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
 });
 
