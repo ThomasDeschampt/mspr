@@ -26,7 +26,7 @@ Future<LatLng?> getCoordinatesFromAddress(String address) async {
 
 Future<Map<String, dynamic>?> getPlantDataFromAPI(String address) async {
   final url = Uri.parse(
-      'http://15.237.169.255:3000/api/plante/afficher?adr_plt=$address');
+      'http:/localhost:3000/api/plante/afficher?adr_plt=$address');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -38,7 +38,7 @@ Future<Map<String, dynamic>?> getPlantDataFromAPI(String address) async {
 }
 
 Future<http.Response> addGuardianToPlant(String plantId, String userPseudo) {
-  final uri = Uri.parse('http://15.237.169.255:3000/api/plante/ajouterGardien')
+  final uri = Uri.parse('http://localhost:3000/api/plante/ajouterGardien')
       .replace(queryParameters: {'id_plt': plantId, 'psd_utl': userPseudo});
 
   return http.patch(uri);
@@ -81,7 +81,7 @@ String formatDateTime(String dateString) {
 
 Future<List<String>?> getAddressesFromAPI() async {
   final url =
-      Uri.parse('http://15.237.169.255:3000/api/plante/recupererlocalisation');
+      Uri.parse('http://localhost:3000/api/plante/recupererlocalisation');
   final response = await http.get(url);
 
   if (response.statusCode == 200) {

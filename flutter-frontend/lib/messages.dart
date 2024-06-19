@@ -13,121 +13,168 @@ class MessagesPage extends StatefulWidget {
 }
 
 class _MessagesPageState extends State<MessagesPage> {
-  List<List<String>>? conversations;
-  List<List<String>>? pseudos;
+  List<Map<String, dynamic>>? conversations;
 
   @override
   void initState() {
     super.initState();
-    getConversations();
+    fetchConversations();
   }
 
-  Future<void> getConversations() async {
-    List<List<String>>? convos = await getConversationsFromAPI(widget.pseudo);
-    setState(() {
-      conversations = convos;
-    });
-    if (conversations != null) {
-      getPseudos();
-    }
-  }
-
-  Future<void> getPseudos() async {
-    List<List<String>>? ps = await getPseudosFromAPI(conversations!);
-    setState(() {
-      pseudos = ps;
-    });
-  }
-
-  Future<List<List<String>>?> getConversationsFromAPI(String pseudo) async {
-    final url = Uri.parse('http://15.237.169.255:3000/api/message/conversations?psd_utl=$pseudo');
+  Future<String> getId(String pseudo) async {
+    final url = Uri.parse('http://localhost:3000/api/utilisateurs/id?psd_utl=$pseudo');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      List<List<String>> conversations = [];
+      print("User ID: ${jsonData['utilisateur']}");
+      return jsonData['utilisateur'].toString();
+    } else {
+      throw Exception('Failed to load user ID');
+    }
+  }
 
-      for (int i = 0; i < jsonData.length; i += 2) {
-        List<String> conversation = [jsonData[i].toString(), jsonData[i + 1].toString()];
-        conversations.add(conversation);
+  Future<void> fetchConversations() async {
+    try {
+      final fetchedConversations = await getConversationsFromAPI(widget.pseudo);
+      setState(() {
+        conversations = fetchedConversations;
+      });
+    } catch (e) {
+      print('Error fetching conversations: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getConversationsFromAPI(String pseudo) async {
+    try {
+      final id = await getId(pseudo);
+      final url = Uri.parse('http://localhost:3000/api/conversation/afficher?id_utl=$id');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        List<Map<String, dynamic>> conversations = [];
+
+        for (var conv in jsonData) {
+          conversations.add({
+            'id_conv': conv['id_conv'],
+            'last_message': conv['type'],  // Adjust this if you have another field for the last message
+          });
+        }
+
+        return conversations;
+      } else {
+        throw Exception('Failed to load conversations');
       }
-
-      return conversations;
+    } catch (e) {
+      print('Error in getConversationsFromAPI: $e');
+      return null;
     }
-
-    return null;
   }
 
-Future<List<List<String>>?> getPseudosFromAPI(List<List<String>> conversations) async {
-  List<List<String>> pseudos = [];
-
-  for (List<String> conversation in conversations) {
-    String idUt1 = conversation[0];
-    String idUt2 = conversation[1];
-
-    String? gardien = await getPseudoFromAPI(idUt1);
-    String? proprietaire = await getPseudoFromAPI(idUt2);
-
-    List<String> pseudoPair = [];
-    if (gardien != null) {
-      pseudoPair.add(gardien);
-    }
-    if (proprietaire != null) {
-      pseudoPair.add(proprietaire);
-    }
-    pseudos.add(pseudoPair);
-  }
-
-  return pseudos;
-}
-
-
-  Future<String?> getPseudoFromAPI(String id_utl) async {
-    final url = Uri.parse('http://15.237.169.255:3000/api/utilisateurs/pseudo?id_utl=$id_utl');
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      return jsonData['utilisateur'];
-    }
-
-    return null;
-  }
-
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Messages'),
-    ),
-    body: Center(
-      child: pseudos != null
-          ? ListView.builder(
-              itemCount: pseudos!.length,
-              itemBuilder: (BuildContext context, int index) {
-                List<String> pseudoPair = pseudos![index];
-                String pseudo1 = pseudoPair.isNotEmpty ? pseudoPair[0] : '';
-                String pseudo2 = pseudoPair.length > 1 ? pseudoPair[1] : '';
-               return ListTile(
-  title: Text('$pseudo1'),
-  subtitle: Text('Conversation ${index + 1}'),
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => chatpage(
-          myPseudo: widget.pseudo, // Assurez-vous que c'est le bon identifiant
-          gardien: pseudo1, // Ou l'ID correspondant
-          proprietaire: pseudo2, // Le pseudo pour afficher dans l'appBar
-        ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Conversations'),
       ),
-    );
-  },
-);
+      body: conversations == null
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: conversations!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text('Conversation ID: ${conversations![index]['id_conv']}'),
+                  subtitle: Text('Last Message: ${conversations![index]['last_message']}'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatPage(conversationId: conversations![index]['id_conv'].toString()),
+                      ),
+                    );
+                  },
+                );
               },
-            )
-          : CircularProgressIndicator(),
-    ),
-  );
+            ),
+    );
+  }
 }
+
+class ChatPage extends StatefulWidget {
+  final String conversationId;
+
+  const ChatPage({Key? key, required this.conversationId}) : super(key: key);
+
+  @override
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  List<Map<String, dynamic>>? messages;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMessages();
+  }
+
+  Future<void> fetchMessages() async {
+    try {
+      final fetchedMessages = await getMessagesFromAPI(widget.conversationId);
+      setState(() {
+        messages = fetchedMessages;
+      });
+    } catch (e) {
+      print('Error fetching messages: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getMessagesFromAPI(String conversationId) async {
+    try {
+      final url = Uri.parse('http://localhost:3000/api/message/afficher?id_conv=$conversationId');
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        List<Map<String, dynamic>> messages = [];
+
+        for (var msg in jsonData) {
+          messages.add({
+            'id_msg': msg['id_msg'],
+            'txt_msg': msg['txt_msg'],
+            'id_sender': msg['id_sender'],
+            'createdAt': msg['createdAt'],
+          });
+        }
+
+        return messages;
+      } else {
+        throw Exception('Failed to load messages');
+      }
+    } catch (e) {
+      print('Error in getMessagesFromAPI: $e');
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat Page'),
+      ),
+      body: messages == null
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: messages!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text('Message: ${messages![index]['txt_msg']}'),
+                  subtitle: Text('Sender ID: ${messages![index]['id_sender']} at ${messages![index]['createdAt']}'),
+                );
+              },
+            ),
+    );
+  }
 }

@@ -53,12 +53,24 @@ class _LoginPageState extends State<LoginPage> {
     final BuildContext currentContext = context;
 
     // Effectuer la requête HTTP
-    final response = await http.post(Uri.parse('http://15.237.169.255:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
-    // final response = await http.post(Uri.parse('localhost:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
+    //final response = await http.post(Uri.parse('http://15.237.169.255:3000/api/utilisateurs/verifier?psd_utl=$pseudo&mdp_utl=$motdepasse'));
 
-    final Map<String, dynamic> responseData = json.decode(response.body);
+    final url = Uri.parse('http://localhost:3000/api/utilisateurs/verifier');
 
-    if (responseData.containsKey('message') && responseData['message'] == 'Utilisateur trouvé') {
+      final encryptedData = json.encode({
+        'psd_utl': pseudo,
+        'mdp_utl': motdepasse
+      });
+
+      final response = await http.post(
+        url,
+        body: encryptedData,
+        headers: {'Content-Type': 'application/json'},
+      );
+      final Map<String, dynamic> responseData = json.decode(response.body);
+
+
+    if (responseData.containsKey('token')) {
       print('Utilisateur trouvé');
       // Extraire et stocker le token JWT de la réponse
       _jwtToken = responseData['token'];
@@ -195,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: _login,
                 style: ElevatedButton.styleFrom(
-                  primary: Color.fromARGB(255, 15, 220, 141),
+                  backgroundColor: Color.fromARGB(255, 15, 220, 141),
                   minimumSize: Size(double.infinity, 50), // fromHeight use double.infinity as width and 50 is the height
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)), // Pas de bordures arrondies
                 ),
@@ -204,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
               onPressed: _navigateToSignUp, // Méthode pour naviguer vers la page d'inscription
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Couleur du bouton d'inscription
+                backgroundColor: Colors.blue, // Couleur du bouton d'inscription
                 minimumSize: Size(double.infinity, 50), // Taille du bouton d'inscription
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)), // Bordures arrondies
               ),

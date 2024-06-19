@@ -77,9 +77,6 @@ async function afficherPlanteFaitesGardees(psd_utl) {
 async function recupererlocalisation() {
   try {
     const plantes = await Plante.findAll({
-      where: {
-        id_utl_1: 1,
-      },
     });
     let localisation = [];
     for (let i = 0; i < plantes.length; i++) {

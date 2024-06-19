@@ -137,9 +137,33 @@ async function supprimerUtilisateur(psd_utl) {
   }
 }
 
+async function afficherId(psd_utl) {
+  try {
+    const utilisateur = await Utilisateur.findOne({
+      where: {
+        psd_utl: psd_utl,
+      },
+    });
+
+    if (utilisateur) {
+      console.log("utilisateur trouvé");
+      return utilisateur.id_utl;
+    } else {
+      console.log("utilisateur non trouvé");
+      return false;
+    }
+  } catch (erreur) {
+    console.error(
+      "Erreur lors de la vérification de l'utilisateur:",
+      erreur.message,
+    );
+  }
+}
+
 module.exports = {
   ajouterUtilisateur,
   verifierUtilisateur,
   supprimerUtilisateur,
-  afficherPseudo
+  afficherPseudo,
+  afficherId
 };

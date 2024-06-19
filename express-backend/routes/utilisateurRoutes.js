@@ -4,7 +4,8 @@ const {
   ajouterUtilisateur,
   verifierUtilisateur,
   supprimerUtilisateur,
-  afficherPseudo
+  afficherPseudo,
+  afficherId
 } = require("../api/Utilisateur");
 const Utilisateur = require("../models/Utilisateur");
 const jwt = require('jsonwebtoken');
@@ -93,6 +94,21 @@ router.get("/pseudo", async (req, res) => {
   } catch (erreur) {
     console.error("Erreur lors de la récupération du pseudo de l'utilisateur :", erreur.message);
     res.status(500).json({ message: "Erreur lors de la récupération du pseudo de l'utilisateur", erreur: erreur.message });
+  }
+});
+
+router.get("/id", async (req, res) => {
+  const { psd_utl } = req.query;
+  if (!psd_utl) {
+    return res.status(400).json({ message: "Le nom d'utilisateur est requis" });
+  }
+
+  try {
+    const utilisateur = await afficherId(psd_utl);
+    res.status(200).json({ utilisateur });
+  } catch (erreur) {
+    console.error("Erreur lors de la récupération de l'ID de l'utilisateur :", erreur.message);
+    res.status(500).json({ message: "Erreur lors de la récupération de l'ID de l'utilisateur", erreur: erreur.message });
   }
 });
 
