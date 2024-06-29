@@ -31,7 +31,7 @@ async function afficherPlantes() {
 }
 
 async function afficherPlanteGardees(psd_utl) {
-  const proprietaire = await Utilisateur.findOne({
+  const gardien = await Utilisateur.findOne({
     where: {
       psd_utl: psd_utl,
     },
@@ -40,7 +40,7 @@ async function afficherPlanteGardees(psd_utl) {
   try {
     const plantes = await Plante.findAll({
       where: {
-        id_utl_1: proprietaire.id_utl,
+        id_gardien: gardien.id_utl,
       },
     });
     return plantes;
@@ -77,6 +77,9 @@ async function afficherPlanteFaitesGardees(psd_utl) {
 async function recupererlocalisation() {
   try {
     const plantes = await Plante.findAll({
+      where: {
+        id_gardien: null,
+      },
     });
     let localisation = [];
     for (let i = 0; i < plantes.length; i++) {
@@ -120,7 +123,7 @@ async function ajouterPlante(
 
 async function ajouterGardienPlante(id_plt, id_utl) {
   try {
-    const plante = await Plante.update(
+    await Plante.update(
       {
         id_gardien  : id_utl,
       },

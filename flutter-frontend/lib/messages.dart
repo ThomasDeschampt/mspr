@@ -34,6 +34,7 @@ class _MessagesPageState extends State<MessagesPage> {
     }
   }
 
+
   Future<void> fetchConversations() async {
     try {
       final fetchedConversations = await getConversationsFromAPI(widget.pseudo);

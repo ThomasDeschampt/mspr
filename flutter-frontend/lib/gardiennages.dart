@@ -24,7 +24,7 @@ class _GardiennagePageState extends State<GardiennagePage> {
 
   Future<void> fetchPlantes() async {
     final response = await http.get(Uri.parse(
-        'http://15.237.169.255:3000/api/plante/afficherGardees?psd_utl=${widget.pseudo}'));
+        'http://localhost:3000/api/plante/afficherGardees?psd_utl=${widget.pseudo}'));
     if (response.statusCode == 200) {
       setState(() {
         plantes = json.decode(response.body);
