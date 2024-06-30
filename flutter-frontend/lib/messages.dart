@@ -23,7 +23,8 @@ class _MessagesPageState extends State<MessagesPage> {
   }
 
   Future<String> getId(String pseudo) async {
-    final url = Uri.parse('http://localhost:3000/api/utilisateurs/id?psd_utl=$pseudo');
+    final url =
+        Uri.parse('http://localhost:3000/api/utilisateurs/id?psd_utl=$pseudo');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -33,7 +34,6 @@ class _MessagesPageState extends State<MessagesPage> {
       throw Exception('Failed to load user ID');
     }
   }
-
 
   Future<void> fetchConversations() async {
     try {
@@ -46,10 +46,12 @@ class _MessagesPageState extends State<MessagesPage> {
     }
   }
 
-  Future<List<Map<String, dynamic>>?> getConversationsFromAPI(String pseudo) async {
+  Future<List<Map<String, dynamic>>?> getConversationsFromAPI(
+      String pseudo) async {
     try {
       final id = await getId(pseudo);
-      final url = Uri.parse('http://localhost:3000/api/conversation/afficher?id_utl=$id');
+      final url = Uri.parse(
+          'http://localhost:3000/api/conversation/afficher?id_utl=$id');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -61,7 +63,8 @@ class _MessagesPageState extends State<MessagesPage> {
             'id_conv': conv['id_conv'],
             'id_utl1': conv['id_utl1'],
             'id_utl2': conv['id_utl2'],
-            'other_user_id': conv['id_utl1'] == id ? conv['id_utl2'] : conv['id_utl1'],
+            'other_user_id':
+                conv['id_utl1'] == id ? conv['id_utl2'] : conv['id_utl1'],
           });
         }
 
@@ -80,7 +83,8 @@ class _MessagesPageState extends State<MessagesPage> {
       return userPseudos[userId]!;
     }
     try {
-      final url = Uri.parse('http://localhost:3000/api/utilisateurs/pseudo?id_utl=$userId');
+      final url = Uri.parse(
+          'http://localhost:3000/api/utilisateurs/pseudo?id_utl=$userId');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -127,7 +131,11 @@ class _MessagesPageState extends State<MessagesPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ChatPage(conversationId: conversations![index]['id_conv'].toString()),
+                            builder: (context) => ChatPage(
+                              conversationId:
+                                  conversations![index]['id_conv'].toString(),
+                              pseudo: widget.pseudo,
+                            ),
                           ),
                         );
                       },
@@ -141,25 +149,30 @@ class _MessagesPageState extends State<MessagesPage> {
 }
 
 class ChatPage extends StatefulWidget {
-final String conversationId;
+  final String conversationId;
+  final String pseudo;
 
-const ChatPage({Key? key, required this.conversationId}) : super(key: key);
+  const ChatPage({Key? key, required this.conversationId, required this.pseudo})
+      : super(key: key);
 
-@override
-_ChatPageState createState() => _ChatPageState();
+  @override
+  _ChatPageState createState() => _ChatPageState();
 }
+
 class _ChatPageState extends State<ChatPage> {
   List<Map<String, dynamic>>? messages;
   TextEditingController messageController = TextEditingController();
   Timer? _timer;
   Map<int, String> userPseudos = {}; // Cache for user pseudonyms
   ScrollController _scrollController = ScrollController();
+  String? idSender;
 
   @override
   void initState() {
     super.initState();
     fetchMessages();
     startAutoRefresh();
+    getIdSender();
   }
 
   @override
@@ -170,7 +183,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void startAutoRefresh() {
-    _timer = Timer.periodic(Duration(seconds: 30), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       fetchMessages();
     });
   }
@@ -187,20 +200,29 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-void _scrollToBottom() {
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Future.delayed(Duration(milliseconds: 100), () {
-      if (_scrollController.hasClients) {
-        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-      }
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        if (_scrollController.hasClients) {
+          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+        }
+      });
     });
-  });
-}
+  }
 
-
-  Future<List<Map<String, dynamic>>?> getMessagesFromAPI(String conversationId) async {
+  Future<void> getIdSender() async {
     try {
-      final url = Uri.parse('http://localhost:3000/api/message/afficher?id_conv=$conversationId');
+      idSender = await getId(widget.pseudo);
+    } catch (e) {
+      print('Error getting sender ID: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getMessagesFromAPI(
+      String conversationId) async {
+    try {
+      final url = Uri.parse(
+          'http://localhost:3000/api/message/afficher?id_conv=$conversationId');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -226,12 +248,26 @@ void _scrollToBottom() {
     }
   }
 
+  Future<String> getId(String pseudo) async {
+    final url =
+        Uri.parse('http://localhost:3000/api/utilisateurs/id?psd_utl=$pseudo');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return jsonData['utilisateur'].toString();
+    } else {
+      throw Exception('Failed to load user ID');
+    }
+  }
+
   Future<String> getPseudo(int userId) async {
     if (userPseudos.containsKey(userId)) {
       return userPseudos[userId]!;
     }
     try {
-      final url = Uri.parse('http://localhost:3000/api/utilisateurs/pseudo?id_utl=$userId');
+      final url = Uri.parse(
+          'http://localhost:3000/api/utilisateurs/pseudo?id_utl=$userId');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -249,17 +285,14 @@ void _scrollToBottom() {
 
   Future<void> addMessage(String txtMsg) async {
     try {
+      if (idSender == null) return;
+
       final url = Uri.parse(
-          'http://localhost:3000/api/message/ajouter?id_conv=${widget.conversationId}&dat_msg=${DateTime.now().toIso8601String()}&txt_msg=$txtMsg&id_sender=1');
+          'http://localhost:3000/api/message/ajouter?id_conv=${widget.conversationId}&dat_msg=${DateTime.now().toIso8601String()}&txt_msg=$txtMsg&id_sender=$idSender');
       final response = await http.post(url);
 
-      if (response.statusCode == 200) {
-        fetchMessages();
-        messageController.clear();
-        _scrollToBottom();
-      } else {
-        throw Exception('Failed to add message');
-      }
+      fetchMessages();
+      _scrollToBottom();
     } catch (e) {
       print('Error adding message: $e');
     }
@@ -286,11 +319,13 @@ void _scrollToBottom() {
                     controller: _scrollController,
                     itemCount: messages!.length,
                     itemBuilder: (context, index) {
-                      bool isSentByMe = messages![index]['id_sender'] == 1;
+                      bool isSentByMe =
+                          messages![index]['id_sender'].toString() == idSender;
                       return FutureBuilder<String>(
                         future: getPseudo(messages![index]['id_sender']),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
                           if (snapshot.hasError) {
@@ -298,14 +333,23 @@ void _scrollToBottom() {
                           }
                           String pseudo = snapshot.data ?? 'Unknown';
                           return Row(
-                            mainAxisAlignment: isSentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                            mainAxisAlignment: isSentByMe
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-                                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 14),
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 10),
+                                constraints: BoxConstraints(
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width *
+                                            0.7),
                                 decoration: BoxDecoration(
-                                  color: isSentByMe ? Colors.blue : Colors.grey[300],
+                                  color: isSentByMe
+                                      ? Colors.blue
+                                      : Colors.grey[300],
                                   borderRadius: isSentByMe
                                       ? BorderRadius.only(
                                           topLeft: Radius.circular(10),
@@ -319,19 +363,25 @@ void _scrollToBottom() {
                                         ),
                                 ),
                                 child: Column(
-                                  crossAxisAlignment: isSentByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                  crossAxisAlignment: isSentByMe
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       pseudo,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: isSentByMe ? Colors.white : Colors.black,
+                                        color: isSentByMe
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                     ),
                                     Text(
                                       messages![index]['txt_msg'],
                                       style: TextStyle(
-                                        color: isSentByMe ? Colors.white : Colors.black,
+                                        color: isSentByMe
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                     ),
                                   ],
@@ -362,6 +412,7 @@ void _scrollToBottom() {
                   onPressed: () {
                     if (messageController.text.isNotEmpty) {
                       addMessage(messageController.text);
+                      messageController.clear();
                     }
                   },
                 ),
