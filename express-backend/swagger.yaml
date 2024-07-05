@@ -13,6 +13,12 @@ tags:
     description: API pour la gestion des conversations
   - name: Message
     description: API pour la gestion des messages
+  - name: Plante
+    description: API pour la gestion des plantes
+  - name: Image
+    description: API pour la gestion des images
+  - name: Conseil
+    description: API pour la gestion des conseils
 
 paths:
   /ajouter:
@@ -29,23 +35,31 @@ paths:
               properties:
                 nom_utl:
                   type: string
-                pre_ult:
+                  description: Nom de l'utilisateur
+                pre_utl:
                   type: string
+                  description: Prénom de l'utilisateur
                 age_utl:
                   type: integer
+                  description: Âge de l'utilisateur
                 num_utl:
                   type: string
+                  description: Numéro de téléphone de l'utilisateur
                 eml_utl:
                   type: string
+                  description: Adresse email de l'utilisateur
                 adr_utl:
                   type: string
+                  description: Adresse de l'utilisateur
                 psd_utl:
                   type: string
+                  description: Pseudonyme de l'utilisateur
                 mdp_utl:
                   type: string
+                  description: Mot de passe de l'utilisateur
               required:
                 - nom_utl
-                - pre_ult
+                - pre_utl
                 - age_utl
                 - num_utl
                 - eml_utl
@@ -74,8 +88,10 @@ paths:
               properties:
                 psd_utl:
                   type: string
+                  description: Pseudonyme de l'utilisateur
                 mdp_utl:
                   type: string
+                  description: Mot de passe de l'utilisateur
               required:
                 - psd_utl
                 - mdp_utl
@@ -89,6 +105,7 @@ paths:
                 properties:
                   token:
                     type: string
+                    description: Jeton d'authentification
         '400':
           description: Le nom d'utilisateur et le mot de passe sont requis
         '401':
@@ -107,7 +124,7 @@ paths:
           required: true
           schema:
             type: string
-          description: Nom d'utilisateur de l'utilisateur à supprimer
+          description: Pseudonyme de l'utilisateur à supprimer
       responses:
         '200':
           description: Utilisateur supprimé avec succès
@@ -141,8 +158,10 @@ paths:
                     properties:
                       id_utl:
                         type: integer
+                        description: ID de l'utilisateur
                       pseudo:
                         type: string
+                        description: Pseudonyme de l'utilisateur
         '400':
           description: L'ID de l'utilisateur est requis
         '500':
@@ -162,12 +181,16 @@ paths:
               properties:
                 id_plt:
                   type: integer
+                  description: ID de la plateforme
                 id_utl1:
                   type: integer
+                  description: ID du premier utilisateur
                 id_utl2:
                   type: integer
+                  description: ID du second utilisateur
                 type:
                   type: string
+                  description: Type de la conversation
               required:
                 - id_plt
                 - id_utl1
@@ -193,13 +216,17 @@ paths:
               properties:
                 id_conv:
                   type: integer
+                  description: ID de la conversation
                 dat_msg:
                   type: string
                   format: date-time
+                  description: Date et heure du message
                 txt_msg:
                   type: string
+                  description: Texte du message
                 id_sender:
                   type: integer
+                  description: ID de l'expéditeur
               required:
                 - id_conv
                 - dat_msg
@@ -235,14 +262,318 @@ paths:
                   properties:
                     id_msg:
                       type: integer
+                      description: ID du message
                     id_conv:
                       type: integer
+                      description: ID de la conversation
                     dat_msg:
                       type: string
                       format: date-time
+                      description: Date et heure du message
                     txt_msg:
                       type: string
+                      description: Texte du message
                     id_sender:
                       type: integer
+                      description: ID de l'expéditeur
         '500':
           description: Erreur lors de la récupération des messages
+
+  /plante/afficher:
+    get:
+      summary: Afficher une plante
+      tags: 
+        - Plante
+      parameters:
+        - in: query
+          name: adr_plt
+          required: true
+          schema:
+            type: string
+          description: Adresse de la plante
+      responses:
+        '200':
+          description: Plante récupérée avec succès
+        '500':
+          description: Erreur lors de la récupération de la plante
+
+  /plante/afficherTout:
+    get:
+      summary: Afficher toutes les plantes
+      tags: 
+        - Plante
+      responses:
+        '200':
+          description: Plantes récupérées avec succès
+        '500':
+          description: Erreur lors de la récupération des plantes
+
+  /plante/afficherGardees:
+    get:
+      summary: Afficher les plantes gardées par un utilisateur
+      tags: 
+        - Plante
+      parameters:
+        - in: query
+          name: psd_utl
+          required: true
+          schema:
+            type: string
+          description: Pseudonyme de l'utilisateur
+      responses:
+        '200':
+          description: Plantes gardées récupérées avec succès
+        '500':
+          description: Erreur lors de la récupération des plantes gardées
+
+  /plante/afficherFaitesGardees:
+    get:
+      summary: Afficher les plantes faites gardées par un utilisateur
+      tags: 
+        - Plante
+      parameters:
+        - in: query
+          name: psd_utl
+          required: true
+          schema:
+            type: string
+          description: Pseudonyme de l'utilisateur
+      responses:
+        '200':
+          description: Plantes faites gardées récupérées avec succès
+        '500':
+          description: Erreur lors de la récupération des plantes faites gardées
+
+  /plante/recupererlocalisation:
+    get:
+      summary: Récupérer la localisation de la plante
+      tags: 
+        - Plante
+      responses:
+        '200':
+          description: Localisation de la plante récupérée avec succès
+        '500':
+          description: Erreur lors de la récupération de la localisation de la plante
+
+  /plante/ajouter:
+    post:
+      summary: Ajouter une nouvelle plante
+      tags: 
+        - Plante
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                esp_plt:
+                  type: string
+                  description: Espèce de la plante
+                des_plt:
+                  type: string
+                  description: Description de la plante
+                nom_plt:
+                  type: string
+                  description: Nom de la plante
+                adr_plt:
+                  type: string
+                  description: Adresse de la plante
+                dat_deb_plt:
+                  type: string
+                  format: date
+                  description: Date de début de la plante
+                dat_fin_plt:
+                  type: string
+                  format: date
+                  description: Date de fin de la plante
+                id_proprietaire:
+                  type: integer
+                  description: ID du propriétaire de la plante
+              required:
+                - esp_plt
+                - des_plt
+                - nom_plt
+                - adr_plt
+                - dat_deb_plt
+                - dat_fin_plt
+                - id_proprietaire
+      responses:
+        '200':
+          description: Plante ajoutée avec succès
+        '500':
+          description: Erreur lors de l'ajout de la plante
+
+  /plante/ajouterGardien:
+    patch:
+      summary: Ajouter un gardien pour une plante
+      tags: 
+        - Plante
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_plt:
+                  type: integer
+                  description: ID de la plante
+                id_utl:
+                  type: integer
+                  description: ID de l'utilisateur
+              required:
+                - id_plt
+                - id_utl
+      responses:
+        '200':
+          description: Gardien ajouté avec succès
+        '500':
+          description: Erreur lors de l'ajout du gardien
+
+  /conversation/afficher:
+    get:
+      summary: Afficher les conversations d'un utilisateur
+      tags: 
+        - Conversation
+      parameters:
+        - in: query
+          name: id_utl
+          required: true
+          schema:
+            type: integer
+          description: ID de l'utilisateur
+      responses:
+        '200':
+          description: Conversations récupérées avec succès
+        '500':
+          description: Erreur lors de la récupération des conversations
+
+  /image/afficher:
+    get:
+      summary: Afficher une image
+      tags: 
+        - Image
+      parameters:
+        - in: query
+          name: id_img
+          required: true
+          schema:
+            type: integer
+          description: ID de l'image
+      responses:
+        '200':
+          description: Image récupérée avec succès
+        '500':
+          description: Erreur lors de la récupération de l'image
+
+  /image/afficher_tous:
+    get:
+      summary: Afficher toutes les images d'un utilisateur ou d'une plante
+      tags: 
+        - Image
+      parameters:
+        - in: query
+          name: id_utl
+          schema:
+            type: integer
+          description: ID de l'utilisateur
+        - in: query
+          name: id_utl_1
+          schema:
+            type: integer
+          description: ID du second utilisateur
+        - in: query
+          name: id_plt
+          schema:
+            type: integer
+          description: ID de la plante
+      responses:
+        '200':
+          description: Images récupérées avec succès
+        '500':
+          description: Erreur lors de la récupération des images
+
+  /image/ajouter:
+    post:
+      summary: Ajouter une nouvelle image
+      tags: 
+        - Image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url_img:
+                  type: string
+                  description: URL de l'image
+                id_utl:
+                  type: integer
+                  description: ID de l'utilisateur
+                id_utl_1:
+                  type: integer
+                  description: ID du second utilisateur
+                id_plt:
+                  type: integer
+                  description: ID de la plante
+              required:
+                - url_img
+                - id_utl
+                - id_utl_1
+                - id_plt
+      responses:
+        '200':
+          description: Image ajoutée avec succès
+        '500':
+          description: Erreur lors de l'ajout de l'image
+
+  /conseil/ajouter:
+    post:
+      summary: Ajouter un nouveau conseil
+      tags: 
+        - Conseil
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dsc_csn:
+                  type: string
+                  description: Description du conseil
+                id_plt:
+                  type: integer
+                  description: ID de la plante
+                psd_utl:
+                  type: string
+                  description: Pseudonyme de l'utilisateur
+              required:
+                - dsc_csn
+                - id_plt
+                - psd_utl
+      responses:
+        '200':
+          description: Conseil ajouté avec succès
+        '500':
+          description: Erreur lors de l'ajout du conseil
+
+  /conseil/afficher:
+    get:
+      summary: Afficher un conseil
+      tags: 
+        - Conseil
+      parameters:
+        - in: query
+          name: id_cns
+          required: true
+          schema:
+            type: integer
+          description: ID du conseil
+      responses:
+        '200':
+          description: Conseil récupéré avec succès
+        '500':
+          description: Erreur lors de la récupération du conseil
