@@ -1,3 +1,4 @@
+const { text } = require("express");
 const Message = require("../models/Message");
 const Utilisateur = require("../models/Utilisateur");
 
@@ -13,6 +14,21 @@ async function ajouterMessage(id_conv, dat_msg, txt_msg, id_sender) {
     console.log("Nouveau message ajouté:", nouveauMessage);
   } catch (erreur) {
     console.error("Erreur lors de l'ajout du message:", erreur.message);
+  }
+}
+
+async function ajouterImage(id_conv, dat_msg, id_sender, image) {
+  try {
+    const nouveauMessage = await Message.create({
+      id_conv: id_conv,
+      dat_msg: dat_msg,
+      id_sender: id_sender,
+      image: image,
+      txt_msg : "image"
+    });
+    console.log("Nouveau message avec image ajouté:", nouveauMessage);
+  } catch (erreur) {
+    console.error("Erreur lors de l'ajout du message avec image:", erreur.message);
   }
 }
 
@@ -33,4 +49,4 @@ async function afficherMessages(id_conv) {
 }
 
 
-module.exports = { ajouterMessage, afficherMessages };
+module.exports = { ajouterMessage, afficherMessages, ajouterImage };

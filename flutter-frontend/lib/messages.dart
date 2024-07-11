@@ -2,6 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:html' as html;
+import 'dart:typed_data';
+import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image/image.dart' as img;
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class MessagesPage extends StatefulWidget {
   final String pseudo;
@@ -166,6 +175,7 @@ class _ChatPageState extends State<ChatPage> {
   Map<int, String> userPseudos = {}; // Cache for user pseudonyms
   ScrollController _scrollController = ScrollController();
   String? idSender;
+  Uint8List? _imageData;
 
   @override
   void initState() {
@@ -235,6 +245,7 @@ class _ChatPageState extends State<ChatPage> {
             'txt_msg': msg['txt_msg'],
             'id_sender': msg['id_sender'],
             'createdAt': msg['createdAt'],
+            'image': msg['image'] != null ? msg['image']['data'] : null,
           });
         }
 
@@ -296,6 +307,45 @@ class _ChatPageState extends State<ChatPage> {
     } catch (e) {
       print('Error adding message: $e');
     }
+  }
+
+  Future<void> addImage(String image) async {
+    try {
+      if (idSender == null) return;
+
+      final url = Uri.parse(
+          'http://localhost:3000/api/message/ajouterImage?id_conv=${widget.conversationId}&dat_msg=${DateTime.now().toIso8601String()}&id_sender=$idSender&image=$image');
+      final response = await http.post(url);
+
+      fetchMessages();
+      _scrollToBottom();
+    } catch (e) {
+      print('Error adding message: $e');
+    }
+  }
+
+  Future<void> _selectPhoto() async {
+    final imageFile = await ImagePickerWeb.getImageAsBytes();
+    if (imageFile != null) {
+      setState(() {
+        _imageData = imageFile;
+      });
+    }
+  }
+
+  Future<void> _sendPhoto() async {
+    if (_imageData == null || idSender == null) return;
+
+    final base64Image = base64Encode(_imageData!);
+
+    addImage(base64Image);
+    setState(() {
+      _imageData = null;
+    });
+  }
+
+  String bufferToBase64(List<int> buffer) {
+    return base64Encode(Uint8List.fromList(buffer));
   }
 
   @override
@@ -376,14 +426,19 @@ class _ChatPageState extends State<ChatPage> {
                                             : Colors.black,
                                       ),
                                     ),
-                                    Text(
-                                      messages![index]['txt_msg'],
-                                      style: TextStyle(
-                                        color: isSentByMe
-                                            ? Colors.white
-                                            : Colors.black,
+                                    if (messages![index]['txt_msg']
+                                            .startsWith('image') &&
+                                        messages![index]['image'] != null)
+                                      Text('Une image a été envoyée.')
+                                    else
+                                      Text(
+                                        messages![index]['txt_msg'],
+                                        style: TextStyle(
+                                          color: isSentByMe
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                       ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -394,10 +449,24 @@ class _ChatPageState extends State<ChatPage> {
                     },
                   ),
           ),
+          if (_imageData != null)
+            Container(
+              margin: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Image.memory(_imageData!, width: 100),
+            ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
+                IconButton(
+                  icon: Icon(Icons.image),
+                  onPressed: _selectPhoto,
+                ),
                 Expanded(
                   child: TextField(
                     controller: messageController,
@@ -410,7 +479,9 @@ class _ChatPageState extends State<ChatPage> {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    if (messageController.text.isNotEmpty) {
+                    if (_imageData != null) {
+                      _sendPhoto();
+                    } else if (messageController.text.isNotEmpty) {
                       addMessage(messageController.text);
                       messageController.clear();
                     }

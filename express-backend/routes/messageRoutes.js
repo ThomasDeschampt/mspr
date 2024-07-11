@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { ajouterMessage, afficherMessages } = require("../api/Message");
+const { ajouterMessage, afficherMessages, ajouterImage } = require("../api/Message");
 
 router.post("/ajouter", async (req, res) => {
   const { id_conv, dat_msg, txt_msg, id_sender } = req.query;
@@ -12,6 +12,20 @@ router.post("/ajouter", async (req, res) => {
     console.error("Erreur lors de l'ajout du message:", erreur.message);
     res.status(500).json({
       message: "Erreur lors de l'ajout du message",
+      erreur: erreur.message,
+    });
+  }
+});
+
+router.post("/ajouterImage", async (req, res) => {
+  const { id_conv, dat_msg, id_sender, image } = req.query;
+
+  try {
+    await ajouterImage(id_conv, dat_msg, id_sender, image);
+  }catch (erreur) {
+    console.error("Erreur lors de l'ajout de l'image:", erreur.message);
+    res.status(500).json({
+      message: "Erreur lors de l'ajout de l'image",
       erreur: erreur.message,
     });
   }

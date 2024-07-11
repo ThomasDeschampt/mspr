@@ -29,6 +29,10 @@ const MessageConversation = sequelize.define("MessageConversation", {
     type: DataTypes.STRING(20),
     defaultValue: 'unread',
   },
+  image: {
+    type: DataTypes.BLOB('long'),
+    allowNull: true,
+  },
 });
 
 MessageConversation.belongsTo(Conversation, { foreignKey: 'id_conv' });

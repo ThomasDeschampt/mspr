@@ -114,27 +114,26 @@ async function afficherPseudo(id_utl){
 }
 
 async function supprimerUtilisateur(psd_utl) {
-  try {
-    const utilisateur = await Utilisateur.findOne({
-      where: {
-        psd_utl: psd_utl,
-      },
-    });
+      try {
+        await Utilisateur.update(
+          {
+            mdp_utl  : 'archived',
+          },
+          {
+            where: {
+              psd_utl: psd_utl,
+            },
+          }
 
-    if (utilisateur) {
-      await utilisateur.destroy();
+        );
       console.log("utilisateur supprimé");
       return true;
-    } else {
-      console.log("utilisateur non trouvé");
-      return false;
+    } catch (erreur) {
+      console.error(
+        "Erreur lors de la suppression de l'utilisateur:",
+        erreur.message,
+      );
     }
-  } catch (erreur) {
-    console.error(
-      "Erreur lors de la suppression de l'utilisateur:",
-      erreur.message,
-    );
-  }
 }
 
 async function afficherId(psd_utl) {
