@@ -143,36 +143,67 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: ageController,
-                decoration: InputDecoration(labelText: 'Âge'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre âge';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: numeroController,
-                decoration: InputDecoration(labelText: 'Numéro de téléphone'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre numéro de téléphone';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: 'Adresse email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre adresse email';
-                  }
-                  return null;
-                },
-              ),
+TextFormField(
+  controller: ageController,
+  decoration: InputDecoration(labelText: 'Âge'),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre âge';
+    }
+
+    // Regex pour valider l'âge (nombre entier positif)
+    String pattern = r'^[0-9]+$';
+    RegExp regex = RegExp(pattern);
+
+    if (!regex.hasMatch(value)) {
+      return 'Veuillez entrer un âge valide';
+    }
+
+    return null;
+  },
+),
+
+TextFormField(
+  controller: numeroController,
+  decoration: InputDecoration(labelText: 'Numéro de téléphone'),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer votre numéro de téléphone';
+    }
+
+    // Regex pour valider le numéro de téléphone (10 chiffres pour un numéro français)
+    String pattern = r'^[0-9]{10}$';
+    RegExp regex = RegExp(pattern);
+
+    if (!regex.hasMatch(value)) {
+      return 'Veuillez entrer un numéro de téléphone valide (10 chiffres)';
+    }
+
+    return null;
+  },
+),
+
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(labelText: 'Adresse email'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez entrer votre adresse email';
+                      }
+
+                      // Regex pour valider l'adresse email
+                      String pattern =
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+                      RegExp regex = RegExp(pattern);
+
+                      if (!regex.hasMatch(value)) {
+                        return 'Veuillez entrer une adresse email valide';
+                      }
+
+                      return null;
+                    },
+                  ),
+
               TextFormField(
                 controller: adresseController,
                 decoration: InputDecoration(labelText: 'Adresse'),

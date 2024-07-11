@@ -30,32 +30,37 @@ class _AccueilPageState extends State<AccueilPage> {
   }
 
   Future<void> fetchUserType() async {
-  final pseudo = widget.pseudo;
-  try {
-    final response = await http.get(Uri.parse('http://15.237.169.255:3000/api/botaniste/estBotaniste?psd_utl=$pseudo'));
-    // final response = await http.get(Uri.parse('http://localhost:3000/api/botaniste/estBotaniste?psd_utl=$pseudo'));
+    final pseudo = widget.pseudo;
+    try {
+      final response = await http.get(Uri.parse('http://15.237.169.255:3000/api/botaniste/estBotaniste?psd_utl=$pseudo'));
 
-    if (response.statusCode == 200) {
-      setState(() {
-        condition = true;
-      });
-    } else {
+      if (response.statusCode == 200) {
+        setState(() {
+          condition = true;
+        });
+      } else {
+        setState(() {
+          condition = false;
+        });
+      }
+    } catch (e) {
       setState(() {
         condition = false;
       });
     }
-  } catch (e) {
-    setState(() {
-      condition = false;
-    });
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Accueil Page'),
+        title: Text(
+          'Accueil Page',
+          style: TextStyle(
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -69,9 +74,7 @@ class _AccueilPageState extends State<AccueilPage> {
   }
 
   Widget _buildBotanistMenu() {
-    return ListView(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+    return Column(
       children: [
         _buildMenuItem(context, Icons.person, 'Mon profil botaniste', () {
           Navigator.push(
@@ -110,9 +113,7 @@ class _AccueilPageState extends State<AccueilPage> {
   }
 
   Widget _buildNonBotanistMenu() {
-    return ListView(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+    return Column(
       children: [
         _buildMenuItem(context, Icons.person, 'Mon profil utilisateur', () {
           Navigator.push(
@@ -153,19 +154,23 @@ class _AccueilPageState extends State<AccueilPage> {
 
   Widget _buildMenuItem(
       BuildContext context, IconData icon, String title, VoidCallback onTap) {
-    return FFButtonWidget(
-      onPressed: onTap,
-      iconData: icon,
-      text: title,
-      options: FFButtonOptions(
-        width: 300,
-        height: 50,
-        color: Color.fromARGB(255, 15, 220, 141),
-        textStyle: FlutterFlowTheme.of(context).titleMedium.override(
-          fontFamily: 'Plus Jakarta Sans',
-          color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: FFButtonWidget(
+        onPressed: onTap,
+        iconData: icon,
+        text: title,
+        options: FFButtonOptions(
+          width: double.infinity,
+          height: 50,
+          color: Color.fromARGB(255, 15, 220, 141),
+          textStyle: FlutterFlowTheme.of(context).titleMedium.override(
+            fontFamily: 'Plus Jakarta Sans',
+            color: Colors.white,
+          ),
+          elevation: 2,
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        elevation: 2,
       ),
     );
   }

@@ -36,12 +36,24 @@ class _GardiennagePageState extends State<GardiennagePage> {
 
   String formatDateTime(String dateString) {
     // Analyser la chaîne de date en tant qu'objet DateTime
+    print(dateString);
     DateTime dateTime = DateTime.parse(dateString);
 
     // Créer une liste des noms de mois
     List<String> monthNames = [
-      "", "janvier", "février", "mars", "avril", "mai", "juin", "juillet",
-      "août", "septembre", "octobre", "novembre", "décembre"
+      "",
+      "janvier",
+      "février",
+      "mars",
+      "avril",
+      "mai",
+      "juin",
+      "juillet",
+      "août",
+      "septembre",
+      "octobre",
+      "novembre",
+      "décembre"
     ];
 
     // Extraire le jour, le mois et l'année de la date
@@ -52,7 +64,8 @@ class _GardiennagePageState extends State<GardiennagePage> {
     int minute = dateTime.minute;
 
     // Formater la date dans le format souhaité
-    String formattedDate = "$day ${monthNames[month]} $year à ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}";
+    String formattedDate =
+        "$day ${monthNames[month]} $year";
 
     return formattedDate;
   }
@@ -71,11 +84,6 @@ class _GardiennagePageState extends State<GardiennagePage> {
                 Text('Adresse: ${plante['adr_plt']}'),
                 Text('Date de début: ${formatDateTime(plante['dat_deb_plt'])}'),
                 Text('Date de fin: ${formatDateTime(plante['dat_fin_plt'])}'),
-                _image != null ? Image.file(_image!) : Container(),
-                ElevatedButton(
-                  onPressed: _takePicture,
-                  child: Text('Prendre une photo'),
-                ),
               ],
             ),
           ),
