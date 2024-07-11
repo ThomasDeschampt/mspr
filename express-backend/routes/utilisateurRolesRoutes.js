@@ -3,7 +3,7 @@ const router = express.Router();
 const { ajouterRole } = require('../api/UtilisateurRoles'); 
 
 router.post('/ajouter', async (req, res) => {
-  const { role_name } = req.body;
+  const { role_name } = req.query;
   try {
     const newRole = await ajouterRole(role_name);
     res.status(201).json(newRole);
